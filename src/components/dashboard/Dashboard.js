@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
+//import RepositoryList from '../repository/RepositoryList';
+import ProjectPullRequests from '../pull_request/ProjectPullRequests';
+
+const styles = {
+  marginRight: "50px",
+  marginLeft: "50px"
+};
 
 class Dashboard extends Component {
   render() {
     return (
-      <div className="dashboard container">
-        <div className="row">
-          <h1>
-            Dashboard
-          </h1>
-        </div>
+      <div style={styles}>
+        <ProjectPullRequests />
       </div>
     );
   }
