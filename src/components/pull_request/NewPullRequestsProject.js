@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { getPullRequestsNoProject, addPullRequestInProject, removePullRequestNoProject } from '../../store/actions/pullRequestsAction';
+import { getPullRequestsNoProject, addPullRequestInProject, removePullRequestNoProject } from '../../store/actions/newPullRequestsAction';
 import PullRequestsTable from './pullRequestsTable/PullRequestsTable';
 
 const styles = {
@@ -62,7 +62,7 @@ class NewPullRequestsProject extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    pullRequestsNoProject: state.pullRequests.pullRequestsNoProject
+    pullRequestsNoProject: state.newPullRequests.pullRequestsNoProject
 });
 
 const mapDispatchToProps = (dispatch) => ({

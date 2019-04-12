@@ -1,8 +1,7 @@
-import { LOAD_PROJECT_PULL_REQUESTS_SUCCESS, LOAD_PULL_REQUESTS_NO_PROJECT_SUCCESS, ADDED_PULL_REQUEST_SUCCESS, ADDED_PULL_REQUEST_ERROR } from '../actions/types';
+import { LOAD_PROJECT_PULL_REQUESTS_SUCCESS } from '../actions/types';
 
 const initState = {
-    projectPullRequests: [],
-    pullRequestsNoProject: []
+    projectPullRequests: []
 };
   
 const pullRequestsReducer = (state = initState, action) => {
@@ -13,18 +12,6 @@ const pullRequestsReducer = (state = initState, action) => {
                 ...state,
                 projectPullRequests: action.projectPullRequests
             };
-        case LOAD_PULL_REQUESTS_NO_PROJECT_SUCCESS:
-            console.log('pull requests no project loaded!');
-            return {
-                ...state,
-                pullRequestsNoProject: action.pullRequestsNoProject
-            };
-        case ADDED_PULL_REQUEST_SUCCESS:
-            console.log("Pull request added");
-            return state;
-        case ADDED_PULL_REQUEST_ERROR:
-            console.log("Error to add pull request");
-            return state;
         default:
           return state
     }
