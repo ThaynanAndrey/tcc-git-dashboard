@@ -13,6 +13,11 @@ const styles = {
     marginLeft: "50px"
 };
 
+/**
+ * Component with the function of presenting all the Pull Requests of the project.
+ * 
+ * @author Thaynan Nunes
+ */
 class ProjectPullRequests extends Component {
   constructor(props) {
     super(props);
@@ -20,10 +25,21 @@ class ProjectPullRequests extends Component {
     this.removePullRequest = this.removePullRequest.bind(this);
   }
 
+  /**
+   * Function loaded just after the rendering of the component, in which
+   * all Pull Requests linked to the Project will be obtained.
+   */
   componentDidMount() {
     this.props.getProjectPullRequests();
   }
 
+  /**
+   * Deletes the Pull Request from user's Project, and shows a toast if
+   * is deleted successfully.
+   * 
+   * @param {Object} pullRequest
+   *        Pull Request to be deleted
+   */
   async removePullRequest(pullRequest) {
       await this.props.removePullRequestProject(pullRequest);
       toast.success("Pull Request removido!", {

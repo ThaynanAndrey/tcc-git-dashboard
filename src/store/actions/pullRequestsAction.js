@@ -7,6 +7,11 @@ import { LOAD_PROJECT_PULL_REQUESTS_SUCCESS } from './types';
 const INDEX_PR_GIT = 0;
 const INDEX_PR_FIRESTORE = 1;
 
+/**
+ * Gets Project's Pull Requests.
+ * 
+ * @returns {Function} Dispatch used to invoke the pullRequest's redux
+ */
 export const getProjectPullRequests = () => {
     return (dispatch, getState) => {         
         const promises = [];
@@ -34,6 +39,13 @@ export const getProjectPullRequests = () => {
     };
 };
 
+/**
+ * Removes the Pull Request of Project.
+ * 
+ * @param {Object} removedPullRequest 
+ *      Pull Request to be removed
+ * @returns {Function} Dispatch used to invoke the pullRequest's redux
+ */
 export const removePullRequestProject = (removedPullRequest) => {
     return (dispatch, getState) => {
         const firestore = firebase.firestore();
@@ -50,7 +62,12 @@ export const removePullRequestProject = (removedPullRequest) => {
     }
 };
 
-export const getAllReposUser = () => {
+/**
+ * Get all user's Repositories.
+ * 
+ * @returns {Function} Dispatch used to invoke the repositories's redux
+ */
+export const getAllUserRepositories = () => {
     return (dispatch, getState) => {
         const authOptions = {
             method: 'GET',
@@ -69,19 +86,47 @@ export const getAllReposUser = () => {
     }
 };
 
+/**
+ * Requests to GitHub the Repository's Pull Requests.
+ * 
+ * @returns {Promise} request's promise
+ */
 const _getPromisePullRequestsGit = () => axios.get('https://api.github.com/repos/octocat/Hello-World/pulls');
 
+/**
+ * Requests to Firestore all Project's Pull Requests.
+ * 
+ * @returns {Promise} request's promise
+ */
 const _getPromisePullRequestsFirestore = () => {
     const firestore = firebase.firestore();
     return firestore.collection('pullRequests').orderBy('idPullRequestGitHub').get();
 };
 
+/**
+ * Gets all Project's Pull Requests with datas of Github.
+ * 
+ * @param {Array} pullRequestsGit
+ *      Array with Pull Requests from GitHub
+ * @param {Array} pullRequestsFirestore 
+ *      Array with PullRequests from Firestore
+ * @returns {Array} array with Project's Pull Requests
+ */
 const _getPullRequests = (pullRequestsGit, pullRequestsFirestore) => {
     return pullRequestsGit
             .filter((pullRequest) => _isPullRequestInFirestore(pullRequest, pullRequestsFirestore))
             .map((pullRequest) => mapearAtributosPullRequest(pullRequest));
 };
 
+/**
+ * Returns {@code true} if pull request is into pullRequestsFirestore, {@code false} otherwise.
+ * 
+ * @param {Array} pullRequest
+ *      Pull Request to be verified
+ * @param {Array} pullRequestsFirestore
+ *      Array with Firestore's pull requests
+ * @returns {@code true} if pull request is into pullRequestsFirestore, {@code false} otherwise
+ */
 const _isPullRequestInFirestore = (pullRequest, pullRequestsFirestore) => {
     const index = binarySearch(pullRequestsFirestore, 0, pullRequestsFirestore.length-1, pullRequest.id);
     if(index !== -1) {

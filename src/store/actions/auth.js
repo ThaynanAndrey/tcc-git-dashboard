@@ -2,6 +2,11 @@ import firebase from 'firebase/app';
 
 import { USER_LOGIN_SUCCESS, USER_LOGIN_ERROR } from './types';
 
+/**
+ * Realize login with firebase authentication.
+ * 
+ * @returns {Function} Dispatch used to invoke the auth's redux
+ */
 export const login = () => {
     return dispatch => {
         const provider = new firebase.auth.GithubAuthProvider();

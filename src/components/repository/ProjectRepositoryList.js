@@ -6,7 +6,12 @@ const styles = {
     marginLeft: "50px"
 };
 
-export class RepositoryList extends Component {
+/**
+ * Component that shows all Project's Repositories.
+ * 
+ * @author Thaynan Nunes
+ */
+export class ProjectRepositoryList extends Component {
     render() {
         return (
             <div style={styles}>
@@ -26,4 +31,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RepositoryList);
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectRepositoryList);

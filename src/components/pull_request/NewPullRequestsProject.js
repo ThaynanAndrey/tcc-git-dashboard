@@ -13,6 +13,12 @@ const styles = {
     marginLeft: "50px"
 };
 
+/**
+ * Component with the list function Pull Requests of the user's registered
+ * repositories that have not yet been linked to the project.
+ * 
+ * @author Thaynan Nunes
+ */
 class NewPullRequestsProject extends Component {
   constructor(props) {
     super(props);
@@ -20,10 +26,21 @@ class NewPullRequestsProject extends Component {
     this.addPullRequest = this.addPullRequest.bind(this);
   }
 
+  /**
+   * Function loaded just after the rendering of the component, in which
+   * all Pull Requests not yet linked to the Project will be obtained.
+   */
   componentDidMount() {
     this.props.getPullRequestsNoProject();
   }
 
+  /**
+   * Add new Pull Request to Project, and shows a toast if
+   * is added successfully.
+   * 
+   * @param {Object} pullRequest
+   *      Pull Request to be added to Project
+   */
   async addPullRequest(pullRequest) {
     await this.props.addPullRequestInProject(pullRequest);
     toast.success("Pull Request adicionado!", {

@@ -6,6 +6,12 @@ const styles = {
   marginLeft: "50px"
 };
 
+/**
+ * Stateless Component with the function of presenting a
+ * main menu for redirects within the application.
+ * 
+ * @author Thaynan Nunes
+ */
 const Navbar = () => {
   return (
     <div className="navbar-fixed">

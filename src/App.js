@@ -4,7 +4,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Dashboard from './components/dashboard/Dashboard';
 import ProjectPullRequests  from './components/pull_request/ProjectPullRequests';
-import RepositoryList from './components/repository/RepositoryList';
+import ProjectRepositoryList from './components/repository/ProjectRepositoryList';
 import NewPullRequestsProject from './components/pull_request/NewPullRequestsProject';
 
 class App extends Component {
@@ -17,7 +17,7 @@ class App extends Component {
             <Route exact path='/'component={Dashboard} />
             <Route path='/pullRequests'component={ProjectPullRequests} />
             <Route path='/adicionarPullRequests'component={NewPullRequestsProject} />
-            <Route path='/repositories'component={RepositoryList} />
+            <Route path='/repositories'component={ProjectRepositoryList} />
           </Switch>
         </div>
       </BrowserRouter>
