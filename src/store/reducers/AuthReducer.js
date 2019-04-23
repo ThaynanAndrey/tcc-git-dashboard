@@ -12,7 +12,8 @@ const authReducer = (state = initState, action) => {
             console.log('User logged');
             return {
                 ...state,
-                user: action.user
+                user: action.user,
+                accessToken: action.accessToken
             };
         case USER_LOGIN_ERROR:
             console.log("Error to log user");

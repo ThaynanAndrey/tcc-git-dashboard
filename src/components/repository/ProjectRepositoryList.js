@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { requireAuthentication } from '../login/RequireAuthentication';
+
 const styles = {
     marginRight: "50px",
     marginLeft: "50px"
@@ -31,4 +33,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectRepositoryList);
+export default requireAuthentication(connect(mapStateToProps, mapDispatchToProps)(ProjectRepositoryList));

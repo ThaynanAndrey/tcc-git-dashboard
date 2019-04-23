@@ -19,20 +19,20 @@ export const getPullRequestsNoProject = () => {
     return async dispatch => {
         const promises = [];
         promises.push(_getPromiseRepositoriesFirestore());
-        promises.push(_getPromisePullRequestsFirestore());
+        promises.push(_getPullRequestsFirestore());
         
         const results = await Promise.all(promises);
         const repositoriesFirestore = results[INDEX_REPOSITORIES_FIRESTORE].docs.map(doc => doc.data());
         const pullRequestsFirestore = results[INDEX_PR_FIRESTORE].docs.map(doc => doc.data());
-        console.log(pullRequestsFirestore);
 
         const gitHubPromises = repositoriesFirestore.map(repository => _getPullRequestsRepository(repository.idGitHub));
         const pullRequestsGitHubResult = await Promise.all(gitHubPromises);
         let nextPullRequests = await _getNextPullRequests(pullRequestsGitHubResult);
+        
         let pullRequestsGit = pullRequestsGitHubResult.reduce((array, result) => array.concat(result.data), []);
         nextPullRequests = nextPullRequests.reduce((array, pr) => array.concat(pr.data), []);
-        
         pullRequestsGit = pullRequestsGit.concat(nextPullRequests);
+        
         const pullRequestsNoProject = _getPullRequestsNoProject(pullRequestsGit, pullRequestsFirestore);
 
         dispatch({
@@ -61,8 +61,8 @@ export const addPullRequestInProject = (pullRequest) => {
             nomePropietario: pullRequest.propietario.nome
         }).then(() => {
             dispatch({ type: ADDED_PULL_REQUEST_SUCCESS });
-        }).catch(err => {
-            dispatch({ type: ADDED_PULL_REQUEST_ERROR }, err);
+        }).catch(erro => {
+            dispatch({ type: ADDED_PULL_REQUEST_ERROR , erro });
         });
     };
 };
@@ -104,7 +104,7 @@ const _getPullRequestsRepository = (id, page) =>
  * 
  * @returns {Promise} request's promise
  */
-const _getPromisePullRequestsFirestore = () => {
+const _getPullRequestsFirestore = () => {
     const firestore = firebase.firestore();
     return firestore.collection(COLLECTION_PULL_REQUEST_FIRESTORE).orderBy('idPullRequestGitHub').get();
 };

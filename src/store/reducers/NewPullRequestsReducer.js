@@ -16,7 +16,7 @@ const newPullRequestsReducer = (state = initState, action) => {
             console.log("Pull request added");
             return state;
         case ADDED_PULL_REQUEST_ERROR:
-            console.log("Error to add pull request");
+            console.log("Error to add pull request: " + action.erro);
             return state;
         default:
           return state

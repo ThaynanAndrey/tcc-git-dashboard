@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { requireAuthentication } from '../login/RequireAuthentication';
 import { getProjectPullRequests, removePullRequestProject } from '../../store/actions/pullRequestsAction';
 import PullRequestsTable from './pullRequestsTable/PullRequestsTable';
 
@@ -93,4 +94,4 @@ const mapDispatchToProps = (dispatch) => ({
     removePullRequestProject: (pullRequest) => dispatch(removePullRequestProject(pullRequest))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectPullRequests);
+export default requireAuthentication(connect(mapStateToProps, mapDispatchToProps)(ProjectPullRequests));

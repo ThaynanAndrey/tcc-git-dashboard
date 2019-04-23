@@ -12,12 +12,15 @@ const PULL_REQUEST_FIRESTORE_COLLECTION = "pullRequests";
  * @returns {Function} Dispatch used to invoke the pullRequest's redux
  */
 export const getProjectPullRequests = () => {
-    return async dispatch => {
-        let pullRequestsFirestore = await _getPromisePullRequestsFirestore();
+    return async (dispatch, getState) => {
+        console.log(getState().auth.accessToken);
+
+        let pullRequestsFirestore = await _getPullRequestsFirestore();
         pullRequestsFirestore = getDataPullRequestsFirestore(pullRequestsFirestore);
         
         const promises = pullRequestsFirestore
             .map(pullRequest => _getGitHubPullRequest(pullRequest));
+        
         const pullRequestsResult = await Promise.all(promises);
         const projectPullRequests = pullRequestsResult
             .map((result, index) => 
@@ -33,7 +36,7 @@ export const getProjectPullRequests = () => {
 /**
  * Removes the Pull Request of Project.
  * 
- * @param {Object} removedPullRequest 
+ * @param {Object} removedPullRequest
  *      Pull Request to be removed
  * @returns {Function} Dispatch used to invoke the pullRequest's redux
  */
@@ -92,7 +95,7 @@ const _getGitHubPullRequest = pullRequest =>
  * 
  * @returns {Promise} request's promise
  */
-const _getPromisePullRequestsFirestore = () => {
+const _getPullRequestsFirestore = () => {
     const firestore = firebase.firestore();
     return firestore.collection(PULL_REQUEST_FIRESTORE_COLLECTION).get();
 };
