@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { requireAuthentication } from '../login/RequireAuthentication';
+import { requireAuthentication } from '../../high-order-components/RequireAuthentication';
 import { getPullRequestsNoProject, addPullRequestInProject, removePullRequestNoProject } from '../../store/actions/newPullRequestsAction';
 import PullRequestsTable from './pullRequestsTable/PullRequestsTable';
 

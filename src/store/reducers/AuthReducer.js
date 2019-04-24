@@ -1,9 +1,10 @@
-import { USER_LOGIN_SUCCESS, USER_LOGIN_ERROR  } from '../actions/types';
+import { USER_LOGIN_SUCCESS, USER_LOGIN_ERROR, USER_LOGOUT_SUCCESS, USER_LOGOUT_ERROR } from '../actions/types';
 
 const initState = {
     user: undefined,
     accessToken: undefined,
-    error: undefined
+    errorLogin: undefined,
+    errorLogout: undefined
 };
   
 const authReducer = (state = initState, action) => {
@@ -13,14 +14,23 @@ const authReducer = (state = initState, action) => {
             return {
                 ...state,
                 user: action.user,
+                idUser: action.idUser,
                 accessToken: action.accessToken
             };
         case USER_LOGIN_ERROR:
             console.log("Error to log user");
             return {
                 ...state,
-                user: undefined,
-                error: action.error
+                errorLogin: action.errorLogin
+            }
+        case USER_LOGOUT_SUCCESS:
+            console.log("log out user");
+            return initState;
+        case USER_LOGOUT_ERROR:
+            console.log("Error to log out user");
+            return {
+                ...state,
+                errorLogout: action.errorLogout
             }
         default:
           return state

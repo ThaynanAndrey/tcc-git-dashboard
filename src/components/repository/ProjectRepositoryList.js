@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { requireAuthentication } from '../login/RequireAuthentication';
+import { requireAuthentication } from '../../high-order-components/RequireAuthentication';
 
 const styles = {
     marginRight: "50px",
