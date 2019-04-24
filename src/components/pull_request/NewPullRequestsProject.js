@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { requireAuthentication } from '../../high-order-components/RequireAuthentication';
 import { getPullRequestsNoProject, addPullRequestInProject, removePullRequestNoProject } from '../../store/actions/newPullRequestsAction';
 import PullRequestsTable from './pullRequestsTable/PullRequestsTable';
 
@@ -13,6 +14,12 @@ const styles = {
     marginLeft: "50px"
 };
 
+/**
+ * Component with the list function Pull Requests of the user's registered
+ * repositories that have not yet been linked to the project.
+ * 
+ * @author Thaynan Nunes
+ */
 class NewPullRequestsProject extends Component {
   constructor(props) {
     super(props);
@@ -20,10 +27,21 @@ class NewPullRequestsProject extends Component {
     this.addPullRequest = this.addPullRequest.bind(this);
   }
 
+  /**
+   * Function loaded just after the rendering of the component, in which
+   * all Pull Requests not yet linked to the Project will be obtained.
+   */
   componentDidMount() {
     this.props.getPullRequestsNoProject();
   }
 
+  /**
+   * Add new Pull Request to Project, and shows a toast if
+   * is added successfully.
+   * 
+   * @param {Object} pullRequest
+   *      Pull Request to be added to Project
+   */
   async addPullRequest(pullRequest) {
     await this.props.addPullRequestInProject(pullRequest);
     toast.success("Pull Request adicionado!", {
@@ -71,4 +89,4 @@ const mapDispatchToProps = (dispatch) => ({
     removePullRequestNoProject: (pullRequest) => dispatch(removePullRequestNoProject(pullRequest))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewPullRequestsProject);
+export default requireAuthentication(connect(mapStateToProps, mapDispatchToProps)(NewPullRequestsProject));

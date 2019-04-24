@@ -1,22 +1,38 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+import SignedInLinks from './SignedInLinks';
+import SignedOutLinks from './SignedOutLinks';
+import { isAuthenticated, logout } from '../../store/actions/authAction';
 
 const styles = {
   marginRight: "50px",
   marginLeft: "50px"
 };
 
+/**
+ * Stateless Component with the function of presenting a
+ * main menu for redirects within the application.
+ * 
+ * @author Thaynan Nunes
+ */
 const Navbar = () => {
+  
+  /**
+   * Sign out user and redirect to login page.
+   */
+  const signOut = () => {
+    logout();
+  };
+
+  const links = isAuthenticated() ? <SignedInLinks signOut={signOut}/> : <SignedOutLinks />;
+  
   return (
     <div className="navbar-fixed">
       <nav className="nav-wrapper grey darken-3">
         <div style={styles}>
           <Link to='/' className="brand-logo">Git Dashboard</Link>
-          <ul className="right hide-on-med-and-down">
-            <li><NavLink to='/projetos'>Projetos</NavLink></li>
-            <li><NavLink to='/repositories'>Repositórios</NavLink></li>
-            <li><NavLink to='/login'>Login</NavLink></li>
-          </ul>
+          { links }
         </div>
       </nav>
     </div>

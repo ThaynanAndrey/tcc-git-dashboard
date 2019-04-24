@@ -1,6 +1,12 @@
 import React from 'react';
 import Tooltip from "react-simple-tooltip";
 
+/**
+ * Stateless component with the function of presenting the body of
+ * a table with Pull Requests not yet added to the project.
+ * 
+ * @author Thaynan Nunes
+ */
 const NewPullRequestsTableBody = ({ pullRequests, addPullRequest }) => {
     const pullRequestElements = pullRequests.map((pullRequest, indice) => (
         <tr key={indice}>

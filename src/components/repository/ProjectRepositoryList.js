@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { requireAuthentication } from '../../high-order-components/RequireAuthentication';
+
 const styles = {
     marginRight: "50px",
     marginLeft: "50px"
 };
 
-export class RepositoryList extends Component {
+/**
+ * Component that shows all Project's Repositories.
+ * 
+ * @author Thaynan Nunes
+ */
+export class ProjectRepositoryList extends Component {
     render() {
         return (
             <div style={styles}>
@@ -26,4 +33,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RepositoryList);
+export default requireAuthentication(connect(mapStateToProps, mapDispatchToProps)(ProjectRepositoryList));

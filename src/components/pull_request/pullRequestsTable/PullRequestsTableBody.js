@@ -2,6 +2,12 @@ import React from 'react';
 import Tooltip from "react-simple-tooltip";
 import { Link } from 'react-router-dom';
 
+/**
+ * Stateless Component with the function of displaying the body of
+ * a table with the Pull Requests added in the project.
+ * 
+ * @author Thaynan Nunes
+ */
 const PullRequestsTableBody = ({ pullRequests, removePullRequest }) => {
     const pullRequestElements = pullRequests.map((pullRequest, indice) => (
         <tr key={indice}>

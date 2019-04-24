@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
-//import RepositoryList from '../repository/RepositoryList';
 import ProjectPullRequests from '../pull_request/ProjectPullRequests';
 
-const styles = {
-  marginRight: "50px",
-  marginLeft: "50px"
-};
-
+/**
+ * Component with the function of presenting a dashboard for the
+ * monitoring of user projects.
+ * 
+ * @author Thaynan Nunes
+ */
 class Dashboard extends Component {
   render() {
     return (
-      <div style={styles}>
-        <ProjectPullRequests />
-      </div>
+      <ProjectPullRequests />
     );
   }
 }
