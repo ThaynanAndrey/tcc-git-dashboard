@@ -3,6 +3,11 @@ import PullRequestsTableHead from './PullRequestsTableHead';
 import PullRequestsTableBody from './PullRequestsTableBody';
 import NewPullRequestsTableBody from './NewPullRequestsTableBody';
 
+/**
+ * Stateless component with the function of presenting a table of Pull Requests.
+ * 
+ * @author Thaynan Nunes
+ */
 const PullRequestsTable = ({ pullRequests, isListNewPullRequests, addPullRequest, removePullRequest }) => {
     const pullRequestTableBody = isListNewPullRequests
         ? <NewPullRequestsTableBody pullRequests={pullRequests} addPullRequest={addPullRequest}/>

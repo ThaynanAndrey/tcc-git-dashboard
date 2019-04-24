@@ -2,6 +2,23 @@ import moment from 'moment';
 
 moment.locale('pt-BR');
 
+/**
+ * Gets the Pull Requests data in Firestore's array.
+ * 
+ * @param {Array} pullRequestsFirestore
+ *      Array to be gotten the data
+ * @returns {Array} array with Pull Requests data in Firestore
+ */
+export const getDataPullRequestsFirestore = (pullRequestsFirestore) => {
+    return pullRequestsFirestore.docs
+        .filter(doc => doc.exists)
+        .map(doc => {
+            let pullRequest = doc.data();
+            pullRequest.id = doc.id;
+            return pullRequest;
+        });
+};
+
 export const binarySearch = (list, start, end, element) => {
     if(start > end) {
         return -1;
@@ -15,22 +32,29 @@ export const binarySearch = (list, start, end, element) => {
     return binarySearch(list, mid+1, end, element);
 };
 
-export const mapearAtributosPullRequest = (pullRequest) => {
-    return {
-        id: pullRequest.id,
-        idFirestore: pullRequest.idFirestore,
-        nome: pullRequest.title,
-        dataAtualizacao: pullRequest.updated_at,
-        dataCriacao: moment(pullRequest.created_at).format('DD/MM/YYYY, HH:mm'),
-        numero: pullRequest.number,
-        status: (pullRequest.state === "open" ? "aberto": "fechado"),
+export const mapearAtributosPullRequest = (pullRequestGitHub, pullRequestsFirestore, indexFirestore) => {
+    const pullRequest = {
+        id: pullRequestGitHub.id,
+        idFirestore: pullRequestGitHub.idFirestore,
+        nome: pullRequestGitHub.title,
+        dataAtualizacao: pullRequestGitHub.updated_at,
+        dataCriacao: moment(pullRequestGitHub.created_at).format('DD/MM/YYYY, HH:mm'),
+        numero: pullRequestGitHub.number,
+        status: (pullRequestGitHub.state === "open" ? "aberto": "fechado"),
         repositorio: {
-            nome: pullRequest.base.repo.name,
-            id: pullRequest.base.repo.id
+            nome: pullRequestGitHub.base.repo.name,
+            id: pullRequestGitHub.base.repo.id
         },
         responsavel: {
-            id: pullRequest.user.id,
-            nome: pullRequest.user.login
+            id: pullRequestGitHub.user.id,
+            nome: pullRequestGitHub.user.login
+        },
+        propietario: {
+            id: pullRequestGitHub.base.repo.owner.id,
+            nome: pullRequestGitHub.base.repo.owner.login
         }
-    }
+    };
+    pullRequest.idFirestore = pullRequestsFirestore && pullRequestsFirestore[indexFirestore].id;
+
+    return pullRequest;
 };

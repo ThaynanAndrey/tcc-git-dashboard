@@ -1,5 +1,11 @@
 import React from 'react';
 
+/**
+ * Stateless component with the function of displaying the head of a
+ * Pull Requests table.
+ * 
+ * @author Thaynan Nunes
+ */
 const PullRequestsTableHead = () => {
     return (
         <thead>
