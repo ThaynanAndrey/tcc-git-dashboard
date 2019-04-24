@@ -13,8 +13,6 @@ const PULL_REQUEST_FIRESTORE_COLLECTION = "pullRequests";
  */
 export const getProjectPullRequests = () => {
     return async (dispatch, getState) => {
-        console.log(getState().auth.accessToken);
-
         let pullRequestsFirestore = await _getPullRequestsFirestore();
         pullRequestsFirestore = getDataPullRequestsFirestore(pullRequestsFirestore);
         

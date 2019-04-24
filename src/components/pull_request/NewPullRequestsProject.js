@@ -62,9 +62,9 @@ class NewPullRequestsProject extends Component {
             
             <ToastContainer />
             
-            <Link to="/pullRequests">
+            <Link to="/">
               <div className="col right">
-                <button className="btn waves-effect waves-light green accent-3"
+                <button className="btn waves-effect waves-light green darken-2"
                         type="button" name="cadastrar-pr">
                     Pulls Requests do Projeto
                     <i className="material-icons left">arrow_back</i>

@@ -7,6 +7,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #FFFAFA;
+  font-family: "Josefin Sans";
 }
 
 code {
@@ -16,4 +17,10 @@ code {
 
 .body-table {
   background-color: white;
+}
+
+.body-collapsible-project {
+  max-height: 45vh;
+  overflow: auto;
+  overflow-x: hidden;
 }

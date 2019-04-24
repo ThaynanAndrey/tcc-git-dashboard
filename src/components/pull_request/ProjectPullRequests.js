@@ -9,9 +9,10 @@ import { getProjectPullRequests, removePullRequestProject } from '../../store/ac
 import PullRequestsTable from './pullRequestsTable/PullRequestsTable';
 
 const styles = {
-    fontSize: "17px",
-    marginRight: "50px",
-    marginLeft: "50px"
+    // fontSize: "17px",
+    // marginRight: "50px",
+    // marginLeft: "50px"
+    paddingTop: "0"
 };
 
 /**
@@ -56,26 +57,26 @@ class ProjectPullRequests extends Component {
   render() {
     return (
         <div style={styles}>
-            <h3>Pull Requests cadastrados no Projeto</h3>
+            {/* <h3>Pull Requests cadastrados no Projeto</h3> */}
             
             <ToastContainer />
             
             <div className="row">
-                <div className="col right">
+                {/* <div className="col right">
                     <Link to="/adicionarPullRequests">
-                        <button className="btn waves-effect waves-light green accent-3"
+                        <button className="btn waves-effect waves-light green darken-2"
                                 type="button" name="cadastrar-pr">
                             Cadastrar Pull Requests
                             <i className="material-icons left">add</i>
                         </button>
                     </Link>
-                </div>
-                <div className="col right">
+                </div> */}
+                {/* <div className="col right">
                     <button className="btn waves-effect waves-light orange accent-3" type="button" name="cadastrar-pr">
                         Cadastrar Repositório
                         <i className="material-icons left">add</i>
                     </button>
-                </div>
+                </div> */}
             </div>
 
             <PullRequestsTable pullRequests={this.props.projectPullRequests}

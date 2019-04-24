@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import M from "materialize-css";
 
 import Navbar from './components/layout/Navbar';
-import Dashboard from './components/dashboard/Dashboard';
+import ProjectDetails from './components/project/ProjectDetails';
 import ProjectPullRequests  from './components/pull_request/ProjectPullRequests';
 import ProjectRepositoryList from './components/repository/ProjectRepositoryList';
 import NewPullRequestsProject from './components/pull_request/NewPullRequestsProject';
@@ -21,6 +22,10 @@ const styles = {
 };
 
 class App extends Component {
+  componentDidMount() {
+    M.AutoInit();
+  }
+
   render() {
     return (
       <BrowserRouter>
@@ -28,7 +33,7 @@ class App extends Component {
           <Navbar />
           <div className="App" style={styles}>
             <Switch>
-              <Route exact path='/'component={Dashboard} />
+              <Route exact path='/'component={ProjectDetails} />
               <Route path='/pullRequests'component={ProjectPullRequests} />
               <Route path='/adicionarPullRequests'component={NewPullRequestsProject} />
               <Route path='/repositories'component={ProjectRepositoryList} />
