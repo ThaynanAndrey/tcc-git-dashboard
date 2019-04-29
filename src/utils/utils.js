@@ -3,19 +3,40 @@ import moment from 'moment';
 moment.locale('pt-BR');
 
 /**
- * Gets the Pull Requests data in Firestore's array.
+ * Gets url with auth headers.
  * 
- * @param {Array} pullRequestsFirestore
- *      Array to be gotten the data
- * @returns {Array} array with Pull Requests data in Firestore
+ * @param {String} url
+ *      URL to be requested
+ * @param {String} method
+ *      REST's method
+ * @param {String} accessToken
+ *      User's access token
  */
-export const getDataPullRequestsFirestore = (pullRequestsFirestore) => {
-    return pullRequestsFirestore.docs
+export const getUrlAuthenticated = (url, method, accessToken) => (
+    {
+        method,
+        url,
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+        }
+    }
+);
+
+/**
+ * Gets data in Firestore's array.
+ * 
+ * @param {Array} elemsFirestore
+ *      Array to be gotten the data
+ * @returns {Array} array with data Firestore's elements
+ */
+export const getDataElemsFirestore = elemsFirestore => {
+    return elemsFirestore.docs
         .filter(doc => doc.exists)
         .map(doc => {
-            let pullRequest = doc.data();
-            pullRequest.id = doc.id;
-            return pullRequest;
+            let dataDoc = doc.data();
+            dataDoc.id = doc.id;
+            return dataDoc;
         });
 };
 
@@ -43,7 +64,8 @@ export const mapearAtributosPullRequest = (pullRequestGitHub, pullRequestsFirest
         status: (pullRequestGitHub.state === "open" ? "aberto": "fechado"),
         repositorio: {
             nome: pullRequestGitHub.base.repo.name,
-            id: pullRequestGitHub.base.repo.id
+            id: pullRequestGitHub.base.repo.id,
+            idFirestore: pullRequestGitHub.idFirestoreRepository
         },
         responsavel: {
             id: pullRequestGitHub.user.id,

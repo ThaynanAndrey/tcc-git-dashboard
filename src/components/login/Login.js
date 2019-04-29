@@ -36,7 +36,7 @@ class Login extends Component {
     await this.props.login();
 
     if(isAuthenticated()) {
-        this.props.history.push('/pullRequests');
+        this.props.history.push('/');
     }
   }
 
@@ -47,7 +47,7 @@ class Login extends Component {
                 <div className="card-content white-text">
                     <span className="card-title">
                         <h4>
-                            Git DashBoard
+                            Git Dashboard
                         </h4>    
                     </span>
                     <h6>

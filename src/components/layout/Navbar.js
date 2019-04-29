@@ -29,7 +29,7 @@ const Navbar = () => {
   
   return (
     <div className="navbar-fixed">
-      <nav className="nav-wrapper grey darken-3">
+      <nav className="nav-wrapper blue-grey darken-2">
         <div style={styles}>
           <Link to='/' className="brand-logo">Git Dashboard</Link>
           { links }
