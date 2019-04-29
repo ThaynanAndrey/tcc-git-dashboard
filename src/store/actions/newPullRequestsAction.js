@@ -1,7 +1,7 @@
 import axios from 'axios';
 import firebase from 'firebase/app';
 
-import { binarySearch, mapearAtributosPullRequest } from '../../utils/utils';
+import { binarySearch, mapearAtributosPullRequest, getUrlAuthenticated, getDataElemsFirestore } from '../../utils/utils';
 import { LOAD_PULL_REQUESTS_NO_PROJECT_SUCCESS, ADDED_PULL_REQUEST_SUCCESS, ADDED_PULL_REQUEST_ERROR } from './types';
 
 const COLLECTION_PULL_REQUEST_FIRESTORE = "pullRequests";
@@ -22,8 +22,8 @@ export const getPullRequestsNoProject = () => {
         promises.push(_getPullRequestsFirestore());
         
         const results = await Promise.all(promises);
-        const repositoriesFirestore = results[INDEX_REPOSITORIES_FIRESTORE].docs.map(doc => doc.data());
-        const pullRequestsFirestore = results[INDEX_PR_FIRESTORE].docs.map(doc => doc.data());
+        const repositoriesFirestore = getDataElemsFirestore(results[INDEX_REPOSITORIES_FIRESTORE]);
+        const pullRequestsFirestore = getDataElemsFirestore(results[INDEX_PR_FIRESTORE]);
 
         const gitHubPromises = repositoriesFirestore.map(repository => _getPullRequestsRepository(repository.idGitHub));
         const pullRequestsGitHubResult = await Promise.all(gitHubPromises);
@@ -32,7 +32,8 @@ export const getPullRequestsNoProject = () => {
         let pullRequestsGit = pullRequestsGitHubResult.reduce((array, result) => array.concat(result.data), []);
         nextPullRequests = nextPullRequests.reduce((array, pr) => array.concat(pr.data), []);
         pullRequestsGit = pullRequestsGit.concat(nextPullRequests);
-        
+        pullRequestsGit = _addIdFirestoreRepository(pullRequestsGit, repositoriesFirestore);
+
         const pullRequestsNoProject = _getPullRequestsNoProject(pullRequestsGit, pullRequestsFirestore);
 
         dispatch({
@@ -58,7 +59,8 @@ export const addPullRequestInProject = (pullRequest) => {
             idRepositorioGitHub: pullRequest.repositorio.id,
             nomeRepositorioGitHub: pullRequest.repositorio.nome,
             numeroPullRequestGitHub: pullRequest.numero,
-            nomePropietario: pullRequest.propietario.nome
+            nomePropietario: pullRequest.propietario.nome,
+            repository: firestore.doc(`${COLLECTION_REPOSITORY_FIRESTORE}/${pullRequest.repositorio.idFirestore}`)
         }).then(() => {
             dispatch({ type: ADDED_PULL_REQUEST_SUCCESS });
         }).catch(erro => {
@@ -96,8 +98,14 @@ export const removePullRequestNoProject = (pullRequestRemoved) => {
  *      Pull Request's page
  * @returns {Promise} request's promise
  */
-const _getPullRequestsRepository = (id, page) =>
-    axios.get(`https://api.github.com/repositories/${id}/pulls?page=${page ? page : 1}`);
+const _getPullRequestsRepository = (id, page) => {
+    const method = 'GET';
+    const url = `https://api.github.com/repositories/${id}/pulls?page=${page ? page : 1}`;
+    const accessToken = sessionStorage.getItem('authAccessToken');
+    const authUrl = getUrlAuthenticated(url, method, accessToken);
+
+    return axios(authUrl);
+}
 
 /**
  * Requests to Firestore all Project's Pull Requests.
@@ -173,3 +181,20 @@ const _isPullRequestInFirestore = (pullRequest, pullRequestsFirestore) => {
     const index = binarySearch(pullRequestsFirestore, 0, pullRequestsFirestore.length-1, pullRequest.id);
     return index !== -1;
 };
+
+/**
+ * Adds Firestore id in repositories array.
+ * 
+ * @param {Array} pullRequestsGit 
+ *      
+ * @param {Array} repositoriesFirestore 
+ */
+const _addIdFirestoreRepository = (pullRequestsGit, repositoriesFirestore) => {
+    return pullRequestsGit.map(pr => {
+        const mappedPr = pr;
+        mappedPr.idFirestoreRepository = repositoriesFirestore
+            .filter(repository => repository.idGitHub === pr.base.repo.id)[0].id;
+        
+        return mappedPr;
+    });
+}

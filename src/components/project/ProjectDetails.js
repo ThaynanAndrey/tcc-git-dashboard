@@ -4,6 +4,7 @@ import M from "materialize-css";
 import { Link } from 'react-router-dom';
 
 import ProjectPullRequests from '../pull_request/ProjectPullRequests';
+import ProjectRepositoryList from '../repository/ProjectRepositoryList';
 import { requireAuthentication } from '../../high-order-components/RequireAuthentication';
 
 const styles = {
@@ -32,10 +33,6 @@ const styleCollapsibleBody = {
  * @author Thaynan Nunes
  */
 class ProjectDetails extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     /**
      * 
      */
@@ -53,7 +50,7 @@ class ProjectDetails extends Component {
                     <li className="active">
                         <div className="collapsible-header" style={styleCollapsibleHeader}>
                             <div style={styleCollapsibleHeaderText}>
-                                <i className="material-icons">add</i>
+                                <i className="material-icons">dehaze</i>
                                 Pull Requests
                             </div>
                             <div>
@@ -76,11 +73,11 @@ class ProjectDetails extends Component {
                     <li>
                         <div className="collapsible-header" style={styleCollapsibleHeader}>
                             <div style={styleCollapsibleHeaderText}>
-                                <i className="material-icons col right">add</i>
+                                <i className="material-icons">dehaze</i>
                                 Repositórios
                             </div>
                             <div>
-                                <Link to="/adicionarPullRequests">
+                                <Link to="/adicionarRepositorios">
                                     <button className="btn-small waves-effect waves-light green darken-2"
                                             type="button" name="cadastrar-pr">
                                         Adicionar
@@ -90,7 +87,7 @@ class ProjectDetails extends Component {
                             </div>
                         </div>
                         <div className="collapsible-body body-collapsible-project" style={styleCollapsibleBody}>
-                            <h2>Ainda não implementado</h2>
+                            <ProjectRepositoryList />
                         </div>
                     </li>
                 </ul>

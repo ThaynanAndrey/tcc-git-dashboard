@@ -12,11 +12,15 @@ export const login = () => {
         return firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
             .then(() => {
                 const provider = new firebase.auth.GithubAuthProvider();
+                provider.addScope('repo');
+                
                 return firebase.auth().signInWithPopup(provider)
                     .then(result => {
                         const { currentUser } = firebase.auth();
+                        console.log(result);
                         const accessToken = result.credential.accessToken;
-                        localStorage.setItem('authAccessToken', JSON.stringify(accessToken));
+                        sessionStorage.setItem('authAccessToken', accessToken);
+                        
                         dispatch({
                             type: USER_LOGIN_SUCCESS,
                             user: currentUser,
@@ -48,7 +52,7 @@ export const login = () => {
 export const logout = () => {
     return dispatch => {
         return firebase.auth().signOut().then(() => {
-            localStorage.removeItem('authAccessToken');
+            sessionStorage.removeItem('authAccessToken');
             dispatch({
                 type: USER_LOGOUT_SUCCESS
             });
@@ -67,5 +71,5 @@ export const logout = () => {
  * @returns {Boolean} {@code true} if exists an user authenticated, otherwise {@code false}
  */
 export const isAuthenticated = () => {
-    return localStorage.getItem('authAccessToken') !== null;
+    return sessionStorage.getItem('authAccessToken') !== null;
 }

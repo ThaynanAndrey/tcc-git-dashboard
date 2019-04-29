@@ -66,7 +66,7 @@ class NewPullRequestsProject extends Component {
               <div className="col right">
                 <button className="btn waves-effect waves-light green darken-2"
                         type="button" name="cadastrar-pr">
-                    Pulls Requests do Projeto
+                    Voltar
                     <i className="material-icons left">arrow_back</i>
                 </button>
               </div>

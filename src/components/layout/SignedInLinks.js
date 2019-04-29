@@ -10,8 +10,10 @@ const SignedInLinks = (props) => {
     return (
         <ul className="right hide-on-med-and-down">
             <li><NavLink to='/projetos'>Projetos</NavLink></li>
-            <li><NavLink to='/repositories'>Repositórios</NavLink></li>
-            <li><NavLink to='/login' onClick={props.signOut}>Sair</NavLink></li>
+            <li><NavLink to='/login' onClick={props.signOut}>
+                {/*<FontAwesomeIcon icon={faCoffee} />*/}
+                Sair
+            </NavLink></li>
         </ul>
     );
 };
