@@ -8,6 +8,7 @@ import ProjectPullRequests  from './components/pull_request/ProjectPullRequests'
 import NewPullRequestsProject from './components/pull_request/NewPullRequestsProject';
 import ProjectRepositoryList from './components/repository/ProjectRepositoryList';
 import RepositoriesNoProject from './components/repository/RepositoriesNoProject';
+import Projects from './components/project/Projects';
 import Login from './components/login/Login';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -34,7 +35,9 @@ class App extends Component {
           <Navbar />
           <div className="App" style={styles}>
             <Switch>
-              <Route exact path='/'component={ProjectDetails} />
+              <Route exact path='/'component={Projects} />
+              <Route path='/projetos'component={Projects} />
+              <Route path='/projeto/:id'component={ProjectDetails} />
               <Route path='/pullRequests'component={ProjectPullRequests} />
               <Route path='/adicionarPullRequests'component={NewPullRequestsProject} />
               <Route path='/repositories'component={ProjectRepositoryList} />
