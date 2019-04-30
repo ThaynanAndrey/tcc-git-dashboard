@@ -9,15 +9,17 @@ import { getUrlAuthenticated } from '../../utils/utils';
 moment.locale('pt-BR');
 
 const COLLECTION_REPOSITORY_FIRESTORE = "repositories";
+const COLLECTION_PROJECT_FIRESTORE = "projects";
 
 /**
  * Gets Project's Repositories.
  * 
+ * @param {String} idProject Project id
  * @returns {Function} Dispatch used to invoke the repositories' redux
  */
-export const getProjectRepositories = () => {
+export const getProjectRepositories = idProject => {
     return async dispatch => {
-        const projectRepositories = await _getProjectRepositories();
+        const projectRepositories = await getRepositoriesByIdProject(idProject);
 
         dispatch({
             type: LOAD_PROJECT_REPOSITORIES_SUCCESS,
@@ -29,12 +31,13 @@ export const getProjectRepositories = () => {
 /**
  * Gets user's repositories that isn't in project repositories.
  * 
+ * @param {String} idProject Project id
  * @returns {Function} Dispatch used to invoke the repositories' redux
  */
-export const getRepositoriesNoProject = () => {
+export const getRepositoriesNoProject = idProject => {
     return async dispatch => {
         const promises = [];
-        promises.push(_getProjectRepositories());
+        promises.push(getRepositoriesByIdProject(idProject));
         promises.push(_getAllUserRepositories());
         
         const response = await Promise.all(promises);
@@ -78,16 +81,18 @@ export const deleteRepositoryProject = (deletedRepository) => {
  * 
  * @param {Object} repository
  *      Repository to be added
+ * @param {String} idProject
+ *      Project id to be added th repository
  * @returns {Function} dispatch used to invoke the repositories' redux
  */
-export const addRepositoryInProject = (repository) => {
+export const addRepositoryInProject = (repository, idProject) => {
     return (dispatch, getState) => {
         const firestore = firebase.firestore();
         return firestore.collection(COLLECTION_REPOSITORY_FIRESTORE).add({
-            idProjeto: 1,
             idGitHub: repository.id,
             name: repository.name,
-            ownerName: repository.owner.name
+            ownerName: repository.owner.name,
+            project: firestore.doc(`${COLLECTION_PROJECT_FIRESTORE}/${idProject}`)
         }).then(() => {
             let dispatchObject = { 
                 type: ADDED_REPOSITORY_SUCCESS,
@@ -164,22 +169,36 @@ export const resetExternalRepositories = () =>
 /**
  * Gets Project's Repositories.
  * 
+ * @param {String} idProject Project id
  * @returns {Array} Project repositories' array
  */
-const _getProjectRepositories = async () => {
-    let repositoriesFirestore = await getRepositoriesFirestore();
+export const getRepositoriesByIdProject = async idProject => {
+    let repositoriesFirestore = await _getRepositoriesFirestore();
     repositoriesFirestore = _getDataRepositoriesFirestore(repositoriesFirestore);
+    const repositoriesFirestoreFilteredProject = _filterRepositoriesByProject(repositoriesFirestore, idProject);
 
-    const promises = repositoriesFirestore
+    const promises = repositoriesFirestoreFilteredProject
         .map(repository => _getGitHubRepositories(repository.ownerName, repository.name));
 
     const repositoriesResult = await Promise.all(promises);
     const projectRepositories = repositoriesResult
         .map((result, index) => 
-            _mapRepositoryAttr(result.data, repositoriesFirestore, index));
+            _mapRepositoryAttr(result.data, repositoriesFirestoreFilteredProject, index));
 
     return projectRepositories;
 };
+
+/**
+ * Filter repositories by Project id.
+ * 
+ * @param {Array} repositories
+ *      Repositories to be filtered
+ * @param {String} idProject
+ *      Project id
+ * @returns {Array} filtered respositories by Project id
+ */
+const _filterRepositoriesByProject = (repositories, idProject) =>
+    repositories.filter(repository => repository.project.id === idProject);
 
 /**
  * Get all user's Repositories.
@@ -206,7 +225,7 @@ const _getAllUserRepositories = async () => {
  * 
  * @returns {Promise} request's promise
  */
-export const getRepositoriesFirestore = () => {
+const _getRepositoriesFirestore = () => {
     const firestore = firebase.firestore();
     return firestore.collection(COLLECTION_REPOSITORY_FIRESTORE).get();
 };

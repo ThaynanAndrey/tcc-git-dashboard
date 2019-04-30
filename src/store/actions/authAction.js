@@ -17,7 +17,6 @@ export const login = () => {
                 return firebase.auth().signInWithPopup(provider)
                     .then(result => {
                         const { currentUser } = firebase.auth();
-                        console.log(result);
                         const accessToken = result.credential.accessToken;
                         sessionStorage.setItem('authAccessToken', accessToken);
                         

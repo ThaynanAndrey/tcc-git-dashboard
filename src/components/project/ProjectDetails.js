@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import M from "materialize-css";
-import { Link } from 'react-router-dom';
 
 import ProjectPullRequests from '../pull_request/ProjectPullRequests';
 import ProjectRepositoryList from '../repository/ProjectRepositoryList';
@@ -22,10 +21,6 @@ const styleCollapsibleHeaderText = {
     display: "flex"
 };
 
-const styleCollapsibleBody = {
-    paddingTop: "0"
-};
-
 /**
  * Component with the function of presenting all Project's details, that is the Project's
  * Repositories and Pull Requests.
@@ -33,12 +28,22 @@ const styleCollapsibleBody = {
  * @author Thaynan Nunes
  */
 class ProjectDetails extends Component {
+    constructor(props) {
+        super(props);
+
+        this.redirectPage = this.redirectPage.bind(this);
+    }
+
     /**
      * 
      */
     componentDidMount() {
         const elems = document.querySelectorAll('.collapsible');
         M.Collapsible.init(elems, {});
+    }
+
+    redirectPage(path) {
+        this.props.history.push(path);
     }
 
     render() {
@@ -54,17 +59,16 @@ class ProjectDetails extends Component {
                                 Pull Requests
                             </div>
                             <div>
-                                <Link to="/adicionarPullRequests">
-                                    <button className="btn-small waves-effect waves-light green darken-2"
-                                            type="button" name="cadastrar-pr">
-                                        Adicionar
-                                        <i className="material-icons left">add</i>
-                                    </button>
-                                </Link>
+                                <button className="btn-small waves-effect waves-light green darken-2"
+                                        type="button" name="cadastrar-pr"
+                                        onClick={() => this.redirectPage(`${this.props.idProject}/adicionarPullRequests`)}>
+                                    Adicionar
+                                    <i className="material-icons left">add</i>
+                                </button>
                             </div>
                         </div>
-                        <div className="collapsible-body body-collapsible-project" style={styleCollapsibleBody}>
-                            <ProjectPullRequests />
+                        <div className="collapsible-body body-collapsible-project">
+                            <ProjectPullRequests idProject={this.props.idProject} />
                         </div>
                     </li>
                 </ul>
@@ -77,17 +81,16 @@ class ProjectDetails extends Component {
                                 Repositórios
                             </div>
                             <div>
-                                <Link to="/adicionarRepositorios">
-                                    <button className="btn-small waves-effect waves-light green darken-2"
-                                            type="button" name="cadastrar-pr">
-                                        Adicionar
-                                        <i className="material-icons left">add</i>
-                                    </button>
-                                </Link>
+                                <button className="btn-small waves-effect waves-light green darken-2"
+                                        type="button" name="cadastrar-pr"
+                                        onClick={() => this.redirectPage(`${this.props.idProject}/adicionarRepositorios`)}>
+                                    Adicionar
+                                    <i className="material-icons left">add</i>
+                                </button>
                             </div>
                         </div>
-                        <div className="collapsible-body body-collapsible-project" style={styleCollapsibleBody}>
-                            <ProjectRepositoryList />
+                        <div className="collapsible-body body-collapsible-project">
+                            <ProjectRepositoryList idProject={this.props.idProject} />
                         </div>
                     </li>
                 </ul>
@@ -96,12 +99,10 @@ class ProjectDetails extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    // projectPullRequests: state.pullRequests.projectPullRequests
+const mapStateToProps = (state, ownProps) => ({
+    idProject: ownProps.match.params.id
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    // getProjectPullRequests: () => dispatch(getProjectPullRequests())
-});
+const mapDispatchToProps = (dispatch) => ({ });
 
 export default requireAuthentication(connect(mapStateToProps, mapDispatchToProps)(ProjectDetails));

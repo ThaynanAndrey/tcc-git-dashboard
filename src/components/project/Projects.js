@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Tooltip from "react-simple-tooltip";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { requireAuthentication } from '../../high-order-components/RequireAuthentication';
+
+import { loadProjects, createProject, deleteProject } from '../../store/actions/projectsAction';
 
 const styles = {
     fontSize: "17px",
     marginRight: "50px",
     marginLeft: "50px"
+};
+
+const styleCardContent = {
+    maxHeight: "49vh",
+    overflow: "auto"
 };
 
 /**
@@ -19,12 +29,28 @@ export class Projects extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            projectName: ""
+        };
+
         this.openProject = this.openProject.bind(this);
         this.deleteProject = this.deleteProject.bind(this);
         this.createProject = this.createProject.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
+    /**
+     * Load user's Projetcs after load component.
+     */
+    componentDidMount() {
+        this.props.loadProjects();
+    }
+
+    /**
+     * Gets the salutation to user.
+     * 
+     * @returns {String} salutation to user
+     */
     getSalutation() {
         let userName; // = this.props.user && this.props.user.additionalUserInfo.profile.login;
         const salutation = userName ? `Olá, ${userName}!` : "Seja bem-vindo";
@@ -35,16 +61,53 @@ export class Projects extends Component {
 
     }
 
-    deleteProject() {
-
+    /**
+     * Deletes project in Firestore.
+     * 
+     * @param {Object} project 
+     *      Project to be deleted
+     */
+    deleteProject(project) {
+        this.props.deleteProject(project).then(() => {
+            toast.success("Projeto removido!", {
+                position: "top-right",
+                autoClose: 2500,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            });
+        });
     }
 
-    createProject() {
-
+    /**
+     * Creates a new user Project.
+     */
+    async createProject() {
+        if(this.state.projectName !== "") {
+            this.props.createProject(this.state.projectName)
+                .then(() => {
+                    toast.success("Projeto criado!", {
+                        position: "top-right",
+                        autoClose: 2500,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true
+                    });
+        
+                    this.setState({ projectName: "" });
+                });
+        }
     }
 
-    handleChange() {
-
+    /**
+     * Changes the component's state from event.
+     */
+    handleChange(event) {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
     }
     
     render() {
@@ -53,16 +116,18 @@ export class Projects extends Component {
                 <td>{ project.name }</td>
                 <td>{ project.creationDate }</td>
                 <td>
-                    <Tooltip content="Abri Projeto" style={{whiteSpace: "nowrap"}}>
-                        <i className="material-icons left" style={{cursor: "pointer"}}
-                            onClick={() => this.openProject(project)}>
-                            open_in_browser
-                        </i>
-                    </Tooltip>
+                    <Link to={`/projeto/${project.id}`}>
+                        <Tooltip content="Abrir Projeto" style={{whiteSpace: "nowrap"}}>
+                            <i className="material-icons left blue-text" style={{cursor: "pointer"}}
+                                onClick={() => this.openProject(project)}>
+                                open_in_browser
+                            </i>
+                        </Tooltip>
+                    </Link>
                 </td>
                 <td>
-                    <Tooltip content="Adicionar" style={{whiteSpace: "nowrap"}}>
-                        <i className="material-icons left delete-text" style={{cursor: "pointer"}}
+                    <Tooltip content="Remover Projeto" style={{whiteSpace: "nowrap"}}>
+                        <i className="material-icons left delete-text red-text" style={{cursor: "pointer"}}
                             onClick={() => this.deleteProject(project)}>
                             delete
                         </i>
@@ -71,7 +136,7 @@ export class Projects extends Component {
             </tr>
         ));
 
-        const projects = this.props.projects
+        const projects = this.props.projects.length > 0
             ? (<table className="striped highlight responsive-table">
                     <thead>
                         <tr>
@@ -91,11 +156,13 @@ export class Projects extends Component {
             <div style={styles}>
                 {this.getSalutation()}
                 
+                <ToastContainer />
+
                 <div className="card">
                     <div className="card-content" style={{paddingBottom: "0", paddingTop: "20px"}}>
                         <span className="card-title">Meus Projetos</span>
                     </div>
-                    <div className="card-action">
+                    <div className="card-action" style={styleCardContent}>
                         {projects}
                     </div>
                 </div>
@@ -108,7 +175,7 @@ export class Projects extends Component {
                                 <div className="row" style={{marginBottom: "0"}}>
                                     <div className="input-field col s5">
                                         <i className="material-icons prefix">insert_drive_file</i>
-                                        <input name="repositoryName" type="tel" 
+                                        <input name="projectName" type="tel" 
                                                 placeholder="Nome Projeto"
                                                 onChange={this.handleChange} />
                                     </div>
@@ -130,11 +197,14 @@ export class Projects extends Component {
 };
 
 const mapStateToProps = (state) => ({
-    user: state.auth.user
+    user: state.auth.user,
+    projects: state.projects.projects
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    // getProjectPullRequests: () => dispatch(getProjectPullRequests())
+    loadProjects: () => dispatch(loadProjects()),
+    createProject: projectName => dispatch(createProject(projectName)),
+    deleteProject: project => dispatch(deleteProject(project))
 });
 
 export default requireAuthentication(connect(mapStateToProps, mapDispatchToProps)(Projects));

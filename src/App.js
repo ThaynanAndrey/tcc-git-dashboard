@@ -36,13 +36,13 @@ class App extends Component {
           <div className="App" style={styles}>
             <Switch>
               <Route exact path='/'component={Projects} />
-              <Route path='/projetos'component={Projects} />
-              <Route path='/projeto/:id'component={ProjectDetails} />
-              <Route path='/pullRequests'component={ProjectPullRequests} />
-              <Route path='/adicionarPullRequests'component={NewPullRequestsProject} />
-              <Route path='/repositories'component={ProjectRepositoryList} />
-              <Route path='/adicionarRepositorios'component={RepositoriesNoProject} />
-              <Route path='/login'component={Login} />
+              <Route exact path='/projetos'component={Projects} />
+              <Route exact path='/projeto/:id'component={ProjectDetails} />
+              {/* <Route path='/pullRequests'component={ProjectPullRequests} /> */}
+              <Route exact path='/projeto/:id/adicionarPullRequests'component={NewPullRequestsProject} />
+              {/* <Route path='/repositories'component={ProjectRepositoryList} /> */}
+              <Route exact path='/projeto/:id/adicionarRepositorios'component={RepositoriesNoProject} />
+              <Route exact path='/login'component={Login} />
             </Switch>
           </div>
         </div>

@@ -31,13 +31,14 @@ export const getUrlAuthenticated = (url, method, accessToken) => (
  * @returns {Array} array with data Firestore's elements
  */
 export const getDataElemsFirestore = elemsFirestore => {
-    return elemsFirestore.docs
-        .filter(doc => doc.exists)
-        .map(doc => {
-            let dataDoc = doc.data();
-            dataDoc.id = doc.id;
-            return dataDoc;
-        });
+    return elemsFirestore.length === 0 ? [] :
+        elemsFirestore.docs
+            .filter(doc => doc.exists)
+            .map(doc => {
+                let dataDoc = doc.data();
+                dataDoc.id = doc.id;
+                return dataDoc;
+            });
 };
 
 export const binarySearch = (list, start, end, element) => {

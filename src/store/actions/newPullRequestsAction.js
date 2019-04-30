@@ -54,7 +54,6 @@ export const addPullRequestInProject = (pullRequest) => {
     return dispatch => {
         const firestore = firebase.firestore();
         return firestore.collection(COLLECTION_PULL_REQUEST_FIRESTORE).add({
-            idProjeto: 1,
             idPullRequestGitHub: pullRequest.id,
             idRepositorioGitHub: pullRequest.repositorio.id,
             nomeRepositorioGitHub: pullRequest.repositorio.nome,

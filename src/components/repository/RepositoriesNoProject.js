@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Tooltip from "react-simple-tooltip";
-import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -37,7 +36,6 @@ export class RepositoriesNoProject extends Component {
         this.addRepository = this.addRepository.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.searchExternalRepository = this.searchExternalRepository.bind(this);
-        this.resetExternalRepositories = this.resetExternalRepositories.bind(this);
     }
 
     /**
@@ -45,7 +43,8 @@ export class RepositoriesNoProject extends Component {
      * all Repositories linked to the Project will be obtained.
      */
     componentDidMount() {
-        this.props.getRepositoriesNoProject();
+        this.props.resetExternalRepositories();
+        this.props.getRepositoriesNoProject(this.props.idProject);
     }
 
     /**
@@ -55,7 +54,7 @@ export class RepositoriesNoProject extends Component {
      *      Repository to be added
      */
     async addRepository(repository) {
-        await this.props.addRepositoryInProject(repository);
+        await this.props.addRepositoryInProject(repository, this.props.idProject);
 
         toast.success("Repositório adicionado!", {
             position: "top-right",
@@ -64,7 +63,7 @@ export class RepositoriesNoProject extends Component {
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true
-          }); 
+          });
     }
 
     /**
@@ -81,13 +80,6 @@ export class RepositoriesNoProject extends Component {
      */
     searchExternalRepository() {
         this.props.searchExternalRepository(this.state.ownerName, this.state.repositoryName);
-    }
-
-    /**
-     * Resets external repositories' array.
-     */
-    resetExternalRepositories() {
-        this.props.resetExternalRepositories();
     }
 
     render() {
@@ -133,16 +125,14 @@ export class RepositoriesNoProject extends Component {
                 <ToastContainer />
                 
                 <div style={{display: "flex", marginBottom: "15px", justifyContent: "flex-end"}}>
-                    <Link to="/">
-                        <div className="col right">
-                            <button className="btn waves-effect waves-light green darken-2"
-                                    type="button" name="voltar"
-                                    onClick={this.resetExternalRepositories}>
-                                Voltar
-                                <i className="material-icons left">arrow_back</i>
-                            </button>
-                        </div>
-                    </Link>
+                    <div className="col right">
+                        <button className="btn waves-effect waves-light green darken-2"
+                                type="button" name="voltar"
+                                onClick={this.props.history.goBack}>
+                            Voltar
+                            <i className="material-icons left">arrow_back</i>
+                        </button>
+                    </div>
                 </div>
 
                 <div className="card">
@@ -201,15 +191,16 @@ export class RepositoriesNoProject extends Component {
     };
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
+    idProject: ownProps.match.params.id,
     repositoriesNoProject: state.repositories.repositoriesNoProject,
     externalRepositories: state.repositories.externalRepositories,
     msgExternalRepositories: state.repositories.msgExternalRepositories
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    getRepositoriesNoProject: () => dispatch(getRepositoriesNoProject()),
-    addRepositoryInProject: repository => dispatch(addRepositoryInProject(repository)),
+    getRepositoriesNoProject: idProject => dispatch(getRepositoriesNoProject(idProject)),
+    addRepositoryInProject: (repository, idProject) => dispatch(addRepositoryInProject(repository, idProject)),
     searchExternalRepository: (ownerName, repositoryName) => dispatch(searchExternalRepository(ownerName, repositoryName)),
     resetExternalRepositories: () => dispatch(resetExternalRepositories())
 });

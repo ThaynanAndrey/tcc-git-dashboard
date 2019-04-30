@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -61,16 +60,15 @@ class NewPullRequestsProject extends Component {
             <h3>Adicionar Pull Requests ao Projeto</h3>
             
             <ToastContainer />
-            
-            <Link to="/">
-              <div className="col right">
-                <button className="btn waves-effect waves-light green darken-2"
-                        type="button" name="cadastrar-pr">
-                    Voltar
-                    <i className="material-icons left">arrow_back</i>
-                </button>
-              </div>
-            </Link>
+          
+            <div className="col right">
+              <button className="btn waves-effect waves-light green darken-2"
+                      type="button" name="cadastrar-pr"
+                      onClick={this.props.history.goBack}>
+                  Voltar
+                  <i className="material-icons left">arrow_back</i>
+              </button>
+            </div>
 
             <PullRequestsTable pullRequests={this.props.pullRequestsNoProject} 
               isListNewPullRequests={true} addPullRequest={this.addPullRequest}/>

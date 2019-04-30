@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -9,9 +8,6 @@ import { getProjectPullRequests, removePullRequestProject } from '../../store/ac
 import PullRequestsTable from './pullRequestsTable/PullRequestsTable';
 
 const styles = {
-    // fontSize: "17px",
-    // marginRight: "50px",
-    // marginLeft: "50px"
     paddingTop: "0"
 };
 
@@ -32,7 +28,7 @@ class ProjectPullRequests extends Component {
    * all Pull Requests linked to the Project will be obtained.
    */
   componentDidMount() {
-    this.props.getProjectPullRequests();
+    this.props.getProjectPullRequests(this.props.idProject);
   }
 
   /**
@@ -54,36 +50,25 @@ class ProjectPullRequests extends Component {
       });
   }
 
-  render() {
-    return (
-        <div style={styles}>
-            {/* <h3>Pull Requests cadastrados no Projeto</h3> */}
-            
-            <ToastContainer />
-            
-            <div className="row">
-                {/* <div className="col right">
-                    <Link to="/adicionarPullRequests">
-                        <button className="btn waves-effect waves-light green darken-2"
-                                type="button" name="cadastrar-pr">
-                            Cadastrar Pull Requests
-                            <i className="material-icons left">add</i>
-                        </button>
-                    </Link>
-                </div> */}
-                {/* <div className="col right">
-                    <button className="btn waves-effect waves-light orange accent-3" type="button" name="cadastrar-pr">
-                        Cadastrar Repositório
-                        <i className="material-icons left">add</i>
-                    </button>
-                </div> */}
-            </div>
+    render() {
+        if(this.props.projectPullRequests.length === 0) {
+            return (
+                <div style={{paddingTop: "5px"}}>
+                    <h6>Não existem Pull Requests cadastrados!</h6>
+                </div>
+            )
+        }
+        else {
+            return (
+                <div style={styles}>
+                    <ToastContainer />
 
-            <PullRequestsTable pullRequests={this.props.projectPullRequests}
-                isListNewPullRequests={false} removePullRequest={this.removePullRequest}/>
-        </div>
-    );
-  }
+                    <PullRequestsTable pullRequests={this.props.projectPullRequests}
+                        isListNewPullRequests={false} removePullRequest={this.removePullRequest}/>
+                </div>
+            );
+        }
+    }
 }
 
 const mapStateToProps = (state) => ({
@@ -91,7 +76,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    getProjectPullRequests: () => dispatch(getProjectPullRequests()),
+    getProjectPullRequests: idProject => dispatch(getProjectPullRequests(idProject)),
     removePullRequestProject: (pullRequest) => dispatch(removePullRequestProject(pullRequest))
 });
 

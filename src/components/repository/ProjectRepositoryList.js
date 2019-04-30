@@ -25,7 +25,7 @@ export class ProjectRepositoryList extends Component {
      * all Repositories linked to the Project will be obtained.
      */
     componentDidMount() {
-        this.props.getProjectRepositories();
+        this.props.getProjectRepositories(this.props.idProject);
     }
 
     /**
@@ -64,26 +64,34 @@ export class ProjectRepositoryList extends Component {
             </tr>
         ));
 
-        return (
-            <div>
-                
-                <ToastContainer />
-                
-                <table className="striped highlight responsive-table">
-                    <thead>
-                        <tr>
-                            <th>Repositório</th>
-                            <th>Data de Criação</th>
-                            <th>Responsável</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {repositoryElements}
-                    </tbody>
-                </table>
-            </div>
-        )
+        if(this.props.projectRepositories.length === 0) {
+            return (
+                <div>
+                    <h6>Não existem Repositórios cadastrados!</h6>
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    
+                    <ToastContainer />
+                    
+                    <table className="striped highlight responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Repositório</th>
+                                <th>Data de Criação</th>
+                                <th>Responsável</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {repositoryElements}
+                        </tbody>
+                    </table>
+                </div>
+            );
+        }
     };
 }
 
@@ -92,8 +100,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    getProjectRepositories: () => dispatch(getProjectRepositories()),
-    deleteRepositoryProject: (repository) => dispatch(deleteRepositoryProject(repository))
+    getProjectRepositories: idProject => dispatch(getProjectRepositories(idProject)),
+    deleteRepositoryProject: repository => dispatch(deleteRepositoryProject(repository))
 });
 
 export default requireAuthentication(connect(mapStateToProps, mapDispatchToProps)(ProjectRepositoryList));
