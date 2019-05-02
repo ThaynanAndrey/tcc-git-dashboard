@@ -16,7 +16,6 @@ const PullRequestsTableHead = () => {
                 <th>Responsável</th>
                 <th>Repositório</th>
                 <th></th>
-                <th></th>
             </tr>
         </thead>
     )

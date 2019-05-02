@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -32,7 +31,7 @@ class NewPullRequestsProject extends Component {
    * all Pull Requests not yet linked to the Project will be obtained.
    */
   componentDidMount() {
-    this.props.getPullRequestsNoProject();
+    this.props.getPullRequestsNoProject(this.props.idProject);
   }
 
   /**
@@ -43,7 +42,7 @@ class NewPullRequestsProject extends Component {
    *      Pull Request to be added to Project
    */
   async addPullRequest(pullRequest) {
-    await this.props.addPullRequestInProject(pullRequest);
+    await this.props.addPullRequestInProject(pullRequest, this.props.idProject);
     toast.success("Pull Request adicionado!", {
       position: "top-right",
       autoClose: 2500,
@@ -61,16 +60,15 @@ class NewPullRequestsProject extends Component {
             <h3>Adicionar Pull Requests ao Projeto</h3>
             
             <ToastContainer />
-            
-            <Link to="/">
-              <div className="col right">
-                <button className="btn waves-effect waves-light green darken-2"
-                        type="button" name="cadastrar-pr">
-                    Voltar
-                    <i className="material-icons left">arrow_back</i>
-                </button>
-              </div>
-            </Link>
+          
+            <div className="col right">
+              <button className="btn waves-effect waves-light green darken-2"
+                      type="button" name="cadastrar-pr"
+                      onClick={this.props.history.goBack}>
+                  Voltar
+                  <i className="material-icons left">arrow_back</i>
+              </button>
+            </div>
 
             <PullRequestsTable pullRequests={this.props.pullRequestsNoProject} 
               isListNewPullRequests={true} addPullRequest={this.addPullRequest}/>
@@ -79,14 +77,15 @@ class NewPullRequestsProject extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-    pullRequestsNoProject: state.newPullRequests.pullRequestsNoProject
+const mapStateToProps = (state, ownProps) => ({
+    pullRequestsNoProject: state.newPullRequests.pullRequestsNoProject,
+    idProject: ownProps.match.params.id
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    getPullRequestsNoProject: () => dispatch(getPullRequestsNoProject()),
-    addPullRequestInProject: (pullRequest) => dispatch(addPullRequestInProject(pullRequest)),
-    removePullRequestNoProject: (pullRequest) => dispatch(removePullRequestNoProject(pullRequest))
+    getPullRequestsNoProject: idProject => dispatch(getPullRequestsNoProject(idProject)),
+    addPullRequestInProject: (pullRequest, idProject) => dispatch(addPullRequestInProject(pullRequest, idProject)),
+    removePullRequestNoProject: pullRequest => dispatch(removePullRequestNoProject(pullRequest))
 });
 
 export default requireAuthentication(connect(mapStateToProps, mapDispatchToProps)(NewPullRequestsProject));

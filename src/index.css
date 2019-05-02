@@ -23,4 +23,6 @@ code {
   max-height: 45vh;
   overflow: auto;
   overflow-x: hidden;
+  padding-top: 0;
+  padding-bottom: 10px;
 }

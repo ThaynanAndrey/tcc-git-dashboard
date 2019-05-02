@@ -10,7 +10,6 @@
     "firebase": "^5.8.6",
     "font-awesome": "^4.7.0",
     "materialize-css": "^1.0.0-rc.2",
-    "moment": "^2.24.0",
     "npm": "^6.9.0",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
