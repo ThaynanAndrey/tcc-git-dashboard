@@ -8,10 +8,11 @@ import NewPullRequestsTableBody from './NewPullRequestsTableBody';
  * 
  * @author Thaynan Nunes
  */
-const PullRequestsTable = ({ pullRequests, isListNewPullRequests, addPullRequest, removePullRequest }) => {
+const PullRequestsTable = ({ pullRequests, isListNewPullRequests, addPullRequest, removePullRequest, openPullRequest }) => {
     const pullRequestTableBody = isListNewPullRequests
         ? <NewPullRequestsTableBody pullRequests={pullRequests} addPullRequest={addPullRequest}/>
-        : <PullRequestsTableBody pullRequests={pullRequests} removePullRequest={removePullRequest}/>;
+        : <PullRequestsTableBody pullRequests={pullRequests} removePullRequest={removePullRequest}
+            openPullRequest={openPullRequest}/>;
 
     return (
         <table className="striped highlight responsive-table">

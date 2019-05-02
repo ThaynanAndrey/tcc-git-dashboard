@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
 
-import { getDataElemsFirestore } from '../../utils/utils';
+import { getDataElemsFirestore, getFormattedDate } from '../../utils/utils';
 import { LOAD_PROJECTS_SUCCESS, LOAD_PROJECTS_ERROR, CREATE_PROJECT_SUCCESS, CREATE_PROJECT_ERROR } from './types';
 
 const COLLECTION_PROJECTS_FIRESTORE = "projects";
@@ -19,7 +19,8 @@ export const loadProjects = () => {
                 projects = _filterUserProjects(projects);
                 projects = projects.map(project => {
                     let pro = project;
-                    pro.creationDate = "10/10/2018";
+                    const date = new Date(pro.creationDate.seconds * 1000);
+                    pro.creationDate = getFormattedDate(date);
                     return pro;
                 });
 

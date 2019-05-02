@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import Tooltip from "react-simple-tooltip";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -33,8 +32,6 @@ export class Projects extends Component {
             projectName: ""
         };
 
-        this.openProject = this.openProject.bind(this);
-        this.deleteProject = this.deleteProject.bind(this);
         this.createProject = this.createProject.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
@@ -57,8 +54,8 @@ export class Projects extends Component {
         return <h3>{salutation}</h3>;
     }
 
-    openProject() {
-
+    openProject(project) {
+        this.props.history.push(`/projeto/${project.id}`);
     }
 
     /**
@@ -67,7 +64,8 @@ export class Projects extends Component {
      * @param {Object} project 
      *      Project to be deleted
      */
-    deleteProject(project) {
+    deleteProject(project, event) {
+        event.stopPropagation();
         this.props.deleteProject(project).then(() => {
             toast.success("Projeto removido!", {
                 position: "top-right",
@@ -112,23 +110,13 @@ export class Projects extends Component {
     
     render() {
         const projectElements = () => this.props.projects.map((project, index) => (
-            <tr key={index}>
+            <tr key={index} onClick={this.openProject.bind(this, project)} style={{cursor: "pointer"}}>
                 <td>{ project.name }</td>
                 <td>{ project.creationDate }</td>
                 <td>
-                    <Link to={`/projeto/${project.id}`}>
-                        <Tooltip content="Abrir Projeto" style={{whiteSpace: "nowrap"}}>
-                            <i className="material-icons left blue-text" style={{cursor: "pointer"}}
-                                onClick={() => this.openProject(project)}>
-                                open_in_browser
-                            </i>
-                        </Tooltip>
-                    </Link>
-                </td>
-                <td>
                     <Tooltip content="Remover Projeto" style={{whiteSpace: "nowrap"}}>
                         <i className="material-icons left delete-text red-text" style={{cursor: "pointer"}}
-                            onClick={() => this.deleteProject(project)}>
+                            onClick={this.deleteProject.bind(this, project)}>
                             delete
                         </i>
                     </Tooltip>
@@ -142,7 +130,6 @@ export class Projects extends Component {
                         <tr>
                             <th>Nome</th>
                             <th>Data de Criação</th>
-                            <th></th>
                             <th></th>
                         </tr>
                     </thead>

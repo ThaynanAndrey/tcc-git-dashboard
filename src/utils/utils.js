@@ -1,7 +1,3 @@
-import moment from 'moment';
-
-moment.locale('pt-BR');
-
 /**
  * Gets url with auth headers.
  * 
@@ -41,6 +37,25 @@ export const getDataElemsFirestore = elemsFirestore => {
             });
 };
 
+/**
+ * Gets formatted date to DD/MM/YYYY HH:MM
+ * 
+ * @param {Date} date
+ *      Date to be formatted
+ */
+export const getFormattedDate = date =>
+    `${_formatNumberTwoDigits(date.getDate())}/${_formatNumberTwoDigits(date.getMonth() + 1)}/${date.getFullYear()}, 
+    ${_formatNumberTwoDigits(date.getHours())}:${_formatNumberTwoDigits(date.getMinutes())}`;
+
+/**
+ * Formats number to two digits. For example, the number 2 becomes 02.
+ * 
+ * @param {Number} number 
+ *      Number to be formatted
+ */
+const _formatNumberTwoDigits = (number) =>
+    ("0" + number).slice(-2);
+
 export const binarySearch = (list, start, end, element) => {
     if(start > end) {
         return -1;
@@ -60,7 +75,7 @@ export const mapearAtributosPullRequest = (pullRequestGitHub, pullRequestsFirest
         idFirestore: pullRequestGitHub.idFirestore,
         nome: pullRequestGitHub.title,
         dataAtualizacao: pullRequestGitHub.updated_at,
-        dataCriacao: moment(pullRequestGitHub.created_at).format('DD/MM/YYYY, HH:mm'),
+        dataCriacao: getFormattedDate(new Date(pullRequestGitHub.created_at)),
         numero: pullRequestGitHub.number,
         status: (pullRequestGitHub.state === "open" ? "aberto": "fechado"),
         repositorio: {

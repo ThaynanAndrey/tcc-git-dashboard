@@ -168,7 +168,7 @@ export class RepositoriesNoProject extends Component {
                 
                 <div className="card">
                     <div className="card-content" style={{paddingBottom: "0", paddingTop: "20px"}}>
-                        <span className="card-title">Repositórios compartilhados</span>
+                        <span className="card-title">Meus Repositórios</span>
                     </div>
                     <div className="card-action" style={styleCardContent}>
                         <table className="striped highlight responsive-table">

@@ -56,13 +56,13 @@ class Login extends Component {
                     </h6>
                 </div>
                 <div className="card-action">
-                    <a className="waves-effect waves-light btn blue lighten-1"
+                    <button className="waves-effect waves-light btn blue lighten-1"
                         style={buttonStyle}
                         onClick={() => this.login()}>
                         <FontAwesomeIcon icon={['fab', 'github']} />
                         &nbsp;
                         Login com GitHub
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>

@@ -2,7 +2,6 @@ import axios from 'axios';
 import firebase from 'firebase/app';
 
 import { mapearAtributosPullRequest, getDataElemsFirestore, getUrlAuthenticated } from '../../utils/utils';
-import { getRepositoriesByIdProject } from './repositoriesAction';
 import { LOAD_PROJECT_PULL_REQUESTS_SUCCESS } from './types';
 
 const PULL_REQUEST_FIRESTORE_COLLECTION = "pullRequests";
@@ -15,24 +14,17 @@ const PULL_REQUEST_FIRESTORE_COLLECTION = "pullRequests";
  */
 export const getProjectPullRequests = idProject => {
     return async dispatch => {
-        const promisesFirestore = [];
-        promisesFirestore.push(_getPullRequestsFirestore());
-        promisesFirestore.push(getRepositoriesByIdProject(idProject));
+        let pullRequestsFirestore = await _getPullRequestsFirestore();
+        pullRequestsFirestore = getDataElemsFirestore(pullRequestsFirestore);
+        const filterPullRequestsByProject = _filterPullRequestsByProject(pullRequestsFirestore, idProject);
         
-        const result = await Promise.all(promisesFirestore);
-        const pullRequestsFirestore = getDataElemsFirestore(result[0]);
-        const repositoriesFirestore = result[1];
-
-        const filterPullRequestsByRepositories = 
-            _filterPullRequestByRepositories(pullRequestsFirestore, repositoriesFirestore);
-        
-        const promises = filterPullRequestsByRepositories
+        const promises = filterPullRequestsByProject
             .map(pullRequest => _getGitHubPullRequest(pullRequest));
         
         const pullRequestsResult = await Promise.all(promises);
         const projectPullRequests = pullRequestsResult
             .map((result, index) => 
-                mapearAtributosPullRequest(result.data, pullRequestsFirestore, index));
+                mapearAtributosPullRequest(result.data, filterPullRequestsByProject, index));
 
         dispatch({
             type: LOAD_PROJECT_PULL_REQUESTS_SUCCESS,
@@ -91,16 +83,13 @@ const _getPullRequestsFirestore = () => {
 };
 
 /**
- * Gets the Pull Requests that in Project's Repositories.
+ * Filter Pull Requests by Project id.
  * 
- * @param {Array} pullRequests 
+ * @param {Array} pullRequests
  *      Pull Requests to be filtered
- * @param {Array} repositories 
- *      Project's repositories
- * @return {Array} Filtered Pull Requests
+ * @param {String} idProject
+ *      Project id
+ * @returns {Array} filtered Pull Requests by Project id
  */
-const _filterPullRequestByRepositories = (pullRequests, repositories) => {
-    const idRepositories = repositories.map(repo => repo.idFirestore);
-    
-    return pullRequests.filter(pr => idRepositories.includes(pr.repository.id));
-};
+const _filterPullRequestsByProject = (pullRequests, idProject) =>
+    pullRequests.filter(pullRequest => pullRequest.project.id === idProject);

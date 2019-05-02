@@ -31,7 +31,7 @@ class NewPullRequestsProject extends Component {
    * all Pull Requests not yet linked to the Project will be obtained.
    */
   componentDidMount() {
-    this.props.getPullRequestsNoProject();
+    this.props.getPullRequestsNoProject(this.props.idProject);
   }
 
   /**
@@ -42,7 +42,7 @@ class NewPullRequestsProject extends Component {
    *      Pull Request to be added to Project
    */
   async addPullRequest(pullRequest) {
-    await this.props.addPullRequestInProject(pullRequest);
+    await this.props.addPullRequestInProject(pullRequest, this.props.idProject);
     toast.success("Pull Request adicionado!", {
       position: "top-right",
       autoClose: 2500,
@@ -77,14 +77,15 @@ class NewPullRequestsProject extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-    pullRequestsNoProject: state.newPullRequests.pullRequestsNoProject
+const mapStateToProps = (state, ownProps) => ({
+    pullRequestsNoProject: state.newPullRequests.pullRequestsNoProject,
+    idProject: ownProps.match.params.id
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    getPullRequestsNoProject: () => dispatch(getPullRequestsNoProject()),
-    addPullRequestInProject: (pullRequest) => dispatch(addPullRequestInProject(pullRequest)),
-    removePullRequestNoProject: (pullRequest) => dispatch(removePullRequestNoProject(pullRequest))
+    getPullRequestsNoProject: idProject => dispatch(getPullRequestsNoProject(idProject)),
+    addPullRequestInProject: (pullRequest, idProject) => dispatch(addPullRequestInProject(pullRequest, idProject)),
+    removePullRequestNoProject: pullRequest => dispatch(removePullRequestNoProject(pullRequest))
 });
 
 export default requireAuthentication(connect(mapStateToProps, mapDispatchToProps)(NewPullRequestsProject));

@@ -4,9 +4,7 @@ import M from "materialize-css";
 
 import Navbar from './components/layout/Navbar';
 import ProjectDetails from './components/project/ProjectDetails';
-import ProjectPullRequests  from './components/pull_request/ProjectPullRequests';
 import NewPullRequestsProject from './components/pull_request/NewPullRequestsProject';
-import ProjectRepositoryList from './components/repository/ProjectRepositoryList';
 import RepositoriesNoProject from './components/repository/RepositoriesNoProject';
 import Projects from './components/project/Projects';
 import Login from './components/login/Login';
@@ -38,9 +36,7 @@ class App extends Component {
               <Route exact path='/'component={Projects} />
               <Route exact path='/projetos'component={Projects} />
               <Route exact path='/projeto/:id'component={ProjectDetails} />
-              {/* <Route path='/pullRequests'component={ProjectPullRequests} /> */}
               <Route exact path='/projeto/:id/adicionarPullRequests'component={NewPullRequestsProject} />
-              {/* <Route path='/repositories'component={ProjectRepositoryList} /> */}
               <Route exact path='/projeto/:id/adicionarRepositorios'component={RepositoriesNoProject} />
               <Route exact path='/login'component={Login} />
             </Switch>

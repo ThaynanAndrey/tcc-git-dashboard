@@ -32,18 +32,35 @@ class ProjectDetails extends Component {
         super(props);
 
         this.redirectPage = this.redirectPage.bind(this);
+        this.openPullRequest = this.openPullRequest.bind(this);
     }
 
     /**
-     * 
+     * Load Materialize's Collapsible after load Component.
      */
     componentDidMount() {
         const elems = document.querySelectorAll('.collapsible');
         M.Collapsible.init(elems, {});
     }
 
+    /**
+     * Redirects to page from path passed by parameter
+     * 
+     * @param {String} path
+     *      Page's path 
+     */
     redirectPage(path) {
         this.props.history.push(path);
+    }
+
+    /**
+     * Opens details Pull Request.
+     * 
+     * @param {Object} pullRequest 
+     *      Pull Request to be showed details
+     */
+    openPullRequest(pullRequest) {
+        this.props.history.push("/");
     }
 
     render() {
@@ -68,7 +85,7 @@ class ProjectDetails extends Component {
                             </div>
                         </div>
                         <div className="collapsible-body body-collapsible-project">
-                            <ProjectPullRequests idProject={this.props.idProject} />
+                            <ProjectPullRequests idProject={this.props.idProject} openPullRequest={this.openPullRequest} />
                         </div>
                     </li>
                 </ul>

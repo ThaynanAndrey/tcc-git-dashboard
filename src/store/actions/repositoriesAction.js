@@ -1,12 +1,9 @@
 import axios from 'axios';
 import firebase from 'firebase/app';
-import moment from 'moment';
 
 import { LOAD_PROJECT_REPOSITORIES_SUCCESS, LOAD_REPOSITORIES_NO_PROJECT_SUCCESS,
     ADDED_REPOSITORY_SUCCESS, ADDED_REPOSITORY_ERROR, LOAD_EXTERNAL_REPOSITORIES, LOAD_EXTERNAL_REPOSITORIES_ERROR } from './types';
-import { getUrlAuthenticated } from '../../utils/utils';
-
-moment.locale('pt-BR');
+import { getUrlAuthenticated, getFormattedDate, getDataElemsFirestore } from '../../utils/utils';
 
 const COLLECTION_REPOSITORY_FIRESTORE = "repositories";
 const COLLECTION_PROJECT_FIRESTORE = "projects";
@@ -167,15 +164,26 @@ export const resetExternalRepositories = () =>
         });
 
 /**
+ * Gets Project's Repositories in Firestore
+ * 
+ * @param {String} idProject Project id
+ * @returns {Array} project repositories
+ */
+export const getRepositoriesFirestoreByIdProject = async idProject => {
+    let repositoriesFirestore = await _getRepositoriesFirestore();
+    repositoriesFirestore = getDataElemsFirestore(repositoriesFirestore);
+
+    return _filterRepositoriesByProject(repositoriesFirestore, idProject);
+};
+
+/**
  * Gets Project's Repositories.
  * 
  * @param {String} idProject Project id
  * @returns {Array} Project repositories' array
  */
 export const getRepositoriesByIdProject = async idProject => {
-    let repositoriesFirestore = await _getRepositoriesFirestore();
-    repositoriesFirestore = _getDataRepositoriesFirestore(repositoriesFirestore);
-    const repositoriesFirestoreFilteredProject = _filterRepositoriesByProject(repositoriesFirestore, idProject);
+    const repositoriesFirestoreFilteredProject = await getRepositoriesFirestoreByIdProject(idProject);
 
     const promises = repositoriesFirestoreFilteredProject
         .map(repository => _getGitHubRepositories(repository.ownerName, repository.name));
@@ -247,22 +255,7 @@ const _getGitHubRepositories = (ownerName, repositoryName) => {
     const authUrl = getUrlAuthenticated(url, method, accessToken);
 
     return axios(authUrl);
-}
-
-/**
- * Gets repositories' firestore data.
- * 
- * @param {Array} repositoriesFirestore 
- *      Array with firestore's repositories response
- * @returns {Array} array with repositories' firestore data
- */
-const _getDataRepositoriesFirestore = (repositoriesFirestore) => {
-    return repositoriesFirestore.docs.map(doc => {
-        let repository = doc.data();
-        repository.id = doc.id;
-        return repository;
-    });
-}
+};
 
 /**
  * Maps the GitHub's repository response to necessary datas to System.
@@ -282,7 +275,7 @@ const _mapRepositoryAttr = (repositoryGitHub, repositoriesFirestore, index) => (
         owner: {
             name: repositoryGitHub.owner.login
         },
-        creationDate: moment(repositoryGitHub.created_at).format('DD/MM/YYYY, HH:mm'),
+        creationDate: getFormattedDate(new Date(repositoryGitHub.created_at)),
         idFirestore: repositoriesFirestore && repositoriesFirestore[index].id
     }
 );
