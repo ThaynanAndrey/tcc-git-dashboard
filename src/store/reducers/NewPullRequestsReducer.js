@@ -1,7 +1,9 @@
-import { LOAD_PULL_REQUESTS_NO_PROJECT_SUCCESS, ADDED_PULL_REQUEST_SUCCESS, ADDED_PULL_REQUEST_ERROR } from '../actions/types';
+import { LOAD_PULL_REQUESTS_NO_PROJECT_SUCCESS, ADDED_PULL_REQUEST_SUCCESS, ADDED_PULL_REQUEST_ERROR,
+    LOAD_EXTERNAL_PULL_REQUESTS_NO_PROJECT_SUCCESS } from '../actions/types';
 
 const initState = {
-    pullRequestsNoProject: []
+    pullRequestsNoProject: [],
+    externalPullRequestsNoProject: [],
 };
   
 const newPullRequestsReducer = (state = initState, action) => {
@@ -14,10 +16,20 @@ const newPullRequestsReducer = (state = initState, action) => {
             };
         case ADDED_PULL_REQUEST_SUCCESS:
             console.log("Pull request added");
-            return state;
+            return {
+                ...state,
+                pullRequestsNoProject: action.pullRequestsNoProject,
+                externalPullRequestsNoProject: action.externalPullRequestsNoProject
+            };
         case ADDED_PULL_REQUEST_ERROR:
             console.log("Error to add pull request: " + action.erro);
             return state;
+        case LOAD_EXTERNAL_PULL_REQUESTS_NO_PROJECT_SUCCESS:
+            console.log("Load external pull requests");
+            return {
+                ...state,
+                externalPullRequestsNoProject: action.externalPullRequestsNoProject
+            }
         default:
           return state
     }

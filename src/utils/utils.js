@@ -74,10 +74,16 @@ export const mapearAtributosPullRequest = (pullRequestGitHub, pullRequestsFirest
         id: pullRequestGitHub.id,
         idFirestore: pullRequestGitHub.idFirestore,
         nome: pullRequestGitHub.title,
-        dataAtualizacao: pullRequestGitHub.updated_at,
+        dataAtualizacao: getFormattedDate(new Date(pullRequestGitHub.updated_at)),
         dataCriacao: getFormattedDate(new Date(pullRequestGitHub.created_at)),
         numero: pullRequestGitHub.number,
         status: (pullRequestGitHub.state === "open" ? "aberto": "fechado"),
+        description: pullRequestGitHub.body,
+        merge: {
+            isMerged: pullRequestGitHub.merged,
+            merged_at: pullRequestGitHub.merged_at,
+            merged_by: pullRequestGitHub.merged_by
+        },
         repositorio: {
             nome: pullRequestGitHub.base.repo.name,
             id: pullRequestGitHub.base.repo.id,
@@ -90,6 +96,14 @@ export const mapearAtributosPullRequest = (pullRequestGitHub, pullRequestsFirest
         propietario: {
             id: pullRequestGitHub.base.repo.owner.id,
             nome: pullRequestGitHub.base.repo.owner.login
+        },
+        comments: {
+            number: pullRequestGitHub.comments,
+            url: pullRequestGitHub.comments_url
+        },
+        commits: {
+            number: pullRequestGitHub.commits,
+            url: pullRequestGitHub.commits_url
         }
     };
     pullRequest.idFirestore = pullRequestsFirestore && pullRequestsFirestore[indexFirestore].id;

@@ -14,6 +14,12 @@ const PullRequestsTable = ({ pullRequests, isListNewPullRequests, addPullRequest
         : <PullRequestsTableBody pullRequests={pullRequests} removePullRequest={removePullRequest}
             openPullRequest={openPullRequest}/>;
 
+    if(!pullRequests || pullRequests.length === 0 ) {
+        const message = isListNewPullRequests ? "Não foram encontrados Pull Requests!" : "Não há Pull Requests cadastrados!";
+        return (
+            <div> {message} </div>
+        )
+    }
     return (
         <table className="striped highlight responsive-table">
             <PullRequestsTableHead />

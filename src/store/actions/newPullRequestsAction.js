@@ -3,7 +3,7 @@ import firebase from 'firebase/app';
 
 import { getRepositoriesFirestoreByIdProject } from './repositoriesAction';
 import { binarySearch, mapearAtributosPullRequest, getUrlAuthenticated, getDataElemsFirestore } from '../../utils/utils';
-import { LOAD_PULL_REQUESTS_NO_PROJECT_SUCCESS, ADDED_PULL_REQUEST_SUCCESS, ADDED_PULL_REQUEST_ERROR } from './types';
+import { LOAD_PULL_REQUESTS_NO_PROJECT_SUCCESS, ADDED_PULL_REQUEST_SUCCESS, ADDED_PULL_REQUEST_ERROR, LOAD_EXTERNAL_PULL_REQUESTS_NO_PROJECT_SUCCESS } from './types';
 
 const COLLECTION_PULL_REQUESTS_FIRESTORE = "pullRequests";
 const COLLECTION_PROJECTS_FIRESTORE = "projects";
@@ -55,7 +55,7 @@ export const getPullRequestsNoProject = idProject => {
  * @returns {Function} Dispatch used to invoke the newPullRequest's redux
  */
 export const addPullRequestInProject = (pullRequest, idProject) => {
-    return dispatch => {
+    return (dispatch, getState) => {
         const firestore = firebase.firestore();
         return firestore.collection(COLLECTION_PULL_REQUESTS_FIRESTORE).add({
             idPullRequestGitHub: pullRequest.id,
@@ -65,7 +65,19 @@ export const addPullRequestInProject = (pullRequest, idProject) => {
             nomePropietario: pullRequest.propietario.nome,
             project: firestore.doc(`${COLLECTION_PROJECTS_FIRESTORE}/${idProject}`)
         }).then(() => {
-            dispatch({ type: ADDED_PULL_REQUEST_SUCCESS });
+            let pullRequestsNoProject = getState().newPullRequests.pullRequestsNoProject;
+            pullRequestsNoProject = pullRequestsNoProject
+                .filter(pr => pr.id !== pullRequest.id);
+            
+            let externalPullRequestsNoProject = getState().newPullRequests.externalPullRequestsNoProject;
+            externalPullRequestsNoProject = externalPullRequestsNoProject
+                .filter(pr => pr.id !== pullRequest.id);
+
+            dispatch({
+                type: ADDED_PULL_REQUEST_SUCCESS,
+                pullRequestsNoProject,
+                externalPullRequestsNoProject
+            });
         }).catch(erro => {
             dispatch({ type: ADDED_PULL_REQUEST_ERROR , erro });
         });
@@ -73,23 +85,54 @@ export const addPullRequestInProject = (pullRequest, idProject) => {
 };
 
 /**
- * Removes the Pull Request from list of Pull Request without linked project.
+ * Searches for Pull Request that aren't in the repositories added in the Project.
  * 
- * @param {Object} pullRequestRemoved
- *      Pull request to be removed
+ * @param {String} ownerName
+ *      Repository's qwner name
+ * @param {String} repositoryName
+ *      Repository name where are the Pull Requests searched
+ * @param {String} prNumber
+ *      Number Pull Request to be searched
  * @returns {Function} Dispatch used to invoke the newPullRequest's redux
  */
-export const removePullRequestNoProject = (pullRequestRemoved) => {
-    return (dispatch, getState) => {
-        let pullRequestsNoProject = getState().newPullRequests.pullRequestsNoProject;
-        pullRequestsNoProject = pullRequestsNoProject
-            .filter(pullRequest => pullRequest !== pullRequestRemoved);
-        
-        dispatch({
-            type: LOAD_PULL_REQUESTS_NO_PROJECT_SUCCESS,
-            pullRequestsNoProject
-        });
+export const searchExternalPullRequest = (ownerName, repositoryName, prNumber) => {
+    return dispatch => {
+        return _getGitHubPullRequests(ownerName, repositoryName, prNumber)
+            .then(pullRequests => {
+                const isArray = pullRequests.data instanceof Array;
+                const externalPullRequestsNoProject = isArray ? pullRequests.data.map(pr => mapearAtributosPullRequest(pr))
+                    : new Array(mapearAtributosPullRequest(pullRequests.data));
+                
+                dispatch({
+                    type: LOAD_EXTERNAL_PULL_REQUESTS_NO_PROJECT_SUCCESS,
+                    externalPullRequestsNoProject
+                });
+            })
+            .catch(error => {
+                console.log(error)
+            });
     };
+};
+
+/**
+ * Requests to GitHub the data's Pull Requests for: owner name, pull request name and pull request number.
+ * 
+ * @param {String} ownerName
+ *      Owner's name
+ * @param {Object} repositoryName
+ *      Repository's name
+ * @param {Object} prNumber
+ *      Pull request number
+ * @returns {Promise} request's promise
+ */
+const _getGitHubPullRequests = (ownerName, repositoryName, prNumber) => {
+    const method = 'GET';
+    const url = `https://api.github.com/repos/${ownerName}/${repositoryName}/pulls` 
+        + (prNumber ? ("/" + prNumber) : "");
+    const accessToken = sessionStorage.getItem('authAccessToken');
+    const authUrl = getUrlAuthenticated(url, method, accessToken);
+
+    return axios(authUrl);
 };
 
 /**

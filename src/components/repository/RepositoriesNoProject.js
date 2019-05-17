@@ -76,7 +76,7 @@ export class RepositoriesNoProject extends Component {
     }
 
     /**
-     * Searches by repositories that isn't shared with user.
+     * Searches Repositories that isn't shared with user.
      */
     searchExternalRepository() {
         this.props.searchExternalRepository(this.state.ownerName, this.state.repositoryName);
@@ -143,18 +143,18 @@ export class RepositoriesNoProject extends Component {
                                 <div className="row" style={{marginBottom: "0"}}>
                                     <div className="input-field col s5">
                                         <i className="material-icons prefix">account_circle</i>
-                                        <input name="ownerName" type="text" placeholder="Responsável" 
+                                        <input name="ownerName" type="text" placeholder="Propietário do repositório" 
                                                onChange={this.handleChange}/>
                                     </div>
                                     <div className="input-field col s5">
                                         <i className="material-icons prefix">insert_drive_file</i>
-                                        <input name="repositoryName" type="tel" 
+                                        <input name="repositoryName" type="text" 
                                                placeholder="Repositório (Opicional)"
                                                onChange={this.handleChange} />
                                     </div>
                                     <div className="input-field col s2">
                                         <button className="btn waves-effect waves-light blue darken-2"
-                                                type="button" name="cadastrar-pr"
+                                                type="button" name="search-repository"
                                                 onClick={this.searchExternalRepository}>
                                             Buscar
                                         </button>

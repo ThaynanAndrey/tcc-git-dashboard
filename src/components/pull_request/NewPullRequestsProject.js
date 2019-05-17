@@ -4,13 +4,18 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { requireAuthentication } from '../../high-order-components/RequireAuthentication';
-import { getPullRequestsNoProject, addPullRequestInProject, removePullRequestNoProject } from '../../store/actions/newPullRequestsAction';
+import { getPullRequestsNoProject, addPullRequestInProject, searchExternalPullRequest } from '../../store/actions/newPullRequestsAction';
 import PullRequestsTable from './pullRequestsTable/PullRequestsTable';
 
 const styles = {
     fontSize: "17px",
     marginRight: "50px",
     marginLeft: "50px"
+};
+
+const styleCardContent = {
+  maxHeight: "48vh",
+  overflow: "auto"
 };
 
 /**
@@ -23,7 +28,16 @@ class NewPullRequestsProject extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      ownerName: "",
+      repositoryName: "",
+      prNumber: "",
+      isSearchedExternalPR: false,
+    };
+
     this.addPullRequest = this.addPullRequest.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.searchExternalPullRequest = this.searchExternalPullRequest.bind(this);
   }
 
   /**
@@ -41,18 +55,37 @@ class NewPullRequestsProject extends Component {
    * @param {Object} pullRequest
    *      Pull Request to be added to Project
    */
-  async addPullRequest(pullRequest) {
-    await this.props.addPullRequestInProject(pullRequest, this.props.idProject);
-    toast.success("Pull Request adicionado!", {
-      position: "top-right",
-      autoClose: 2500,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true
+  addPullRequest(pullRequest) {
+    this.props.addPullRequestInProject(pullRequest, this.props.idProject).then(() => {
+      toast.success("Pull Request adicionado!", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true
+      });
     });
-    this.props.removePullRequestNoProject(pullRequest);
-  };
+  }
+
+  /**
+   * Changes the component's state from event.
+   */
+  handleChange(event) {
+    this.setState({
+        [event.target.name]: event.target.value
+    });
+  }
+
+  /**
+   * Searches Pull Requests that isn't shared with user.
+   */
+  searchExternalPullRequest() {
+    this.props.searchExternalPullRequest(this.state.ownerName, this.state.repositoryName, this.state.prNumber)
+      .then(() => {
+        this.setState({ isSearchedExternalPR: true });
+      });
+  }
 
   render() {
     return (
@@ -61,7 +94,7 @@ class NewPullRequestsProject extends Component {
             
             <ToastContainer />
           
-            <div className="col right">
+            <div style={{display: "flex", marginBottom: "15px", justifyContent: "flex-end"}}>
               <button className="btn waves-effect waves-light green darken-2"
                       type="button" name="cadastrar-pr"
                       onClick={this.props.history.goBack}>
@@ -70,8 +103,56 @@ class NewPullRequestsProject extends Component {
               </button>
             </div>
 
-            <PullRequestsTable pullRequests={this.props.pullRequestsNoProject} 
-              isListNewPullRequests={true} addPullRequest={this.addPullRequest}/>
+            <div className="card">
+              <div className="card-content" style={{paddingBottom: "0", paddingTop: "20px"}}>
+                  <span className="card-title">Buscar Pull Requests externos</span>
+                  <div className="row" style={{marginBottom: "0"}}>
+                      <form className="col s12">
+                          <div className="row" style={{marginBottom: "0"}}>
+                              <div className="input-field col s4">
+                                  <i className="material-icons prefix">account_circle</i>
+                                  <input name="ownerName" type="text" placeholder="Propietário Repositório" 
+                                          onChange={this.handleChange}/>
+                              </div>
+                              <div className="input-field col s4">
+                                  <i className="material-icons prefix">insert_drive_file</i>
+                                  <input name="repositoryName" type="text" 
+                                          placeholder="Nome Repositório"
+                                          onChange={this.handleChange} />
+                              </div>
+                              <div className="input-field col s3">
+                                  <i className="material-icons prefix">create</i>
+                                  <input name="prNumber" type="text" 
+                                          placeholder="Número PR"
+                                          onChange={this.handleChange} />
+                              </div>
+                              <div className="input-field col s1">
+                                  <button className="btn waves-effect waves-light blue darken-2"
+                                          type="button" name="search-pr"
+                                          onClick={this.searchExternalPullRequest}>
+                                      Buscar
+                                  </button>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+              { this.state.isSearchedExternalPR && 
+                <div className="card-action" style={styleCardContent}>
+                  <PullRequestsTable pullRequests={this.props.externalPullRequestsNoProject} 
+                    isListNewPullRequests={true} addPullRequest={this.addPullRequest}/>
+                </div>
+              }
+          </div>
+          <div className="card">
+            <div className="card-content" style={{paddingBottom: "0", paddingTop: "20px"}}>
+              <span className="card-title">Pull Requests dos meus repositórios</span>
+            </div>
+            <div className="card-action" style={styleCardContent}>
+              <PullRequestsTable pullRequests={this.props.pullRequestsNoProject} 
+                isListNewPullRequests={true} addPullRequest={this.addPullRequest}/>
+            </div>
+          </div>
         </div>
     );
   }
@@ -79,13 +160,14 @@ class NewPullRequestsProject extends Component {
 
 const mapStateToProps = (state, ownProps) => ({
     pullRequestsNoProject: state.newPullRequests.pullRequestsNoProject,
+    externalPullRequestsNoProject: state.newPullRequests.externalPullRequestsNoProject,
     idProject: ownProps.match.params.id
 });
 
 const mapDispatchToProps = (dispatch) => ({
     getPullRequestsNoProject: idProject => dispatch(getPullRequestsNoProject(idProject)),
     addPullRequestInProject: (pullRequest, idProject) => dispatch(addPullRequestInProject(pullRequest, idProject)),
-    removePullRequestNoProject: pullRequest => dispatch(removePullRequestNoProject(pullRequest))
+    searchExternalPullRequest: (ownerName, repositoryName, prNumber) => dispatch(searchExternalPullRequest(ownerName, repositoryName, prNumber))
 });
 
 export default requireAuthentication(connect(mapStateToProps, mapDispatchToProps)(NewPullRequestsProject));

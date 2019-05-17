@@ -26,3 +26,9 @@ code {
   padding-top: 0;
   padding-bottom: 10px;
 }
+
+.modal-styles {
+  height: 85% !important;
+  max-height: 85% !important;
+  width: 75% !important;
+}
