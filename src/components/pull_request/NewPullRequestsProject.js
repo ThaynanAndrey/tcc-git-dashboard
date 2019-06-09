@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import BlockUi from 'react-block-ui';
 
 import { requireAuthentication } from '../../high-order-components/RequireAuthentication';
-import { getPullRequestsNoProject, addPullRequestInProject, searchExternalPullRequest } from '../../store/actions/newPullRequestsAction';
+import { getPullRequestsNoProject, addPullRequestInProject, searchExternalPullRequest, resetPullRequestsNoProject } from '../../store/actions/newPullRequestsAction';
 import PullRequestsTable from './pullRequestsTable/PullRequestsTable';
 
 const styles = {
@@ -33,9 +33,12 @@ class NewPullRequestsProject extends Component {
       repositoryName: "",
       prNumber: "",
       isSearchedExternalPR: false,
+      loading: false,
+      loadingExternalPR: false
     };
 
     this.addPullRequest = this.addPullRequest.bind(this);
+    this.addExternalPullRequest = this.addExternalPullRequest.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.searchExternalPullRequest = this.searchExternalPullRequest.bind(this);
   }
@@ -45,7 +48,24 @@ class NewPullRequestsProject extends Component {
    * all Pull Requests not yet linked to the Project will be obtained.
    */
   componentDidMount() {
-    this.props.getPullRequestsNoProject(this.props.idProject);
+    this.setState({ loading: true })
+    this.props.getPullRequestsNoProject(this.props.idProject)
+      .finally(() => this.setState({ loading: false }));
+  }
+
+  componentWillUnmount() {
+    this.props.resetPullRequestsNoProject();
+  }
+
+  /**
+   * Add new Pull Request to Project that isn't at project's repositories,
+   * and shows a toast if is added successfully.
+   * 
+   * @param {Object} pullRequest 
+   *      Pull Request to be added in Project
+   */
+  addExternalPullRequest(pullRequest) {
+    this.addPullRequest(pullRequest, true);
   }
 
   /**
@@ -53,9 +73,13 @@ class NewPullRequestsProject extends Component {
    * is added successfully.
    * 
    * @param {Object} pullRequest
-   *      Pull Request to be added to Project
+   *      Pull Request to be added in Project
+   * @param {Boolean} isExternalPR
+   *      Boolean to be indicate is external PR to be added.
    */
-  addPullRequest(pullRequest) {
+  addPullRequest(pullRequest, isExternalPR) {
+    isExternalPR ? this.setState({ loadingExternalPR: true }) : this.setState({ loading: true })
+
     this.props.addPullRequestInProject(pullRequest, this.props.idProject).then(() => {
       toast.success("Pull Request adicionado!", {
         position: "top-right",
@@ -65,6 +89,8 @@ class NewPullRequestsProject extends Component {
         pauseOnHover: true,
         draggable: true
       });
+      
+      isExternalPR ? this.setState({ loadingExternalPR: false }) : this.setState({ loading: false })
     });
   }
 
@@ -81,9 +107,12 @@ class NewPullRequestsProject extends Component {
    * Searches Pull Requests that isn't shared with user.
    */
   searchExternalPullRequest() {
-    this.props.searchExternalPullRequest(this.state.ownerName, this.state.repositoryName, this.state.prNumber)
-      .then(() => {
+    this.setState({ loadingExternalPR: true });
+    this.props.searchExternalPullRequest(this.state.ownerName, this.state.repositoryName,
+      this.state.prNumber, this.props.idProject)
+      .finally(() => {
         this.setState({ isSearchedExternalPR: true });
+        this.setState({ loadingExternalPR: false });
       });
   }
 
@@ -123,7 +152,7 @@ class NewPullRequestsProject extends Component {
                               <div className="input-field col s3">
                                   <i className="material-icons prefix">create</i>
                                   <input name="prNumber" type="text" 
-                                          placeholder="Número PR"
+                                          placeholder="Número PR (Opcional)"
                                           onChange={this.handleChange} />
                               </div>
                               <div className="input-field col s1">
@@ -137,20 +166,29 @@ class NewPullRequestsProject extends Component {
                       </form>
                   </div>
               </div>
-              { this.state.isSearchedExternalPR && 
-                <div className="card-action" style={styleCardContent}>
-                  <PullRequestsTable pullRequests={this.props.externalPullRequestsNoProject} 
-                    isListNewPullRequests={true} addPullRequest={this.addPullRequest}/>
-                </div>
-              }
+              <BlockUi tag="div" blocking={this.state.loadingExternalPR}>
+                { this.state.isSearchedExternalPR && 
+                  <div className="card-action" style={styleCardContent}>
+                    <PullRequestsTable pullRequests={this.props.externalPullRequestsNoProject} 
+                      isListNewPullRequests={true} addPullRequest={this.addExternalPullRequest}/>
+                  </div>
+                }
+              </BlockUi>
           </div>
           <div className="card">
             <div className="card-content" style={{paddingBottom: "0", paddingTop: "20px"}}>
               <span className="card-title">Pull Requests dos meus repositórios</span>
             </div>
             <div className="card-action" style={styleCardContent}>
-              <PullRequestsTable pullRequests={this.props.pullRequestsNoProject} 
-                isListNewPullRequests={true} addPullRequest={this.addPullRequest}/>
+              <BlockUi tag="div" blocking={this.state.loading}>
+                { this.props.pullRequestsNoProject && this.props.pullRequestsNoProject.length > 0 &&
+                  <PullRequestsTable pullRequests={this.props.pullRequestsNoProject} 
+                    isListNewPullRequests={true} addPullRequest={this.addPullRequest}/>
+                }
+                { !this.state.loading && this.props.pullRequestsNoProject.length === 0 &&
+                  <p>Não foram encontrados Pull Requests!</p>
+                }
+              </BlockUi>
             </div>
           </div>
         </div>
@@ -167,7 +205,9 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch) => ({
     getPullRequestsNoProject: idProject => dispatch(getPullRequestsNoProject(idProject)),
     addPullRequestInProject: (pullRequest, idProject) => dispatch(addPullRequestInProject(pullRequest, idProject)),
-    searchExternalPullRequest: (ownerName, repositoryName, prNumber) => dispatch(searchExternalPullRequest(ownerName, repositoryName, prNumber))
+    searchExternalPullRequest: (ownerName, repositoryName, prNumber, idProject) =>
+      dispatch(searchExternalPullRequest(ownerName, repositoryName, prNumber, idProject)),
+    resetPullRequestsNoProject: () => dispatch(resetPullRequestsNoProject())
 });
 
 export default requireAuthentication(connect(mapStateToProps, mapDispatchToProps)(NewPullRequestsProject));

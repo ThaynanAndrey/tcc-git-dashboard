@@ -28,7 +28,10 @@ code {
 }
 
 .modal-styles {
-  height: 85% !important;
   max-height: 85% !important;
   width: 75% !important;
+}
+
+.descriptionPullRequestContent {
+  padding: 20px;
 }

@@ -4,7 +4,7 @@ import firebase from 'firebase/app';
 import { getFormattedDate } from '../../utils/utils';
 
 import { mapearAtributosPullRequest, getDataElemsFirestore, getUrlAuthenticated } from '../../utils/utils';
-import { LOAD_PROJECT_PULL_REQUESTS_SUCCESS, LOAD_PULL_REQUEST_SUCCESS, LOAD_PULL_REQUEST_ERROR } from './types';
+import { LOAD_PROJECT_PULL_REQUESTS_SUCCESS, LOAD_PULL_REQUEST_SUCCESS, LOAD_PULL_REQUEST_ERROR, RESET_PROJECT_PULL_REQUESTS } from './types';
 
 const PULL_REQUEST_FIRESTORE_COLLECTION = "pullRequests";
 
@@ -96,6 +96,14 @@ export const getDetailsPullRequest = pullRequest => {
             }));
     };
 };
+
+/**
+ * Resets project pull requests list.
+ * 
+ * @returns {Function} Dispatch used to invoke the pullRequest's redux
+ */
+export const resetProjectPullRequests = () => 
+    dispatch => dispatch({type: RESET_PROJECT_PULL_REQUESTS});
 
 /**
  * Gets the necessary properties in commit to be shown.

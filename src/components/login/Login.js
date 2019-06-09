@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { login, isAuthenticated } from '../../store/actions/authAction';
+import { ToastContainer, toast } from 'react-toastify';
 
 const cardStyles = {
     textAlign: "center",
@@ -25,7 +26,7 @@ const buttonStyle = {
 class Login extends Component {
   constructor(props) {
     super(props);
-
+    
     this.login = this.login.bind(this);
   }
 
@@ -37,12 +38,23 @@ class Login extends Component {
 
     if(isAuthenticated()) {
         this.props.history.push('/');
+    } else {
+        toast.error("Error ao tentar logar! Tente Novamente", {
+            position: "top-right",
+            autoClose: 4500,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true
+        });
     }
   }
 
   render() {
     return (
         <div style={cardStyles}>
+            <ToastContainer />
+            
             <div className="card blue-grey darken-2">
                 <div className="card-content white-text">
                     <span className="card-title">

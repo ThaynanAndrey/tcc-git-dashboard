@@ -7,6 +7,7 @@ import ProjectPullRequests from '../pull_request/ProjectPullRequests';
 import ProjectRepositoryList from '../repository/ProjectRepositoryList';
 import { requireAuthentication } from '../../high-order-components/RequireAuthentication';
 import { getDetailsPullRequest } from '../../store/actions/pullRequestsAction';
+import { getProject } from '../../store/actions/projectsAction';
 
 const styles = {
     fontSize: "17px",
@@ -69,7 +70,7 @@ class ProjectDetails extends Component {
     }
 
     /**
-     * Load Materialize's Collapsible after load Component.
+     * Load Materialize's Collapsible and Modal after load Component.
      */
     componentDidMount() {
         const elemsCollapsible = document.querySelectorAll('.collapsible');
@@ -77,6 +78,8 @@ class ProjectDetails extends Component {
 
         const elemsModal = document.querySelectorAll('.modal');
         this.instanceModal = M.Modal.init(elemsModal, {})[0];
+
+        this.props.getProject(this.props.idProject);
     }
 
     /**
@@ -110,11 +113,16 @@ class ProjectDetails extends Component {
         this.instanceModal.close();
     }
 
+    /**
+     * Gets the html desciption from Markdown text.
+     */
     getHtmlMarkdownText(textMD) {
         if(textMD && document.getElementById("markdown-description")) {
             const converter = new showdown.Converter();
             const html = converter.makeHtml(textMD);
             document.getElementById("markdown-description").innerHTML = html;
+        } else if(document.getElementById("markdown-description")) {
+            document.getElementById("markdown-description").innerHTML = "<div>Não há descrição para esse Pull Request!</div>"
         }
     }
 
@@ -140,7 +148,7 @@ class ProjectDetails extends Component {
 
         return (
             <div style={styles}>
-                <h3>Detalhes do Projeto</h3>
+                <h3>Detalhes de {this.props.project ? this.props.project.name : "Projeto"}</h3>
 
                 <div className="modal modal-fixed-footer modal-styles">
                     <div className="modal-content" style={modalContentStyles}>
@@ -186,7 +194,7 @@ class ProjectDetails extends Component {
                                         </div>
                                     </div>
                                     <div id="markdown-description"
-                                         className="collapsible-body body-collapsible-project">
+                                         className="collapsible-body body-collapsible-project descriptionPullRequestContent">
                                         {this.getHtmlMarkdownText(this.props.selectedPullRequest.description)}
                                     </div>
                                 </li>
@@ -199,20 +207,22 @@ class ProjectDetails extends Component {
                                             Commits
                                         </div>
                                     </div>
-                                    <div className="collapsible-body body-collapsible-project">
-                                        <table className="striped highlight responsive-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Responsável</th>
-                                                    <th>Data Criação</th>
-                                                    <th>Mensagem</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            {getItems(this.props.selectedPullRequest.commits)}
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    { this.props.selectedPullRequest.commits && this.props.selectedPullRequest.commits.length > 0 &&
+                                        <div className="collapsible-body body-collapsible-project">
+                                            <table className="striped highlight responsive-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Responsável</th>
+                                                        <th>Data Criação</th>
+                                                        <th>Mensagem</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                {getItems(this.props.selectedPullRequest.commits)}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    }
                                 </li>
                                 <li>
                                     <div className="collapsible-header" style={styleCollapsibleHeader}>
@@ -223,20 +233,22 @@ class ProjectDetails extends Component {
                                             Comentários
                                         </div>
                                     </div>
-                                    <div className="collapsible-body body-collapsible-project">
-                                        <table className="striped highlight responsive-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Responsável</th>
-                                                    <th>Data Criação</th>
-                                                    <th>Mensagem</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {getItems(this.props.selectedPullRequest.comments)}
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    { this.props.selectedPullRequest.comments && this.props.selectedPullRequest.comments > 0 &&
+                                        <div className="collapsible-body body-collapsible-project">
+                                            <table className="striped highlight responsive-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Responsável</th>
+                                                        <th>Data Criação</th>
+                                                        <th>Mensagem</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {getItems(this.props.selectedPullRequest.comments)}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    }
                                 </li>
                             </ul>
                         </div>
@@ -299,11 +311,13 @@ class ProjectDetails extends Component {
 
 const mapStateToProps = (state, ownProps) => ({
     idProject: ownProps.match.params.id,
-    selectedPullRequest: state.pullRequests.selectedPullRequest
+    selectedPullRequest: state.pullRequests.selectedPullRequest,
+    project: state.projects.project
 });
 
 const mapDispatchToProps = dispatch => ({
     getDetailsPullRequest: pullRequest => dispatch(getDetailsPullRequest(pullRequest)),
+    getProject: idProject => dispatch(getProject(idProject))
 });
 
 export default requireAuthentication(connect(mapStateToProps, mapDispatchToProps)(ProjectDetails));

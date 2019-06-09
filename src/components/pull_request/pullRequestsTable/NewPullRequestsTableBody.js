@@ -16,7 +16,7 @@ const NewPullRequestsTableBody = ({ pullRequests, addPullRequest }) => {
             <td>{ pullRequest.responsavel.nome }</td>
             <td>{ pullRequest.repositorio.nome }</td>
             <td>
-                <Tooltip content="Adicionar PR" style={{whiteSpace: "nowrap"}}>
+                <Tooltip content="Adicionar PR" placement="left" radius={10} style={{whiteSpace: "nowrap"}}>
                     <i className="material-icons left green-text" style={{cursor: "pointer"}}
                         onClick={() => addPullRequest(pullRequest)}>
                         add_box
