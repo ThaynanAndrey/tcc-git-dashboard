@@ -2,7 +2,8 @@ import axios from 'axios';
 import firebase from 'firebase/app';
 
 import { LOAD_PROJECT_REPOSITORIES_SUCCESS, LOAD_REPOSITORIES_NO_PROJECT_SUCCESS,
-    ADDED_REPOSITORY_SUCCESS, ADDED_REPOSITORY_ERROR, LOAD_EXTERNAL_REPOSITORIES, LOAD_EXTERNAL_REPOSITORIES_ERROR } from './types';
+    ADDED_REPOSITORY_SUCCESS, ADDED_REPOSITORY_ERROR, LOAD_EXTERNAL_REPOSITORIES,
+    LOAD_EXTERNAL_REPOSITORIES_ERROR, RESET_PROJECT_REPOSITORIES, RESET_REPOSITORIES_NO_PROJECT } from './types';
 import { getUrlAuthenticated, getFormattedDate, getDataElemsFirestore } from '../../utils/utils';
 
 const COLLECTION_REPOSITORY_FIRESTORE = "repositories";
@@ -123,18 +124,25 @@ export const addRepositoryInProject = (repository, idProject) => {
  *      Repository name
  * @return {Function} dispatch used to invoke the repositories' redux
  */
-export const searchExternalRepository = (ownerName, repositoryName) => {
-    return (dispatch, getState) => {
-        _getGitHubRepositories(ownerName, repositoryName)
-            .then(repositoriesResult => {
+export const searchExternalRepository = (ownerName, repositoryName, idProject) => {
+    return (dispatch) => {
+        const promises = [];
+        promises.push(_getGitHubRepositories(ownerName, repositoryName));
+        promises.push(getRepositoriesByIdProject(idProject));
+
+        return Promise.all(promises)
+            .then(result => {
+                const repositoriesResult = result[0];
+                const projectRepositories = result[1];
+
                 const isArray = repositoriesResult.data instanceof Array;
                 let externalRepositories = isArray ? repositoriesResult.data.map(result => _mapRepositoryAttr(result))
                     : new Array(_mapRepositoryAttr(repositoriesResult.data));
                 externalRepositories = externalRepositories.filter(externalRepository =>
-                    !_containsRepository(getState().repositories.projectRepositories, externalRepository));
-
+                    !_containsRepository(projectRepositories, externalRepository));
+                
                 const msgExternalRepositories = externalRepositories.length === 0
-                    ? "Não existem repositórios para cadastro" : "";
+                    ? "Não existem repositórios para cadastro" : undefined;
                 dispatch({
                     type: LOAD_EXTERNAL_REPOSITORIES,
                     externalRepositories,
@@ -142,10 +150,11 @@ export const searchExternalRepository = (ownerName, repositoryName) => {
                 })
             })
             .catch(error => {
+                console.log(error)
                 dispatch({
                     type: LOAD_EXTERNAL_REPOSITORIES_ERROR,
                     externalRepositories: [],
-                    msgExternalRepositories: "Não foi possível encontrar repositórios"
+                    msgExternalRepositories: "Houve um erro na busca. Tente novamente!"
                 })
             });
     }
@@ -156,12 +165,19 @@ export const searchExternalRepository = (ownerName, repositoryName) => {
  * 
  * @returns {Function} dispatch used to invoke the repositories' redux
  */
-export const resetExternalRepositories = () => 
+export const resetRepositoriesNoProject = () => 
     dispatch =>
         dispatch({
-            type: LOAD_EXTERNAL_REPOSITORIES,
-            externalRepositories: undefined
+            type: RESET_REPOSITORIES_NO_PROJECT
         });
+
+/**
+ * Resets project repositories list.
+ * 
+ * @returns {Function} dispatch used to invoke the repositories' redux
+ */
+export const resetProjectRepositories = () =>
+    dispatch => dispatch({ type: RESET_PROJECT_REPOSITORIES});
 
 /**
  * Gets Project's Repositories in Firestore
@@ -221,11 +237,54 @@ const _getAllUserRepositories = async () => {
     const accessToken = sessionStorage.getItem('authAccessToken');
     const authUrl = getUrlAuthenticated(url, method, accessToken);
 
-    const repositoriesResult = await axios(authUrl);
-    const repositoriesNoProject = repositoriesResult.data
+    let repositoriesResult = await axios(authUrl);
+    let nextRepositories = await _getNextRepositories(repositoriesResult);
+    nextRepositories = nextRepositories.reduce((array, repo) => array.concat(repo.data), []);
+    repositoriesResult = repositoriesResult.data.concat(nextRepositories);
+
+    const userRepositories = repositoriesResult
         .map(result => _mapRepositoryAttr(result));
 
-    return repositoriesNoProject;
+    return userRepositories;
+};
+
+/**
+ * Get next pages of Repositories.
+ * 
+ * @param {Array} repositoriesGitHub
+ *      Array with GitHub's Repositories
+ * @returns {Promise} Promise with next pages of Repositories
+ */
+const _getNextRepositories = repositoriesGitHub => {
+    console.log(repositoriesGitHub)
+    const promises = [];
+    const nextPages = repositoriesGitHub.headers.link;
+    if(nextPages) {
+        const endPage = Number(nextPages.substring(
+            nextPages.lastIndexOf("page=") + 5, 
+            nextPages.lastIndexOf(">")
+        ));
+        for(let page = 2; page <= endPage; page++) {
+            promises.push(_getRepositoriesByPage(page));
+        }
+    }
+    return Promise.all(promises);
+};
+
+/**
+ * Requests to GitHub by Repositories.
+ * 
+ * @param {Number} page
+ *      Repositories' page
+ * @returns {Promise} request's promise
+ */
+const _getRepositoriesByPage = page => {
+    const method = 'GET';
+    const url = `https://api.github.com/user/repos?sort=updated&page=${page}`;
+    const accessToken = sessionStorage.getItem('authAccessToken');
+    const authUrl = getUrlAuthenticated(url, method, accessToken);
+
+    return axios(authUrl);
 };
 
 /**
@@ -295,9 +354,9 @@ const _getRepositoriesNoProject = (projectRepositories, userRepositories) =>
 /**
  * Returns a boolean indicating if the repository is in repositories list.
  * 
- * @param {*} respositories
+ * @param {Array} respositories
  *      List of repositories
- * @param {*} repository
+ * @param {Object} repository
  *      Repository to be searched
  * @return {Boolean} {@code true} if repostiories' list contains repository, otherwise {@code false}
  */

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import BlockUi from 'react-block-ui';
 
 import { requireAuthentication } from '../../high-order-components/RequireAuthentication';
-import { getProjectPullRequests, removePullRequestProject } from '../../store/actions/pullRequestsAction';
+import { getProjectPullRequests, removePullRequestProject, resetProjectPullRequests } from '../../store/actions/pullRequestsAction';
 import PullRequestsTable from './pullRequestsTable/PullRequestsTable';
 
 const styles = {
@@ -20,6 +20,11 @@ class ProjectPullRequests extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            loading: false,
+            loadingDelete: false
+        }
+
         this.removePullRequest = this.removePullRequest.bind(this);
     }
 
@@ -28,7 +33,13 @@ class ProjectPullRequests extends Component {
      * all Pull Requests linked to the Project will be obtained.
      */
     componentDidMount() {
-        this.props.getProjectPullRequests(this.props.idProject);
+        this.setState({ loading: true })
+        this.props.getProjectPullRequests(this.props.idProject)
+            .finally(() => this.setState({ loading: false }));
+    }
+
+    componentWillUnmount() {
+        this.props.resetProjectPullRequests();
     }
 
     /**
@@ -40,7 +51,7 @@ class ProjectPullRequests extends Component {
      */
     async removePullRequest(pullRequest, event) {
         event.stopPropagation();
-
+        this.setState({ loadingDelete: true })
         await this.props.removePullRequestProject(pullRequest);
         toast.success("Pull Request removido!", {
             position: "top-right",
@@ -50,27 +61,30 @@ class ProjectPullRequests extends Component {
             pauseOnHover: true,
             draggable: true
         });
+        this.setState({ loadingDelete: false })
     }
 
     render() {
-        if(this.props.projectPullRequests.length === 0) {
+        if(!this.state.loading && this.props.projectPullRequests.length === 0) {
             return (
                 <div style={{paddingTop: "5px"}}>
                     <h6>Não existem Pull Requests cadastrados!</h6>
                 </div>
             )
         }
-        else {
-            return (
-                <div style={styles}>
-                    <ToastContainer />
+        return (
+            <BlockUi tag="div" blocking={this.state.loading || this.state.loadingDelete}>
+                {!this.state.loading &&
+                    <div style={styles}>
+                        <ToastContainer />
 
-                    <PullRequestsTable pullRequests={this.props.projectPullRequests}
-                        isListNewPullRequests={false} removePullRequest={this.removePullRequest}
-                        openPullRequest={this.props.openPullRequest}/>
-                </div>
-            );
-        }
+                        <PullRequestsTable pullRequests={this.props.projectPullRequests}
+                            isListNewPullRequests={false} removePullRequest={this.removePullRequest}
+                            openPullRequest={this.props.openPullRequest}/>
+                    </div>
+                }
+            </BlockUi>
+        )
     }
 }
 
@@ -80,7 +94,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     getProjectPullRequests: idProject => dispatch(getProjectPullRequests(idProject)),
-    removePullRequestProject: (pullRequest) => dispatch(removePullRequestProject(pullRequest))
+    removePullRequestProject: (pullRequest) => dispatch(removePullRequestProject(pullRequest)),
+    resetProjectPullRequests: () => dispatch(resetProjectPullRequests()),
 });
 
 export default requireAuthentication(connect(mapStateToProps, mapDispatchToProps)(ProjectPullRequests));

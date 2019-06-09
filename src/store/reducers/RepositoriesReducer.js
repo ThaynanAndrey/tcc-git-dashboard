@@ -1,10 +1,11 @@
 import { LOAD_PROJECT_REPOSITORIES_SUCCESS, LOAD_REPOSITORIES_NO_PROJECT_SUCCESS, ADDED_REPOSITORY_SUCCESS,
-    ADDED_REPOSITORY_ERROR, LOAD_EXTERNAL_REPOSITORIES, LOAD_EXTERNAL_REPOSITORIES_ERROR } from '../actions/types';
+    ADDED_REPOSITORY_ERROR, LOAD_EXTERNAL_REPOSITORIES, LOAD_EXTERNAL_REPOSITORIES_ERROR, RESET_PROJECT_REPOSITORIES,
+    RESET_REPOSITORIES_NO_PROJECT } from '../actions/types';
 
 const initState = {
     projectRepositories: [],
     repositoriesNoProject: [],
-    externalRepositories: undefined,
+    externalRepositories: [],
     msgExternalRepositories: undefined,
     error: undefined
 };
@@ -43,6 +44,17 @@ const repositoriesReducer = (state = initState, action) => {
                 ...state,
                 externalRepositories: action.externalRepositories,
                 msgExternalRepositories: action.msgExternalRepositories
+            }
+        case RESET_PROJECT_REPOSITORIES:
+            return {
+                ...state,
+                projectRepositories: []
+            }
+        case RESET_REPOSITORIES_NO_PROJECT:
+            return {
+                ...state,
+                repositoriesNoProject: [],
+                externalRepositories: []
             }
         default:
           return state

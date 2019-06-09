@@ -9,6 +9,9 @@ import RepositoriesNoProject from './components/repository/RepositoriesNoProject
 import Projects from './components/project/Projects';
 import Login from './components/login/Login';
 
+import 'react-toastify/dist/ReactToastify.css';
+import 'react-block-ui/style.css';
+
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 

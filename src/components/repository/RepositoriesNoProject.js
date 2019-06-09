@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Tooltip from "react-simple-tooltip";
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import BlockUi from 'react-block-ui';
 
 import { requireAuthentication } from '../../high-order-components/RequireAuthentication';
 
-import { getRepositoriesNoProject, addRepositoryInProject, searchExternalRepository, resetExternalRepositories } from '../../store/actions/repositoriesAction';
+import { getRepositoriesNoProject, addRepositoryInProject, searchExternalRepository, resetRepositoriesNoProject } from '../../store/actions/repositoriesAction';
 
 const styles = {
     fontSize: "17px",
@@ -30,7 +30,9 @@ export class RepositoriesNoProject extends Component {
 
         this.state = {
             ownerName: "",
-            repositoryName: ""
+            repositoryName: "",
+            loadingMyRepositories: false,
+            loadingExternalRepositories: false
         };
 
         this.addRepository = this.addRepository.bind(this);
@@ -43,8 +45,13 @@ export class RepositoriesNoProject extends Component {
      * all Repositories linked to the Project will be obtained.
      */
     componentDidMount() {
-        this.props.resetExternalRepositories();
-        this.props.getRepositoriesNoProject(this.props.idProject);
+        this.setState({ loadingMyRepositories: true })
+        this.props.getRepositoriesNoProject(this.props.idProject)
+            .finally(() => this.setState({ loadingMyRepositories: false }));
+    }
+
+    componentWillUnmount() {
+        this.props.resetRepositoriesNoProject();
     }
 
     /**
@@ -53,7 +60,8 @@ export class RepositoriesNoProject extends Component {
      * @param {Object} repository
      *      Repository to be added
      */
-    async addRepository(repository) {
+    async addRepository(repository, isRepositoryNoProject) {
+        isRepositoryNoProject ? this.setState({ loadingMyRepositories: true }) : this.setState({ loadingExternalRepositories: true })
         await this.props.addRepositoryInProject(repository, this.props.idProject);
 
         toast.success("Repositório adicionado!", {
@@ -63,7 +71,8 @@ export class RepositoriesNoProject extends Component {
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true
-          });
+        });
+        isRepositoryNoProject ? this.setState({ loadingMyRepositories: false }) : this.setState({ loadingExternalRepositories: false })
     }
 
     /**
@@ -79,19 +88,21 @@ export class RepositoriesNoProject extends Component {
      * Searches Repositories that isn't shared with user.
      */
     searchExternalRepository() {
-        this.props.searchExternalRepository(this.state.ownerName, this.state.repositoryName);
+        this.setState({ loadingExternalRepositories: true })
+        this.props.searchExternalRepository(this.state.ownerName, this.state.repositoryName, this.props.idProject)
+            .finally(() => this.setState({ loadingExternalRepositories: false }));
     }
 
     render() {
-        const repositoryElements = (repo) => repo.map((repository, indice) => (
+        const repositoryElements = (repo, isRepositoryNoProject) => repo.map((repository, indice) => (
             <tr key={indice}>
                 <td>{ repository.name }</td>
                 <td>{ repository.creationDate }</td>
                 <td>{ repository.owner.name }</td>
                 <td>
-                    <Tooltip content="Adicionar" style={{whiteSpace: "nowrap"}}>
+                    <Tooltip content="Adicionar" placement="left" radius={10} style={{whiteSpace: "nowrap"}}>
                         <i className="material-icons left green-text" style={{cursor: "pointer"}}
-                            onClick={() => this.addRepository(repository)}>
+                            onClick={() => this.addRepository(repository, isRepositoryNoProject)}>
                             add_box
                         </i>
                     </Tooltip>
@@ -99,9 +110,8 @@ export class RepositoriesNoProject extends Component {
             </tr>
         ));
         
-        const repositoryExternalElements = this.props.msgExternalRepositories !== ""
-            ? <div className="card-action" style={styleCardContent}>{this.props.msgExternalRepositories}</div>
-            : (<div className="card-action" style={styleCardContent}>
+        const repositoryExternalElements = 
+            <div className="card-action" style={styleCardContent}>
                 <table className="striped highlight responsive-table">
                     <thead>
                         <tr>
@@ -112,10 +122,10 @@ export class RepositoriesNoProject extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {repositoryElements(this.props.externalRepositories)}
+                        {repositoryElements(this.props.externalRepositories, false)}
                     </tbody>
                 </table>
-            </div>);
+            </div>
 
         return (
             <div style={styles}>
@@ -163,28 +173,44 @@ export class RepositoriesNoProject extends Component {
                             </form>
                         </div>
                     </div>
-                    {this.props.externalRepositories && repositoryExternalElements}
+                    <BlockUi tag="div" blocking={this.state.loadingExternalRepositories}>
+                        { this.props.externalRepositories.length > 0 && repositoryExternalElements }
+                        { this.props.msgExternalRepositories && 
+                            <div className="card-action" style={styleCardContent}>
+                                {this.props.msgExternalRepositories}
+                            </div>
+                        }
+                    </BlockUi>
                 </div>
                 
                 <div className="card">
                     <div className="card-content" style={{paddingBottom: "0", paddingTop: "20px"}}>
-                        <span className="card-title">Meus Repositórios</span>
+                        <span className="card-title">Repositórios compartilhados</span>
                     </div>
-                    <div className="card-action" style={styleCardContent}>
-                        <table className="striped highlight responsive-table">
-                            <thead>
-                                <tr>
-                                    <th>Repositório</th>
-                                    <th>Data de Criação</th>
-                                    <th>Responsável</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {repositoryElements(this.props.repositoriesNoProject)}
-                            </tbody>
-                        </table>
-                    </div>
+                    <BlockUi tag="div" blocking={this.state.loadingMyRepositories}>
+                        {this.props.repositoriesNoProject && this.props.repositoriesNoProject.length > 0 &&
+                            <div className="card-action" style={styleCardContent}>
+                                <table className="striped highlight responsive-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Repositório</th>
+                                            <th>Data de Criação</th>
+                                            <th>Responsável</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {repositoryElements(this.props.repositoriesNoProject, true)}
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        {(!this.props.repositoriesNoProject || this.props.repositoriesNoProject.length === 0) && !this.state.loadingMyRepositories &&
+                            <h5>
+                                Não existem respositórios novos para cadastrar!
+                            </h5>
+                        }
+                    </BlockUi>
                 </div>
             </div>
         )
@@ -201,8 +227,8 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch) => ({
     getRepositoriesNoProject: idProject => dispatch(getRepositoriesNoProject(idProject)),
     addRepositoryInProject: (repository, idProject) => dispatch(addRepositoryInProject(repository, idProject)),
-    searchExternalRepository: (ownerName, repositoryName) => dispatch(searchExternalRepository(ownerName, repositoryName)),
-    resetExternalRepositories: () => dispatch(resetExternalRepositories())
+    searchExternalRepository: (ownerName, repositoryName, idProject) => dispatch(searchExternalRepository(ownerName, repositoryName, idProject)),
+    resetRepositoriesNoProject: () => dispatch(resetRepositoriesNoProject())
 });
 
 export default requireAuthentication(connect(mapStateToProps, mapDispatchToProps)(RepositoriesNoProject));

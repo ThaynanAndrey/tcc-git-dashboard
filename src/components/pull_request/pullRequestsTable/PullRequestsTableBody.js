@@ -16,7 +16,7 @@ const PullRequestsTableBody = ({ pullRequests, removePullRequest, openPullReques
             <td>{ pullRequest.responsavel.nome }</td>
             <td>{ pullRequest.repositorio.nome }</td>
             <td>
-                <Tooltip content="Excluir PR" style={{whiteSpace: "nowrap"}}>
+                <Tooltip content="Excluir PR" placement="left" radius={10} style={{whiteSpace: "nowrap"}}>
                     <i className="material-icons left red-text" style={{cursor: "pointer"}}
                         onClick={removePullRequest.bind(this, pullRequest)}>
                         delete

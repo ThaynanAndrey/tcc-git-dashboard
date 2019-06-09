@@ -50,17 +50,20 @@ export const login = () => {
  */
 export const logout = () => {
     return dispatch => {
-        return firebase.auth().signOut().then(() => {
-            sessionStorage.removeItem('authAccessToken');
-            dispatch({
-                type: USER_LOGOUT_SUCCESS
+        return firebase.auth().signOut()
+            .then(() => {
+                sessionStorage.removeItem('authAccessToken');
+                
+                dispatch({
+                    type: USER_LOGOUT_SUCCESS
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: USER_LOGOUT_ERROR,
+                    errorLogout: error
+                });
             });
-          }, error => {
-            dispatch({
-                type: USER_LOGOUT_ERROR,
-                errorLogout: error
-            });
-          });
     };
 };
 

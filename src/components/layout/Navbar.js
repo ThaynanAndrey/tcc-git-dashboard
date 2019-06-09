@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import SignedInLinks from './SignedInLinks';
 import SignedOutLinks from './SignedOutLinks';
@@ -11,32 +12,47 @@ const styles = {
 };
 
 /**
- * Stateless Component with the function of presenting a
+ * Component with the function of presenting a
  * main menu for redirects within the application.
  * 
  * @author Thaynan Nunes
  */
-const Navbar = () => {
-  
+export class Navbar extends Component {
+  constructor(props) {
+    super(props);
+
+    this.signOut = this.signOut.bind(this);
+  }
+
   /**
    * Sign out user and redirect to login page.
    */
-  const signOut = () => {
-    logout();
+  signOut() {
+    this.props.logout();
   };
-
-  const links = isAuthenticated() ? <SignedInLinks signOut={signOut}/> : <SignedOutLinks />;
   
-  return (
-    <div className="navbar-fixed">
-      <nav className="nav-wrapper blue-grey darken-2">
-        <div style={styles}>
-          <Link to='/' className="brand-logo">Git Dashboard</Link>
-          { links }
-        </div>
-      </nav>
-    </div>
-  )
+  render() {
+    const links = isAuthenticated() ? <SignedInLinks signOut={this.signOut}/> : <SignedOutLinks />;
+
+    return (
+      <div className="navbar-fixed">
+        <nav className="nav-wrapper blue-grey darken-2">
+          <div style={styles}>
+            <Link to='/' className="brand-logo">Git Dashboard</Link>
+            { links }
+          </div>
+        </nav>
+      </div>
+    )
+  }
 }
 
-export default Navbar;
+const mapStateToProps = (state) => ({
+  user: state.auth.user
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  logout: () => dispatch(logout())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

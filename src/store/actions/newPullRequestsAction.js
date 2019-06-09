@@ -3,7 +3,9 @@ import firebase from 'firebase/app';
 
 import { getRepositoriesFirestoreByIdProject } from './repositoriesAction';
 import { binarySearch, mapearAtributosPullRequest, getUrlAuthenticated, getDataElemsFirestore } from '../../utils/utils';
-import { LOAD_PULL_REQUESTS_NO_PROJECT_SUCCESS, ADDED_PULL_REQUEST_SUCCESS, ADDED_PULL_REQUEST_ERROR, LOAD_EXTERNAL_PULL_REQUESTS_NO_PROJECT_SUCCESS } from './types';
+import { LOAD_PULL_REQUESTS_NO_PROJECT_SUCCESS, ADDED_PULL_REQUEST_SUCCESS, ADDED_PULL_REQUEST_ERROR,
+        LOAD_EXTERNAL_PULL_REQUESTS_NO_PROJECT_SUCCESS, LOAD_EXTERNAL_PULL_REQUESTS_NO_PROJECT_ERROR,
+        RESET_PULL_REQUESTS_NO_PROJECT } from './types';
 
 const COLLECTION_PULL_REQUESTS_FIRESTORE = "pullRequests";
 const COLLECTION_PROJECTS_FIRESTORE = "projects";
@@ -93,26 +95,58 @@ export const addPullRequestInProject = (pullRequest, idProject) => {
  *      Repository name where are the Pull Requests searched
  * @param {String} prNumber
  *      Number Pull Request to be searched
+ * @param {String} idProject
+ *      Project's id
  * @returns {Function} Dispatch used to invoke the newPullRequest's redux
  */
-export const searchExternalPullRequest = (ownerName, repositoryName, prNumber) => {
+export const searchExternalPullRequest = (ownerName, repositoryName, prNumber, idProject) => {
     return dispatch => {
-        return _getGitHubPullRequests(ownerName, repositoryName, prNumber)
-            .then(pullRequests => {
+        const promises = [];
+        promises.push(_getGitHubPullRequests(ownerName, repositoryName, prNumber));
+        promises.push(_getPullRequestsFirestoreByIdProject(idProject));
+
+        return Promise.all(promises)
+            .then(result => {
+                const pullRequests = result[0];
+                const projectPullRequests = result[1];
+
                 const isArray = pullRequests.data instanceof Array;
-                const externalPullRequestsNoProject = isArray ? pullRequests.data.map(pr => mapearAtributosPullRequest(pr))
+                let externalPullRequestsNoProject = isArray ? pullRequests.data.map(pr => mapearAtributosPullRequest(pr))
                     : new Array(mapearAtributosPullRequest(pullRequests.data));
-                
+                externalPullRequestsNoProject = externalPullRequestsNoProject.filter(externalPR =>
+                    !_containsPullRequest(projectPullRequests, externalPR));
+
                 dispatch({
                     type: LOAD_EXTERNAL_PULL_REQUESTS_NO_PROJECT_SUCCESS,
                     externalPullRequestsNoProject
                 });
             })
             .catch(error => {
-                console.log(error)
+                dispatch({ type: LOAD_EXTERNAL_PULL_REQUESTS_NO_PROJECT_ERROR })
             });
     };
 };
+
+/**
+ * Resets pull requests no Project list.
+ * 
+ * @returns {Function} Dispatch used to invoke the newPullRequest's redux
+ */
+export const resetPullRequestsNoProject = () =>
+    dispatch => dispatch({ type: RESET_PULL_REQUESTS_NO_PROJECT });
+
+/**
+ * Returns a boolean indicating if the Pull Request is in pullRequests list.
+ * 
+ * @param {Array} pullRequests
+ *      List of Pull Requests
+ * @param {Object} pullRequest
+ *      Pull Request to be searched
+ * @return {Boolean} {@code true} if pull requests' list contains pull request, otherwise {@code false}
+ */
+const _containsPullRequest = (pullRequests, pullRequest) =>
+    pullRequests.reduce((contains, currentPR) => 
+        contains || currentPR.idPullRequestGitHub === pullRequest.id, false)
 
 /**
  * Requests to GitHub the data's Pull Requests for: owner name, pull request name and pull request number.

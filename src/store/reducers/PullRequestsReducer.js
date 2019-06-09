@@ -1,4 +1,4 @@
-import { LOAD_PROJECT_PULL_REQUESTS_SUCCESS, LOAD_PULL_REQUEST_SUCCESS } from '../actions/types';
+import { LOAD_PROJECT_PULL_REQUESTS_SUCCESS, LOAD_PULL_REQUEST_SUCCESS, RESET_PROJECT_PULL_REQUESTS } from '../actions/types';
 
 const initState = {
     projectPullRequests: [],
@@ -17,6 +17,11 @@ const pullRequestsReducer = (state = initState, action) => {
             return {
                 ...state,
                 selectedPullRequest: action.selectedPullRequest
+            }
+        case RESET_PROJECT_PULL_REQUESTS:
+            return {
+                ...state,
+                projectPullRequests: []
             }
         default:
           return state

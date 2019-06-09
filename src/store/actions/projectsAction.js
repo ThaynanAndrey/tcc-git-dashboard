@@ -1,7 +1,8 @@
 import firebase from 'firebase/app';
 
 import { getDataElemsFirestore, getFormattedDate } from '../../utils/utils';
-import { LOAD_PROJECTS_SUCCESS, LOAD_PROJECTS_ERROR, CREATE_PROJECT_SUCCESS, CREATE_PROJECT_ERROR } from './types';
+import { LOAD_PROJECTS_SUCCESS, LOAD_PROJECTS_ERROR, CREATE_PROJECT_SUCCESS,
+        CREATE_PROJECT_ERROR, GET_PROJECT_SUCCESS } from './types';
 
 const COLLECTION_PROJECTS_FIRESTORE = "projects";
 const COLLECTION_USER_FIRESTORE = "users";
@@ -37,6 +38,23 @@ export const loadProjects = () => {
             });
     }
 };
+
+/**
+ * Gets a project by id.
+ * 
+ * @param {String} idProject
+ *      Project id to be gotten
+ */
+export const getProject = idProject =>
+    dispatch => {
+        const firestore = firebase.firestore();
+        firestore.collection(COLLECTION_PROJECTS_FIRESTORE).doc(idProject).get()
+            .then(project => {
+                project = project.data()
+                dispatch({ type: GET_PROJECT_SUCCESS, project })
+            })
+            .catch(error => console.log(error));
+    }
 
 /**
  * Creates a new Project in Firestore.
