@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Modal renders correctly a modal with props isFixed 1`] = `
+<div
+  className="modal modal-fixed-footer modal-styles"
+/>
+`;
+
+exports[`Test Modal renders correctly a modal without props isFixed 1`] = `
+<div
+  className="modal"
+/>
+`;

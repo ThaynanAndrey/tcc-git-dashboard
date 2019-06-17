@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test RepositoriesNoProject renders correctly a component to show PullRequestCollapsibleHeader 1`] = `
+<div
+  className="collapsible-header"
+  style={
+    Object {
+      "display": "flex",
+      "justifyContent": "space-between",
+    }
+  }
+>
+  <div
+    style={
+      Object {
+        "display": "flex",
+      }
+    }
+  >
+    <i
+      className="material-icons"
+    >
+      dehaze
+    </i>
+    Pull Requests
+  </div>
+  <div>
+    <button
+      className="btn-small waves-effect waves-light green darken-2"
+      name="cadastrar-pr"
+      onClick={[Function]}
+      type="button"
+    >
+      Adicionar
+      <i
+        className="material-icons left"
+      >
+        add
+      </i>
+    </button>
+  </div>
+</div>
+`;

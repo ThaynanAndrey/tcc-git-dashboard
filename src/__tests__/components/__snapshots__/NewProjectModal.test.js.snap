@@ -1,0 +1,213 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test NewProjectModal renders correctly a component to show NewProjectModal 1`] = `
+<NewProjectModal>
+  <Modal>
+    <div
+      className="modal"
+    >
+      <BlockUi
+        loader={[Function]}
+        renderChildren={true}
+        tag="div"
+      >
+        <div>
+          <ContenteNewProjectModal>
+            <div
+              className="modal-content"
+            >
+              <h4>
+                Novo Projeto
+              </h4>
+              <div
+                className="row"
+              >
+                <form
+                  className="col s12"
+                >
+                  <div
+                    className="input-field col s5"
+                    style={
+                      Object {
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    <i
+                      className="material-icons prefix"
+                    >
+                      insert_drive_file
+                    </i>
+                    <input
+                      name="projectName"
+                      placeholder="Nome Projeto"
+                      type="tel"
+                    />
+                  </div>
+                </form>
+              </div>
+            </div>
+          </ContenteNewProjectModal>
+          <ProjectModalFooter>
+            <div
+              className="modal-footer"
+            >
+              <div
+                className="modal-close waves-effect waves-green btn-flat"
+              >
+                Cancelar
+              </div>
+              <div
+                className="modal-close waves-effect waves-green btn-flat"
+              >
+                Adicionar
+              </div>
+            </div>
+          </ProjectModalFooter>
+          <span />
+        </div>
+      </BlockUi>
+    </div>
+  </Modal>
+</NewProjectModal>
+`;
+
+exports[`Test NewProjectModal renders correctly a component to show NewProjectModal with correct props 1`] = `
+<NewProjectModal
+  closeModal={[MockFunction]}
+  createProject={[MockFunction]}
+  handleChange={[MockFunction]}
+  loadingCreateProject={[MockFunction]}
+>
+  <Modal>
+    <div
+      className="modal"
+    >
+      <BlockUi
+        blocking={[MockFunction]}
+        loader={[Function]}
+        renderChildren={true}
+        tag="div"
+      >
+        <div
+          aria-busy={[MockFunction]}
+          className="block-ui undefined"
+        >
+          <div
+            onKeyDown={[Function]}
+            onKeyUp={[Function]}
+            tabIndex="0"
+          />
+          <ContenteNewProjectModal
+            handleChange={[MockFunction]}
+          >
+            <div
+              className="modal-content"
+            >
+              <h4>
+                Novo Projeto
+              </h4>
+              <div
+                className="row"
+              >
+                <form
+                  className="col s12"
+                >
+                  <div
+                    className="input-field col s5"
+                    style={
+                      Object {
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    <i
+                      className="material-icons prefix"
+                    >
+                      insert_drive_file
+                    </i>
+                    <input
+                      name="projectName"
+                      onChange={[MockFunction]}
+                      placeholder="Nome Projeto"
+                      type="tel"
+                    />
+                  </div>
+                </form>
+              </div>
+            </div>
+          </ContenteNewProjectModal>
+          <ProjectModalFooter
+            closeModal={[MockFunction]}
+            createProject={[MockFunction]}
+          >
+            <div
+              className="modal-footer"
+            >
+              <div
+                className="modal-close waves-effect waves-green btn-flat"
+                onClick={[MockFunction]}
+              >
+                Cancelar
+              </div>
+              <div
+                className="modal-close waves-effect waves-green btn-flat"
+                onClick={[MockFunction]}
+              >
+                Adicionar
+              </div>
+            </div>
+          </ProjectModalFooter>
+          <div
+            className="block-ui-container"
+            onKeyDown={[Function]}
+            onKeyUp={[Function]}
+            tabIndex="0"
+          >
+            <div
+              className="block-ui-overlay"
+            />
+            <div
+              className="block-ui-message-container"
+              style={
+                Object {
+                  "top": undefined,
+                }
+              }
+            >
+              <div
+                className="block-ui-message"
+              >
+                <Loader>
+                  <div
+                    className="loading-indicator"
+                  >
+                    <span
+                      className="loading-bullet"
+                    >
+                      •
+                    </span>
+                     
+                    <span
+                      className="loading-bullet"
+                    >
+                      •
+                    </span>
+                     
+                    <span
+                      className="loading-bullet"
+                    >
+                      •
+                    </span>
+                  </div>
+                </Loader>
+              </div>
+            </div>
+          </div>
+          <span />
+        </div>
+      </BlockUi>
+    </div>
+  </Modal>
+</NewProjectModal>
+`;

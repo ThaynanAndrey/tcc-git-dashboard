@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Tooltip from "react-simple-tooltip";
 import { ToastContainer, toast } from 'react-toastify';
 import BlockUi from 'react-block-ui';
 import M from "materialize-css";
@@ -8,6 +7,8 @@ import M from "materialize-css";
 import { requireAuthentication } from '../../high-order-components/RequireAuthentication';
 
 import { loadProjects, createProject, deleteProject } from '../../store/actions/projectsAction';
+import NewProjectModal from './modal/NewProjectModal';
+import ProjectsTable from './table/ProjectsTable';
 
 const styles = {
     fontSize: "17px",
@@ -60,11 +61,15 @@ export class Projects extends Component {
      * @returns {String} salutation to user
      */
     getSalutation() {
-        let userName; // = this.props.user && this.props.user.additionalUserInfo.profile.login;
-        const salutation = userName ? `Olá, ${userName}!` : "Seja bem-vindo";
-        return <h3>{salutation}</h3>;
+        return <h3>Seja bem-vindo</h3>;
     }
 
+    /**
+     * Opens a new screen with select project to show your details.
+     * 
+     * @param {Object} project
+     *      Project to show your details
+     */
     openProject(project) {
         this.props.history.push(`/projeto/${project.id}`);
     }
@@ -129,7 +134,6 @@ export class Projects extends Component {
      * Opens modal to create new Project.
      */
     openModal() {
-        this.myFormRef.reset();
         this.instanceModal.open(); 
     }
 
@@ -137,69 +141,15 @@ export class Projects extends Component {
      * Closes the modal.
      */
     closeModal() {
-        this.myFormRef.reset();
         this.instanceModal.close();
     }
 
     render() {
-        const projectElements = () => this.props.projects.map((project, index) => (
-            <tr key={index} onClick={this.openProject.bind(this, project)} style={{cursor: "pointer"}}>
-                <td>{ project.name }</td>
-                <td>{ project.creationDate }</td>
-                <td>
-                    <Tooltip content="Remover Projeto" placement="left" radius={10} style={{whiteSpace: "nowrap"}}>
-                        <i className="material-icons left delete-text red-text" style={{cursor: "pointer"}}
-                            onClick={this.deleteProject.bind(this, project)}>
-                            delete
-                        </i>
-                    </Tooltip>
-                </td>
-            </tr>
-        ));
-
-        const projects =
-            <table className="striped highlight responsive-table">
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Data de Criação</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {projectElements()}
-                </tbody>
-            </table>
-
         return (
             <div>
-                <div className="modal">
-                    <BlockUi tag="div" blocking={this.state.loadingCreateProject}>
-                        <div className="modal-content">
-                            <h4>Novo Projeto</h4>
-                            <div className="row">
-                                <form className="col s12" ref={el => this.myFormRef = el}>
-                                    <div className="input-field col s5"  style={{width: "100%"}}>
-                                        <i className="material-icons prefix">insert_drive_file</i>
-                                        <input name="projectName" type="tel" 
-                                                placeholder="Nome Projeto"
-                                                onChange={this.handleChange} />
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div className="modal-footer">
-                            <a className="modal-close waves-effect waves-green btn-flat"
-                                onClick={this.closeModal}>
-                                Cancelar
-                            </a>
-                            <a className="modal-close waves-effect waves-green btn-flat"
-                                onClick={this.createProject}>
-                                Adicionar
-                            </a>
-                        </div>
-                    </BlockUi>
-                </div>
+                <NewProjectModal handleChange={this.handleChange} closeModal={this.closeModal}
+                    createProject={this.createProject} loadingCreateProject={this.state.loadingCreateProject}
+                />
 
                 <div style={styles}>
                     {this.getSalutation()}
@@ -225,7 +175,11 @@ export class Projects extends Component {
 
                         <BlockUi tag="div" blocking={this.state.loading}>
                             <div className="card-action" style={styleCardContent}>
-                                {this.props.projects.length > 0 && projects}
+                                <ProjectsTable
+                                    projects={this.props.projects}
+                                    openProject={project => this.openProject.bind(this, project)}
+                                    deleteProject={project => this.deleteProject.bind(this, project)}
+                                />
                                 {!this.state.loading && this.props.projects.length === 0 &&  
                                     <span>Não existem projetos cadastrados!</span>
                                 }

@@ -107,18 +107,25 @@ export const searchExternalPullRequest = (ownerName, repositoryName, prNumber, i
 
         return Promise.all(promises)
             .then(result => {
-                const pullRequests = result[0];
-                const projectPullRequests = result[1];
-
+                let pullRequests = result[0];
                 const isArray = pullRequests.data instanceof Array;
                 let externalPullRequestsNoProject = isArray ? pullRequests.data.map(pr => mapearAtributosPullRequest(pr))
                     : new Array(mapearAtributosPullRequest(pullRequests.data));
-                externalPullRequestsNoProject = externalPullRequestsNoProject.filter(externalPR =>
-                    !_containsPullRequest(projectPullRequests, externalPR));
+                
+                _getNextPullRequestsSimpleObject(pullRequests).then(nextPullRequests => {
+                    nextPullRequests = nextPullRequests.reduce((array, pr) => array.concat(pr.data), []);
+                    nextPullRequests = nextPullRequests.map(pr => mapearAtributosPullRequest(pr));
+                    externalPullRequestsNoProject = externalPullRequestsNoProject.concat(nextPullRequests);
 
-                dispatch({
-                    type: LOAD_EXTERNAL_PULL_REQUESTS_NO_PROJECT_SUCCESS,
-                    externalPullRequestsNoProject
+                    const projectPullRequests = result[1];
+
+                    externalPullRequestsNoProject = externalPullRequestsNoProject.filter(externalPR =>
+                        !_containsPullRequest(projectPullRequests, externalPR));
+                        
+                    dispatch({
+                        type: LOAD_EXTERNAL_PULL_REQUESTS_NO_PROJECT_SUCCESS,
+                        externalPullRequestsNoProject
+                    });
                 });
             })
             .catch(error => {
@@ -242,6 +249,30 @@ const _getNextPullRequests = (pullRequestsGitHub) => {
                 const id = pullRequests.data[0].base.repo.id;
                 promises.push(_getPullRequestsRepository(id, page));
             }
+        }
+    }
+
+    return Promise.all(promises);
+};
+
+/**
+ * Get next pages of Pull Request.
+ * 
+ * @param {Array} pullRequestsGitHub
+ *      Array with GitHub's Pull Requests
+ * @returns {Promise} Promise with next pages os Pull Requests
+ */
+const _getNextPullRequestsSimpleObject = pullRequestsGitHub => {
+    const promises = [];
+    const nextPages = pullRequestsGitHub.headers.link;
+    if(nextPages) {
+        const endPage = Number(nextPages.substring(
+            nextPages.lastIndexOf("page=") + 5, 
+            nextPages.lastIndexOf(">")
+        ));
+        for(let page = 2; page <= endPage; page++) {
+            const id = pullRequestsGitHub.data[0].base.repo.id;
+            promises.push(_getPullRequestsRepository(id, page));
         }
     }
 

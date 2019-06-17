@@ -38,6 +38,7 @@ export class RepositoriesNoProject extends Component {
         this.addRepository = this.addRepository.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.searchExternalRepository = this.searchExternalRepository.bind(this);
+        this.isSearchDisabled = this.isSearchDisabled.bind(this);
     }
 
     /**
@@ -91,6 +92,13 @@ export class RepositoriesNoProject extends Component {
         this.setState({ loadingExternalRepositories: true })
         this.props.searchExternalRepository(this.state.ownerName, this.state.repositoryName, this.props.idProject)
             .finally(() => this.setState({ loadingExternalRepositories: false }));
+    }
+
+    /**
+     * Returns a boolean indicating if the search is allowed.
+     */
+    isSearchDisabled() {
+        return !this.state.ownerName;
     }
 
     render() {
@@ -153,19 +161,20 @@ export class RepositoriesNoProject extends Component {
                                 <div className="row" style={{marginBottom: "0"}}>
                                     <div className="input-field col s5">
                                         <i className="material-icons prefix">account_circle</i>
-                                        <input name="ownerName" type="text" placeholder="Propietário do repositório" 
+                                        <input name="ownerName" type="text" placeholder="Proprietário do repositório*" 
                                                onChange={this.handleChange}/>
                                     </div>
                                     <div className="input-field col s5">
                                         <i className="material-icons prefix">insert_drive_file</i>
                                         <input name="repositoryName" type="text" 
-                                               placeholder="Repositório (Opicional)"
+                                               placeholder="Repositório"
                                                onChange={this.handleChange} />
                                     </div>
                                     <div className="input-field col s2">
                                         <button className="btn waves-effect waves-light blue darken-2"
                                                 type="button" name="search-repository"
-                                                onClick={this.searchExternalRepository}>
+                                                onClick={this.searchExternalRepository}
+                                                disabled={this.isSearchDisabled()}>
                                             Buscar
                                         </button>
                                     </div>

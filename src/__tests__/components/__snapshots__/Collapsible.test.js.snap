@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly collapsible component 1`] = `
+<ul
+  className="collapsible"
+/>
+`;

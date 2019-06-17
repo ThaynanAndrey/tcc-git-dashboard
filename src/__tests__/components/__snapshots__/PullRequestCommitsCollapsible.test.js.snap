@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test PullRequestCommitsCollapsible renders correctly a component to show PullRequestCommitsCollapsible 1`] = `
+<CollapsibleCard
+  isActive={false}
+>
+  <div
+    className="collapsible-header"
+    style={
+      Object {
+        "display": "flex",
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "display": "flex",
+        }
+      }
+    >
+      <div
+        style={
+          Object {
+            "backgroundColor": "red",
+            "borderRadius": "0.5rem",
+            "color": "white",
+            "height": "27px",
+            "marginRight": "1rem",
+            "textAlign": "center",
+            "width": "2rem",
+          }
+        }
+      />
+      Commits
+    </div>
+  </div>
+</CollapsibleCard>
+`;

@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test RepositoryCollapsibleBody renders correctly a component to show RepositoryCollapsibleBody 1`] = `
+<div
+  className="collapsible-body body-collapsible-project"
+>
+  <AuthenticatedComponent
+    idProject="123"
+  />
+</div>
+`;

@@ -1,0 +1,1300 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test PullRequestContentModal renders correctly a component to show PullRequestContentModal 1`] = `
+<PullRequestContentModal
+  pullRequest={
+    Object {
+      "comments": Array [],
+      "commits": Array [],
+      "description": "nothing",
+      "repositorio": Object {
+        "nome": "eh",
+      },
+      "responsavel": Object {
+        "nome": "ze",
+      },
+    }
+  }
+>
+  <div
+    className="modal-content"
+    style={
+      Object {
+        "backgroundColor": "#FFFAFA",
+        "padding": "0",
+      }
+    }
+  >
+    <h5
+      style={
+        Object {
+          "margin": "0",
+          "padding": "18px",
+          "textAlign": "center",
+        }
+      }
+    >
+       
+       
+    </h5>
+    <div
+      style={
+        Object {
+          "padding": "0px 18px 18px 18px",
+        }
+      }
+    >
+      <div
+        className="card"
+      >
+        <div
+          className="card-content"
+          style={
+            Object {
+              "paddingBottom": "0",
+              "paddingTop": "10px",
+            }
+          }
+        >
+          <span
+            className="card-title"
+          >
+            Detalhes
+          </span>
+        </div>
+        <div
+          className="card-action"
+          style={
+            Object {
+              "maxHeight": "30vh",
+              "overflow": "auto",
+              "paddingTop": "0",
+            }
+          }
+        >
+          <ul>
+            <li
+              className="row"
+              style={
+                Object {
+                  "marginBottom": 0,
+                }
+              }
+            >
+              <p
+                className="col"
+                style={
+                  Object {
+                    "fontWeight": "bold",
+                    "margin": 0,
+                    "paddingRight": 0,
+                  }
+                }
+              >
+                Status:
+              </p>
+              <p
+                className="col"
+                style={
+                  Object {
+                    "margin": 0,
+                  }
+                }
+              >
+                 
+                 
+              </p>
+            </li>
+            <li
+              className="row"
+              style={
+                Object {
+                  "marginBottom": 0,
+                }
+              }
+            >
+              <p
+                className="col"
+                style={
+                  Object {
+                    "fontWeight": "bold",
+                    "margin": 0,
+                    "paddingRight": 0,
+                  }
+                }
+              >
+                Data de criação:
+              </p>
+              <p
+                className="col"
+                style={
+                  Object {
+                    "margin": 0,
+                  }
+                }
+              >
+                 
+                 
+              </p>
+            </li>
+            <li
+              className="row"
+              style={
+                Object {
+                  "marginBottom": 0,
+                }
+              }
+            >
+              <p
+                className="col"
+                style={
+                  Object {
+                    "fontWeight": "bold",
+                    "margin": 0,
+                    "paddingRight": 0,
+                  }
+                }
+              >
+                Última atualização:
+              </p>
+              <p
+                className="col"
+                style={
+                  Object {
+                    "margin": 0,
+                  }
+                }
+              >
+                 
+                 
+              </p>
+            </li>
+            <li
+              className="row"
+              style={
+                Object {
+                  "marginBottom": 0,
+                }
+              }
+            >
+              <p
+                className="col"
+                style={
+                  Object {
+                    "fontWeight": "bold",
+                    "margin": 0,
+                    "paddingRight": 0,
+                  }
+                }
+              >
+                Login responsável:
+              </p>
+              <p
+                className="col"
+                style={
+                  Object {
+                    "margin": 0,
+                  }
+                }
+              >
+                 
+                ze
+                 
+              </p>
+            </li>
+            <li
+              className="row"
+              style={
+                Object {
+                  "marginBottom": 0,
+                }
+              }
+            >
+              <p
+                className="col"
+                style={
+                  Object {
+                    "fontWeight": "bold",
+                    "margin": 0,
+                    "paddingRight": 0,
+                  }
+                }
+              >
+                Repositório:
+              </p>
+              <p
+                className="col"
+                style={
+                  Object {
+                    "margin": 0,
+                  }
+                }
+              >
+                 
+                eh
+                 
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <PullRequestDetailsCollapsible
+        pullRequest={
+          Object {
+            "comments": Array [],
+            "commits": Array [],
+            "description": "nothing",
+            "repositorio": Object {
+              "nome": "eh",
+            },
+            "responsavel": Object {
+              "nome": "ze",
+            },
+          }
+        }
+      >
+        <Collapsible>
+          <ul
+            className="collapsible"
+          >
+            <PullRequestDescriptionCollapsible
+              pullRequest={
+                Object {
+                  "comments": Array [],
+                  "commits": Array [],
+                  "description": "nothing",
+                  "repositorio": Object {
+                    "nome": "eh",
+                  },
+                  "responsavel": Object {
+                    "nome": "ze",
+                  },
+                }
+              }
+            >
+              <CollapsibleCard
+                isActive={false}
+              >
+                <li
+                  className=""
+                >
+                  <div
+                    className="collapsible-header"
+                    style={
+                      Object {
+                        "display": "flex",
+                        "justifyContent": "space-between",
+                      }
+                    }
+                  >
+                    <div
+                      style={
+                        Object {
+                          "display": "flex",
+                        }
+                      }
+                    >
+                      <i
+                        className="material-icons"
+                      >
+                        dehaze
+                      </i>
+                      Descrição
+                    </div>
+                  </div>
+                  <div
+                    className="collapsible-body body-collapsible-project descriptionPullRequestContent"
+                    id="markdown-description"
+                  />
+                </li>
+              </CollapsibleCard>
+            </PullRequestDescriptionCollapsible>
+            <PullRequestCommitsCollapsible
+              pullRequest={
+                Object {
+                  "comments": Array [],
+                  "commits": Array [],
+                  "description": "nothing",
+                  "repositorio": Object {
+                    "nome": "eh",
+                  },
+                  "responsavel": Object {
+                    "nome": "ze",
+                  },
+                }
+              }
+            >
+              <CollapsibleCard
+                isActive={false}
+              >
+                <li
+                  className=""
+                >
+                  <div
+                    className="collapsible-header"
+                    style={
+                      Object {
+                        "display": "flex",
+                        "justifyContent": "space-between",
+                      }
+                    }
+                  >
+                    <div
+                      style={
+                        Object {
+                          "display": "flex",
+                        }
+                      }
+                    >
+                      <div
+                        style={
+                          Object {
+                            "backgroundColor": "red",
+                            "borderRadius": "0.5rem",
+                            "color": "white",
+                            "height": "27px",
+                            "marginRight": "1rem",
+                            "textAlign": "center",
+                            "width": "2rem",
+                          }
+                        }
+                      >
+                        0
+                      </div>
+                      Commits
+                    </div>
+                  </div>
+                </li>
+              </CollapsibleCard>
+            </PullRequestCommitsCollapsible>
+            <PullRequestCommentsCollapsible
+              pullRequest={
+                Object {
+                  "comments": Array [],
+                  "commits": Array [],
+                  "description": "nothing",
+                  "repositorio": Object {
+                    "nome": "eh",
+                  },
+                  "responsavel": Object {
+                    "nome": "ze",
+                  },
+                }
+              }
+            >
+              <CollapsibleCard
+                isActive={false}
+              >
+                <li
+                  className=""
+                >
+                  <div
+                    className="collapsible-header"
+                    style={
+                      Object {
+                        "display": "flex",
+                        "justifyContent": "space-between",
+                      }
+                    }
+                  >
+                    <div
+                      style={
+                        Object {
+                          "display": "flex",
+                        }
+                      }
+                    >
+                      <div
+                        style={
+                          Object {
+                            "backgroundColor": "red",
+                            "borderRadius": "0.5rem",
+                            "color": "white",
+                            "height": "27px",
+                            "marginRight": "1rem",
+                            "textAlign": "center",
+                            "width": "2rem",
+                          }
+                        }
+                      >
+                        0
+                      </div>
+                      Comentários
+                    </div>
+                  </div>
+                </li>
+              </CollapsibleCard>
+            </PullRequestCommentsCollapsible>
+          </ul>
+        </Collapsible>
+      </PullRequestDetailsCollapsible>
+    </div>
+  </div>
+</PullRequestContentModal>
+`;
+
+exports[`Test PullRequestContentModal renders correctly a component to show PullRequestContentModal with correct classes 1`] = `
+<PullRequestContentModal
+  pullRequest={
+    Object {
+      "comments": Array [],
+      "commits": Array [],
+      "description": "nothing",
+      "repositorio": Object {
+        "nome": "eh",
+      },
+      "responsavel": Object {
+        "nome": "ze",
+      },
+    }
+  }
+>
+  <div
+    className="modal-content"
+    style={
+      Object {
+        "backgroundColor": "#FFFAFA",
+        "padding": "0",
+      }
+    }
+  >
+    <h5
+      style={
+        Object {
+          "margin": "0",
+          "padding": "18px",
+          "textAlign": "center",
+        }
+      }
+    >
+       
+       
+    </h5>
+    <div
+      style={
+        Object {
+          "padding": "0px 18px 18px 18px",
+        }
+      }
+    >
+      <div
+        className="card"
+      >
+        <div
+          className="card-content"
+          style={
+            Object {
+              "paddingBottom": "0",
+              "paddingTop": "10px",
+            }
+          }
+        >
+          <span
+            className="card-title"
+          >
+            Detalhes
+          </span>
+        </div>
+        <div
+          className="card-action"
+          style={
+            Object {
+              "maxHeight": "30vh",
+              "overflow": "auto",
+              "paddingTop": "0",
+            }
+          }
+        >
+          <ul>
+            <li
+              className="row"
+              style={
+                Object {
+                  "marginBottom": 0,
+                }
+              }
+            >
+              <p
+                className="col"
+                style={
+                  Object {
+                    "fontWeight": "bold",
+                    "margin": 0,
+                    "paddingRight": 0,
+                  }
+                }
+              >
+                Status:
+              </p>
+              <p
+                className="col"
+                style={
+                  Object {
+                    "margin": 0,
+                  }
+                }
+              >
+                 
+                 
+              </p>
+            </li>
+            <li
+              className="row"
+              style={
+                Object {
+                  "marginBottom": 0,
+                }
+              }
+            >
+              <p
+                className="col"
+                style={
+                  Object {
+                    "fontWeight": "bold",
+                    "margin": 0,
+                    "paddingRight": 0,
+                  }
+                }
+              >
+                Data de criação:
+              </p>
+              <p
+                className="col"
+                style={
+                  Object {
+                    "margin": 0,
+                  }
+                }
+              >
+                 
+                 
+              </p>
+            </li>
+            <li
+              className="row"
+              style={
+                Object {
+                  "marginBottom": 0,
+                }
+              }
+            >
+              <p
+                className="col"
+                style={
+                  Object {
+                    "fontWeight": "bold",
+                    "margin": 0,
+                    "paddingRight": 0,
+                  }
+                }
+              >
+                Última atualização:
+              </p>
+              <p
+                className="col"
+                style={
+                  Object {
+                    "margin": 0,
+                  }
+                }
+              >
+                 
+                 
+              </p>
+            </li>
+            <li
+              className="row"
+              style={
+                Object {
+                  "marginBottom": 0,
+                }
+              }
+            >
+              <p
+                className="col"
+                style={
+                  Object {
+                    "fontWeight": "bold",
+                    "margin": 0,
+                    "paddingRight": 0,
+                  }
+                }
+              >
+                Login responsável:
+              </p>
+              <p
+                className="col"
+                style={
+                  Object {
+                    "margin": 0,
+                  }
+                }
+              >
+                 
+                ze
+                 
+              </p>
+            </li>
+            <li
+              className="row"
+              style={
+                Object {
+                  "marginBottom": 0,
+                }
+              }
+            >
+              <p
+                className="col"
+                style={
+                  Object {
+                    "fontWeight": "bold",
+                    "margin": 0,
+                    "paddingRight": 0,
+                  }
+                }
+              >
+                Repositório:
+              </p>
+              <p
+                className="col"
+                style={
+                  Object {
+                    "margin": 0,
+                  }
+                }
+              >
+                 
+                eh
+                 
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <PullRequestDetailsCollapsible
+        pullRequest={
+          Object {
+            "comments": Array [],
+            "commits": Array [],
+            "description": "nothing",
+            "repositorio": Object {
+              "nome": "eh",
+            },
+            "responsavel": Object {
+              "nome": "ze",
+            },
+          }
+        }
+      >
+        <Collapsible>
+          <ul
+            className="collapsible"
+          >
+            <PullRequestDescriptionCollapsible
+              pullRequest={
+                Object {
+                  "comments": Array [],
+                  "commits": Array [],
+                  "description": "nothing",
+                  "repositorio": Object {
+                    "nome": "eh",
+                  },
+                  "responsavel": Object {
+                    "nome": "ze",
+                  },
+                }
+              }
+            >
+              <CollapsibleCard
+                isActive={false}
+              >
+                <li
+                  className=""
+                >
+                  <div
+                    className="collapsible-header"
+                    style={
+                      Object {
+                        "display": "flex",
+                        "justifyContent": "space-between",
+                      }
+                    }
+                  >
+                    <div
+                      style={
+                        Object {
+                          "display": "flex",
+                        }
+                      }
+                    >
+                      <i
+                        className="material-icons"
+                      >
+                        dehaze
+                      </i>
+                      Descrição
+                    </div>
+                  </div>
+                  <div
+                    className="collapsible-body body-collapsible-project descriptionPullRequestContent"
+                    id="markdown-description"
+                  />
+                </li>
+              </CollapsibleCard>
+            </PullRequestDescriptionCollapsible>
+            <PullRequestCommitsCollapsible
+              pullRequest={
+                Object {
+                  "comments": Array [],
+                  "commits": Array [],
+                  "description": "nothing",
+                  "repositorio": Object {
+                    "nome": "eh",
+                  },
+                  "responsavel": Object {
+                    "nome": "ze",
+                  },
+                }
+              }
+            >
+              <CollapsibleCard
+                isActive={false}
+              >
+                <li
+                  className=""
+                >
+                  <div
+                    className="collapsible-header"
+                    style={
+                      Object {
+                        "display": "flex",
+                        "justifyContent": "space-between",
+                      }
+                    }
+                  >
+                    <div
+                      style={
+                        Object {
+                          "display": "flex",
+                        }
+                      }
+                    >
+                      <div
+                        style={
+                          Object {
+                            "backgroundColor": "red",
+                            "borderRadius": "0.5rem",
+                            "color": "white",
+                            "height": "27px",
+                            "marginRight": "1rem",
+                            "textAlign": "center",
+                            "width": "2rem",
+                          }
+                        }
+                      >
+                        0
+                      </div>
+                      Commits
+                    </div>
+                  </div>
+                </li>
+              </CollapsibleCard>
+            </PullRequestCommitsCollapsible>
+            <PullRequestCommentsCollapsible
+              pullRequest={
+                Object {
+                  "comments": Array [],
+                  "commits": Array [],
+                  "description": "nothing",
+                  "repositorio": Object {
+                    "nome": "eh",
+                  },
+                  "responsavel": Object {
+                    "nome": "ze",
+                  },
+                }
+              }
+            >
+              <CollapsibleCard
+                isActive={false}
+              >
+                <li
+                  className=""
+                >
+                  <div
+                    className="collapsible-header"
+                    style={
+                      Object {
+                        "display": "flex",
+                        "justifyContent": "space-between",
+                      }
+                    }
+                  >
+                    <div
+                      style={
+                        Object {
+                          "display": "flex",
+                        }
+                      }
+                    >
+                      <div
+                        style={
+                          Object {
+                            "backgroundColor": "red",
+                            "borderRadius": "0.5rem",
+                            "color": "white",
+                            "height": "27px",
+                            "marginRight": "1rem",
+                            "textAlign": "center",
+                            "width": "2rem",
+                          }
+                        }
+                      >
+                        0
+                      </div>
+                      Comentários
+                    </div>
+                  </div>
+                </li>
+              </CollapsibleCard>
+            </PullRequestCommentsCollapsible>
+          </ul>
+        </Collapsible>
+      </PullRequestDetailsCollapsible>
+    </div>
+  </div>
+</PullRequestContentModal>
+`;
+
+exports[`Test PullRequestContentModal renders correctly a component to show PullRequestContentModal with correct props 1`] = `
+<PullRequestContentModal
+  pullRequest={
+    Object {
+      "comments": Array [],
+      "commits": Array [],
+      "description": "nothing",
+      "repositorio": Object {
+        "nome": "eh",
+      },
+      "responsavel": Object {
+        "nome": "ze",
+      },
+    }
+  }
+>
+  <div
+    className="modal-content"
+    style={
+      Object {
+        "backgroundColor": "#FFFAFA",
+        "padding": "0",
+      }
+    }
+  >
+    <h5
+      style={
+        Object {
+          "margin": "0",
+          "padding": "18px",
+          "textAlign": "center",
+        }
+      }
+    >
+       
+       
+    </h5>
+    <div
+      style={
+        Object {
+          "padding": "0px 18px 18px 18px",
+        }
+      }
+    >
+      <div
+        className="card"
+      >
+        <div
+          className="card-content"
+          style={
+            Object {
+              "paddingBottom": "0",
+              "paddingTop": "10px",
+            }
+          }
+        >
+          <span
+            className="card-title"
+          >
+            Detalhes
+          </span>
+        </div>
+        <div
+          className="card-action"
+          style={
+            Object {
+              "maxHeight": "30vh",
+              "overflow": "auto",
+              "paddingTop": "0",
+            }
+          }
+        >
+          <ul>
+            <li
+              className="row"
+              style={
+                Object {
+                  "marginBottom": 0,
+                }
+              }
+            >
+              <p
+                className="col"
+                style={
+                  Object {
+                    "fontWeight": "bold",
+                    "margin": 0,
+                    "paddingRight": 0,
+                  }
+                }
+              >
+                Status:
+              </p>
+              <p
+                className="col"
+                style={
+                  Object {
+                    "margin": 0,
+                  }
+                }
+              >
+                 
+                 
+              </p>
+            </li>
+            <li
+              className="row"
+              style={
+                Object {
+                  "marginBottom": 0,
+                }
+              }
+            >
+              <p
+                className="col"
+                style={
+                  Object {
+                    "fontWeight": "bold",
+                    "margin": 0,
+                    "paddingRight": 0,
+                  }
+                }
+              >
+                Data de criação:
+              </p>
+              <p
+                className="col"
+                style={
+                  Object {
+                    "margin": 0,
+                  }
+                }
+              >
+                 
+                 
+              </p>
+            </li>
+            <li
+              className="row"
+              style={
+                Object {
+                  "marginBottom": 0,
+                }
+              }
+            >
+              <p
+                className="col"
+                style={
+                  Object {
+                    "fontWeight": "bold",
+                    "margin": 0,
+                    "paddingRight": 0,
+                  }
+                }
+              >
+                Última atualização:
+              </p>
+              <p
+                className="col"
+                style={
+                  Object {
+                    "margin": 0,
+                  }
+                }
+              >
+                 
+                 
+              </p>
+            </li>
+            <li
+              className="row"
+              style={
+                Object {
+                  "marginBottom": 0,
+                }
+              }
+            >
+              <p
+                className="col"
+                style={
+                  Object {
+                    "fontWeight": "bold",
+                    "margin": 0,
+                    "paddingRight": 0,
+                  }
+                }
+              >
+                Login responsável:
+              </p>
+              <p
+                className="col"
+                style={
+                  Object {
+                    "margin": 0,
+                  }
+                }
+              >
+                 
+                ze
+                 
+              </p>
+            </li>
+            <li
+              className="row"
+              style={
+                Object {
+                  "marginBottom": 0,
+                }
+              }
+            >
+              <p
+                className="col"
+                style={
+                  Object {
+                    "fontWeight": "bold",
+                    "margin": 0,
+                    "paddingRight": 0,
+                  }
+                }
+              >
+                Repositório:
+              </p>
+              <p
+                className="col"
+                style={
+                  Object {
+                    "margin": 0,
+                  }
+                }
+              >
+                 
+                eh
+                 
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <PullRequestDetailsCollapsible
+        pullRequest={
+          Object {
+            "comments": Array [],
+            "commits": Array [],
+            "description": "nothing",
+            "repositorio": Object {
+              "nome": "eh",
+            },
+            "responsavel": Object {
+              "nome": "ze",
+            },
+          }
+        }
+      >
+        <Collapsible>
+          <ul
+            className="collapsible"
+          >
+            <PullRequestDescriptionCollapsible
+              pullRequest={
+                Object {
+                  "comments": Array [],
+                  "commits": Array [],
+                  "description": "nothing",
+                  "repositorio": Object {
+                    "nome": "eh",
+                  },
+                  "responsavel": Object {
+                    "nome": "ze",
+                  },
+                }
+              }
+            >
+              <CollapsibleCard
+                isActive={false}
+              >
+                <li
+                  className=""
+                >
+                  <div
+                    className="collapsible-header"
+                    style={
+                      Object {
+                        "display": "flex",
+                        "justifyContent": "space-between",
+                      }
+                    }
+                  >
+                    <div
+                      style={
+                        Object {
+                          "display": "flex",
+                        }
+                      }
+                    >
+                      <i
+                        className="material-icons"
+                      >
+                        dehaze
+                      </i>
+                      Descrição
+                    </div>
+                  </div>
+                  <div
+                    className="collapsible-body body-collapsible-project descriptionPullRequestContent"
+                    id="markdown-description"
+                  />
+                </li>
+              </CollapsibleCard>
+            </PullRequestDescriptionCollapsible>
+            <PullRequestCommitsCollapsible
+              pullRequest={
+                Object {
+                  "comments": Array [],
+                  "commits": Array [],
+                  "description": "nothing",
+                  "repositorio": Object {
+                    "nome": "eh",
+                  },
+                  "responsavel": Object {
+                    "nome": "ze",
+                  },
+                }
+              }
+            >
+              <CollapsibleCard
+                isActive={false}
+              >
+                <li
+                  className=""
+                >
+                  <div
+                    className="collapsible-header"
+                    style={
+                      Object {
+                        "display": "flex",
+                        "justifyContent": "space-between",
+                      }
+                    }
+                  >
+                    <div
+                      style={
+                        Object {
+                          "display": "flex",
+                        }
+                      }
+                    >
+                      <div
+                        style={
+                          Object {
+                            "backgroundColor": "red",
+                            "borderRadius": "0.5rem",
+                            "color": "white",
+                            "height": "27px",
+                            "marginRight": "1rem",
+                            "textAlign": "center",
+                            "width": "2rem",
+                          }
+                        }
+                      >
+                        0
+                      </div>
+                      Commits
+                    </div>
+                  </div>
+                </li>
+              </CollapsibleCard>
+            </PullRequestCommitsCollapsible>
+            <PullRequestCommentsCollapsible
+              pullRequest={
+                Object {
+                  "comments": Array [],
+                  "commits": Array [],
+                  "description": "nothing",
+                  "repositorio": Object {
+                    "nome": "eh",
+                  },
+                  "responsavel": Object {
+                    "nome": "ze",
+                  },
+                }
+              }
+            >
+              <CollapsibleCard
+                isActive={false}
+              >
+                <li
+                  className=""
+                >
+                  <div
+                    className="collapsible-header"
+                    style={
+                      Object {
+                        "display": "flex",
+                        "justifyContent": "space-between",
+                      }
+                    }
+                  >
+                    <div
+                      style={
+                        Object {
+                          "display": "flex",
+                        }
+                      }
+                    >
+                      <div
+                        style={
+                          Object {
+                            "backgroundColor": "red",
+                            "borderRadius": "0.5rem",
+                            "color": "white",
+                            "height": "27px",
+                            "marginRight": "1rem",
+                            "textAlign": "center",
+                            "width": "2rem",
+                          }
+                        }
+                      >
+                        0
+                      </div>
+                      Comentários
+                    </div>
+                  </div>
+                </li>
+              </CollapsibleCard>
+            </PullRequestCommentsCollapsible>
+          </ul>
+        </Collapsible>
+      </PullRequestDetailsCollapsible>
+    </div>
+  </div>
+</PullRequestContentModal>
+`;

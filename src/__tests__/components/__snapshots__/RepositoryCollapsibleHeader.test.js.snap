@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test RepositoryCollapsibleHeader renders correctly a component to show RepositoryCollapsibleHeader 1`] = `
+<RepositoryCollapsibleHeader>
+  <div
+    className="collapsible-header"
+    style={
+      Object {
+        "display": "flex",
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "display": "flex",
+        }
+      }
+    >
+      <i
+        className="material-icons"
+      >
+        dehaze
+      </i>
+      Repositórios
+    </div>
+    <div>
+      <button
+        className="btn-small waves-effect waves-light green darken-2"
+        name="cadastrar-pr"
+        onClick={[Function]}
+        type="button"
+      >
+        Adicionar
+        <i
+          className="material-icons left"
+        >
+          add
+        </i>
+      </button>
+    </div>
+  </div>
+</RepositoryCollapsibleHeader>
+`;
+
+exports[`Test RepositoryCollapsibleHeader renders correctly a component to show RepositoryCollapsibleHeader with correct classes 1`] = `
+<RepositoryCollapsibleHeader
+  idProject="123"
+  redirectPage={[MockFunction]}
+>
+  <div
+    className="collapsible-header"
+    style={
+      Object {
+        "display": "flex",
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "display": "flex",
+        }
+      }
+    >
+      <i
+        className="material-icons"
+      >
+        dehaze
+      </i>
+      Repositórios
+    </div>
+    <div>
+      <button
+        className="btn-small waves-effect waves-light green darken-2"
+        name="cadastrar-pr"
+        onClick={[Function]}
+        type="button"
+      >
+        Adicionar
+        <i
+          className="material-icons left"
+        >
+          add
+        </i>
+      </button>
+    </div>
+  </div>
+</RepositoryCollapsibleHeader>
+`;
+
+exports[`Test RepositoryCollapsibleHeader renders correctly a component to show RepositoryCollapsibleHeader with correct props 1`] = `
+<RepositoryCollapsibleHeader
+  idProject="123"
+  redirectPage={[MockFunction]}
+>
+  <div
+    className="collapsible-header"
+    style={
+      Object {
+        "display": "flex",
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "display": "flex",
+        }
+      }
+    >
+      <i
+        className="material-icons"
+      >
+        dehaze
+      </i>
+      Repositórios
+    </div>
+    <div>
+      <button
+        className="btn-small waves-effect waves-light green darken-2"
+        name="cadastrar-pr"
+        onClick={[Function]}
+        type="button"
+      >
+        Adicionar
+        <i
+          className="material-icons left"
+        >
+          add
+        </i>
+      </button>
+    </div>
+  </div>
+</RepositoryCollapsibleHeader>
+`;

@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly when there are multiple headsNames 1`] = `
+<thead>
+  <tr>
+    <th>
+      Casa
+    </th>
+    <th>
+      carro
+    </th>
+    <th>
+      
+    </th>
+  </tr>
+</thead>
+`;
+
+exports[`renders correctly when there are no headsNames 1`] = `
+<thead>
+  <tr />
+</thead>
+`;

@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test ProjectModalFooter renders correctly a component to show ProjectModalFooter 1`] = `
+<ProjectModalFooter>
+  <div
+    className="modal-footer"
+  >
+    <div
+      className="modal-close waves-effect waves-green btn-flat"
+    >
+      Cancelar
+    </div>
+    <div
+      className="modal-close waves-effect waves-green btn-flat"
+    >
+      Adicionar
+    </div>
+  </div>
+</ProjectModalFooter>
+`;
+
+exports[`Test ProjectModalFooter renders correctly a component to show ProjectModalFooter with correct classes 1`] = `
+<ProjectModalFooter
+  closeModal={[MockFunction]}
+  createProject={[MockFunction]}
+>
+  <div
+    className="modal-footer"
+  >
+    <div
+      className="modal-close waves-effect waves-green btn-flat"
+      onClick={[MockFunction]}
+    >
+      Cancelar
+    </div>
+    <div
+      className="modal-close waves-effect waves-green btn-flat"
+      onClick={[MockFunction]}
+    >
+      Adicionar
+    </div>
+  </div>
+</ProjectModalFooter>
+`;
+
+exports[`Test ProjectModalFooter renders correctly a component to show ProjectModalFooter with correct props 1`] = `
+<ProjectModalFooter
+  closeModal={[MockFunction]}
+  createProject={[MockFunction]}
+>
+  <div
+    className="modal-footer"
+  >
+    <div
+      className="modal-close waves-effect waves-green btn-flat"
+      onClick={[MockFunction]}
+    >
+      Cancelar
+    </div>
+    <div
+      className="modal-close waves-effect waves-green btn-flat"
+      onClick={[MockFunction]}
+    >
+      Adicionar
+    </div>
+  </div>
+</ProjectModalFooter>
+`;
