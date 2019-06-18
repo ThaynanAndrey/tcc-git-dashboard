@@ -1,0 +1,137 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RepositoriesReducer should handle ADDED_REPOSITORY_ERROR 1`] = `
+Object {
+  "error": "Shiiiii",
+  "externalRepositories": Array [],
+  "msgExternalRepositories": undefined,
+  "projectRepositories": Array [],
+  "repositoriesNoProject": Array [],
+}
+`;
+
+exports[`RepositoriesReducer should handle ADDED_REPOSITORY_SUCCESS 1`] = `
+Object {
+  "error": undefined,
+  "externalRepositories": Array [
+    Object {
+      "date": "13/11/2012",
+      "name": "My external repo",
+    },
+  ],
+  "msgExternalRepositories": undefined,
+  "projectRepositories": Array [],
+  "repositoriesNoProject": Array [
+    Object {
+      "date": "10/11/2012",
+      "name": "My repo",
+    },
+    Object {
+      "date": "11/11/2012",
+      "name": "My second repo",
+    },
+  ],
+}
+`;
+
+exports[`RepositoriesReducer should handle LOAD_EXTERNAL_REPOSITORIES 1`] = `
+Object {
+  "error": undefined,
+  "externalRepositories": Array [
+    Object {
+      "date": "10/11/2012",
+      "name": "My repo",
+    },
+    Object {
+      "date": "11/11/2012",
+      "name": "My second repo",
+    },
+  ],
+  "msgExternalRepositories": "",
+  "projectRepositories": Array [],
+  "repositoriesNoProject": Array [],
+}
+`;
+
+exports[`RepositoriesReducer should handle LOAD_EXTERNAL_REPOSITORIES_ERROR 1`] = `
+Object {
+  "error": undefined,
+  "externalRepositories": Array [
+    Object {
+      "date": "10/11/2012",
+      "name": "My repo",
+    },
+    Object {
+      "date": "11/11/2012",
+      "name": "My second repo",
+    },
+  ],
+  "msgExternalRepositories": "Oppss, its wrong...",
+  "projectRepositories": Array [],
+  "repositoriesNoProject": Array [],
+}
+`;
+
+exports[`RepositoriesReducer should handle LOAD_PROJECT_REPOSITORIES_SUCCESS 1`] = `
+Object {
+  "error": undefined,
+  "externalRepositories": Array [],
+  "msgExternalRepositories": undefined,
+  "projectRepositories": Array [
+    Object {
+      "date": "10/11/2012",
+      "name": "My repo",
+    },
+    Object {
+      "date": "11/11/2012",
+      "name": "My second repo",
+    },
+  ],
+  "repositoriesNoProject": Array [],
+}
+`;
+
+exports[`RepositoriesReducer should handle LOAD_REPOSITORIES_NO_PROJECT_SUCCESS 1`] = `
+Object {
+  "error": undefined,
+  "externalRepositories": Array [],
+  "msgExternalRepositories": undefined,
+  "projectRepositories": Array [],
+  "repositoriesNoProject": Array [
+    Object {
+      "date": "10/11/2012",
+      "name": "out repo, not mine",
+    },
+  ],
+}
+`;
+
+exports[`RepositoriesReducer should handle RESET_PROJECT_REPOSITORIES 1`] = `
+Object {
+  "error": undefined,
+  "externalRepositories": Array [],
+  "msgExternalRepositories": undefined,
+  "projectRepositories": Array [],
+  "repositoriesNoProject": Array [],
+}
+`;
+
+exports[`RepositoriesReducer should handle RESET_REPOSITORIES_NO_PROJECT 1`] = `
+Object {
+  "error": undefined,
+  "externalRepositories": Array [],
+  "msgExternalRepositories": undefined,
+  "projectRepositories": Array [],
+  "repositoriesNoProject": Array [],
+}
+`;
+
+exports[`RepositoriesReducer should return the initial state 1`] = `
+Object {
+  "error": undefined,
+  "externalRepositories": Array [],
+  "msgExternalRepositories": undefined,
+  "projectRepositories": Array [],
+  "repositoriesNoProject": Array [],
+}
+`;

@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AuthReducer should handle USER_LOGIN_ERROR 1`] = `
+Object {
+  "accessToken": undefined,
+  "errorLogin": "Ihhh, something is wrong",
+  "errorLogout": undefined,
+  "user": undefined,
+}
+`;
+
+exports[`AuthReducer should handle USER_LOGIN_SUCCESS 1`] = `
+Object {
+  "accessToken": "12345",
+  "errorLogin": undefined,
+  "errorLogout": undefined,
+  "idUser": "123",
+  "user": Object {
+    "name": "Ze",
+  },
+}
+`;
+
+exports[`AuthReducer should handle USER_LOGOUT_ERROR 1`] = `
+Object {
+  "accessToken": undefined,
+  "errorLogin": undefined,
+  "errorLogout": "Something is wrong",
+  "user": undefined,
+}
+`;
+
+exports[`AuthReducer should handle USER_LOGOUT_SUCCESS 1`] = `
+Object {
+  "accessToken": undefined,
+  "errorLogin": undefined,
+  "errorLogout": undefined,
+  "user": undefined,
+}
+`;
+
+exports[`AuthReducer should return the initial state 1`] = `
+Object {
+  "accessToken": undefined,
+  "errorLogin": undefined,
+  "errorLogout": undefined,
+  "user": undefined,
+}
+`;

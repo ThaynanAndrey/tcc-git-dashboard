@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NewPullRequestsReducer should handle ADDED_PULL_REQUEST_ERROR 1`] = `
+Object {
+  "externalPullRequestsNoProject": Array [],
+  "pullRequestsNoProject": Array [],
+}
+`;
+
+exports[`NewPullRequestsReducer should handle ADDED_PULL_REQUEST_SUCCESS 1`] = `
+Object {
+  "externalPullRequestsNoProject": Array [
+    Object {
+      "date": "10/12/1201",
+      "name": "PR External Crazy Name",
+    },
+  ],
+  "pullRequestsNoProject": Array [
+    Object {
+      "date": "10/10/1010",
+      "name": "PR Crazy Name",
+    },
+  ],
+}
+`;
+
+exports[`NewPullRequestsReducer should handle LOAD_EXTERNAL_PULL_REQUESTS_NO_PROJECT_ERROR 1`] = `
+Object {
+  "externalPullRequestsNoProject": Array [],
+  "pullRequestsNoProject": Array [],
+}
+`;
+
+exports[`NewPullRequestsReducer should handle LOAD_EXTERNAL_PULL_REQUESTS_NO_PROJECT_SUCCESS 1`] = `
+Object {
+  "externalPullRequestsNoProject": Array [
+    Object {
+      "date": "10/12/1201",
+      "name": "PR External Crazy Name",
+    },
+  ],
+  "pullRequestsNoProject": Array [],
+}
+`;
+
+exports[`NewPullRequestsReducer should handle LOAD_PULL_REQUESTS_NO_PROJECT_SUCCESS 1`] = `
+Object {
+  "externalPullRequestsNoProject": Array [],
+  "pullRequestsNoProject": Array [
+    Object {
+      "date": "10/10/1010",
+      "name": "PR Name",
+    },
+  ],
+}
+`;
+
+exports[`NewPullRequestsReducer should handle RESET_PULL_REQUESTS_NO_PROJECT 1`] = `
+Object {
+  "externalPullRequestsNoProject": Array [],
+  "pullRequestsNoProject": Array [],
+}
+`;
+
+exports[`NewPullRequestsReducer should return the initial state 1`] = `
+Object {
+  "externalPullRequestsNoProject": Array [],
+  "pullRequestsNoProject": Array [],
+}
+`;

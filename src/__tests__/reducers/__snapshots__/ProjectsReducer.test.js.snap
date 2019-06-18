@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProjectsReducer should handle CREATE_PROJECT_ERROR 1`] = `
+Object {
+  "currentProject": undefined,
+  "error": undefined,
+  "project": undefined,
+  "projects": Array [],
+}
+`;
+
+exports[`ProjectsReducer should handle CREATE_PROJECT_SUCCESS 1`] = `
+Object {
+  "currentProject": undefined,
+  "error": undefined,
+  "project": undefined,
+  "projects": Array [
+    Object {
+      "creationDate": "13/11/2013",
+      "name": "New Project test!!!",
+    },
+  ],
+}
+`;
+
+exports[`ProjectsReducer should handle GET_PROJECT_SUCCESS 1`] = `
+Object {
+  "currentProject": undefined,
+  "error": undefined,
+  "project": Object {
+    "creationDate": "10/02/2012",
+    "name": "Lonely test",
+  },
+  "projects": Array [],
+}
+`;
+
+exports[`ProjectsReducer should handle LOAD_PROJECTS_ERROR 1`] = `
+Object {
+  "currentProject": undefined,
+  "error": "Crazy error!",
+  "project": undefined,
+  "projects": Array [],
+}
+`;
+
+exports[`ProjectsReducer should handle LOAD_PROJECTS_SUCCESS 1`] = `
+Object {
+  "currentProject": undefined,
+  "error": undefined,
+  "project": undefined,
+  "projects": Array [
+    Object {
+      "creationDate": "12/12/2012",
+      "name": "Project test",
+    },
+  ],
+}
+`;
+
+exports[`ProjectsReducer should return the initial state 1`] = `
+Object {
+  "currentProject": undefined,
+  "error": undefined,
+  "project": undefined,
+  "projects": Array [],
+}
+`;

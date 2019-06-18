@@ -1,0 +1,122 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test NewPullRequestsTableBody renders correctly a NewPullRequestsTableBody's component with correct props 1`] = `
+<NewPullRequestsTableBody
+  addPullRequest={[MockFunction]}
+  pullRequests={
+    Array [
+      Object {
+        "dataCriacao": "10/10/1010",
+        "name": "Tests",
+        "repositorio": Object {
+          "nome": "Repo",
+        },
+        "responsavel": Object {
+          "nome": "Ze",
+        },
+        "status": "open",
+      },
+    ]
+  }
+>
+  <tbody>
+    <tr
+      key="0"
+    >
+      <td />
+      <td>
+        10/10/1010
+      </td>
+      <td>
+        open
+      </td>
+      <td>
+        Ze
+      </td>
+      <td>
+        Repo
+      </td>
+      <td>
+        <Tooltip.Wrapper
+          arrow={8}
+          background="#000"
+          border="#000"
+          color="#fff"
+          content="Adicionar PR"
+          fadeDuration={0}
+          fadeEasing="linear"
+          fixed={false}
+          fontFamily="inherit"
+          fontSize="inherit"
+          offset={0}
+          padding={16}
+          placement="left"
+          radius={10}
+          style={
+            Object {
+              "whiteSpace": "nowrap",
+            }
+          }
+          zIndex={1}
+        >
+          <EmotionCssPropInternal
+            __EMOTION_TYPE_PLEASE_DO_NOT_USE__="div"
+            css={
+              Object {
+                "map": undefined,
+                "name": "1oin9j2",
+                "next": undefined,
+                "styles": "
+          
+  position: relative;
+  display: inline-block;
+;
+          
+        ",
+              }
+            }
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+            style={
+              Object {
+                "whiteSpace": "nowrap",
+              }
+            }
+          >
+            <div
+              className="css-1oin9j2"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+              style={
+                Object {
+                  "whiteSpace": "nowrap",
+                }
+              }
+            >
+              <i
+                className="material-icons left green-text"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "cursor": "pointer",
+                  }
+                }
+              >
+                add_box
+              </i>
+              <Tooltip
+                fadeDuration={0}
+                fadeEasing="linear"
+                offset={8}
+                open={false}
+                placement="left"
+                zIndex={1}
+              />
+            </div>
+          </EmotionCssPropInternal>
+        </Tooltip.Wrapper>
+      </td>
+    </tr>
+  </tbody>
+</NewPullRequestsTableBody>
+`;

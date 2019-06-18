@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test ProjectDetails renders correctly a ProjectDetails's component 1`] = `
+<div>
+  <Redirect
+    push={false}
+    to="/login"
+  />
+</div>
+`;

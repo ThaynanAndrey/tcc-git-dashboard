@@ -1,6 +1,6 @@
 import { USER_LOGIN_SUCCESS, USER_LOGIN_ERROR, USER_LOGOUT_SUCCESS, USER_LOGOUT_ERROR } from '../actions/types';
 
-const initState = {
+export const initState = {
     user: undefined,
     accessToken: undefined,
     errorLogin: undefined,
@@ -10,7 +10,6 @@ const initState = {
 const authReducer = (state = initState, action) => {
     switch(action.type) {
         case USER_LOGIN_SUCCESS:
-            console.log('User logged');
             return {
                 ...state,
                 user: action.user,
@@ -18,16 +17,13 @@ const authReducer = (state = initState, action) => {
                 accessToken: action.accessToken
             };
         case USER_LOGIN_ERROR:
-            console.log("Error to log user");
             return {
                 ...state,
                 errorLogin: action.errorLogin
             }
         case USER_LOGOUT_SUCCESS:
-            console.log("log out user");
             return initState;
         case USER_LOGOUT_ERROR:
-            console.log("Error to log out user");
             return {
                 ...state,
                 errorLogout: action.errorLogout
