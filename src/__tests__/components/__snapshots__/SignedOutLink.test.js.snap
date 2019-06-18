@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test SignedOutLinks renders correctly a component SignedOutLinks with classes right hide-on-med-and-down 1`] = `
+<ul
+  className="right hide-on-med-and-down"
+>
+  <li>
+    <NavLink
+      activeClassName="active"
+      aria-current="page"
+      to="/login"
+    >
+      Login
+    </NavLink>
+  </li>
+</ul>
+`;

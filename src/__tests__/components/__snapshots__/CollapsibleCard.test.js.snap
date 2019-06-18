@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test CollapsibleCard renders correctly a collapsible with props isActive 1`] = `
+<li
+  className="active"
+/>
+`;
+
+exports[`Test CollapsibleCard renders correctly a collapsible without props isActive 1`] = `
+<li
+  className=""
+/>
+`;

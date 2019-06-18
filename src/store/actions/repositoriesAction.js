@@ -132,22 +132,28 @@ export const searchExternalRepository = (ownerName, repositoryName, idProject) =
 
         return Promise.all(promises)
             .then(result => {
-                const repositoriesResult = result[0];
+                let repositoriesResult = result[0];
                 const projectRepositories = result[1];
 
-                const isArray = repositoriesResult.data instanceof Array;
-                let externalRepositories = isArray ? repositoriesResult.data.map(result => _mapRepositoryAttr(result))
-                    : new Array(_mapRepositoryAttr(repositoriesResult.data));
-                externalRepositories = externalRepositories.filter(externalRepository =>
-                    !_containsRepository(projectRepositories, externalRepository));
-                
-                const msgExternalRepositories = externalRepositories.length === 0
-                    ? "Não existem repositórios para cadastro" : undefined;
-                dispatch({
-                    type: LOAD_EXTERNAL_REPOSITORIES,
-                    externalRepositories,
-                    msgExternalRepositories
-                })
+                _getNextRepositories(repositoriesResult).then(nextRepositories => {
+                    nextRepositories = nextRepositories.reduce((array, repositories) => array.concat(repositories.data), []);
+                    
+                    const isArray = repositoriesResult.data instanceof Array;
+                    repositoriesResult = isArray ? repositoriesResult.data : new Array(repositoriesResult.data);
+                    repositoriesResult = repositoriesResult.concat(nextRepositories);
+                    
+                    let externalRepositories = repositoriesResult.map(repo => _mapRepositoryAttr(repo));
+                    externalRepositories = externalRepositories.filter(externalRepository =>
+                        !_containsRepository(projectRepositories, externalRepository));
+                    
+                    const msgExternalRepositories = externalRepositories.length === 0
+                        ? "Não existem repositórios para cadastro" : undefined;
+                    dispatch({
+                        type: LOAD_EXTERNAL_REPOSITORIES,
+                        externalRepositories,
+                        msgExternalRepositories
+                    });
+                });
             })
             .catch(error => {
                 console.log(error)
@@ -249,14 +255,13 @@ const _getAllUserRepositories = async () => {
 };
 
 /**
- * Get next pages of Repositories.
+ * Get Repositories in next pages.
  * 
  * @param {Array} repositoriesGitHub
  *      Array with GitHub's Repositories
  * @returns {Promise} Promise with next pages of Repositories
  */
 const _getNextRepositories = repositoriesGitHub => {
-    console.log(repositoriesGitHub)
     const promises = [];
     const nextPages = repositoriesGitHub.headers.link;
     if(nextPages) {

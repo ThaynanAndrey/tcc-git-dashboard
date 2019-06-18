@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test PullRequestDescriptionCollapsible renders correctly a component to show PullRequestDescriptionCollapsible 1`] = `
+<CollapsibleCard
+  isActive={false}
+>
+  <div
+    className="collapsible-header"
+    style={
+      Object {
+        "display": "flex",
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "display": "flex",
+        }
+      }
+    >
+      <i
+        className="material-icons"
+      >
+        dehaze
+      </i>
+      Descrição
+    </div>
+  </div>
+  <div
+    className="collapsible-body body-collapsible-project descriptionPullRequestContent"
+    id="markdown-description"
+  />
+</CollapsibleCard>
+`;

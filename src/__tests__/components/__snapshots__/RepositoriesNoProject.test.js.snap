@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test RepositoriesNoProject renders correctly a component to show Repositories are not in Project 1`] = `
+<div>
+  <Connect(RepositoriesNoProject)
+    addRepositoryInProject={[MockFunction]}
+    externalRepositories={Array []}
+    getRepositoriesNoProject={[MockFunction]}
+    idProject="123"
+    msgExternalRepositories=""
+    repositoriesNoProject={Array []}
+    resetRepositoriesNoProject={[MockFunction]}
+    searchExternalRepository={[MockFunction]}
+  />
+</div>
+`;

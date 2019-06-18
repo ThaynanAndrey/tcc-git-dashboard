@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test RepositoriesNoProject renders correctly a component to show PullRequestCollapsible 1`] = `
+<Collapsible>
+  <CollapsibleCard
+    isActive={true}
+  >
+    <PullRequestCollapsibleHeader
+      idProject="123"
+      redirectPage={[MockFunction]}
+    />
+    <PullRequestCollapsibleBody
+      idProject="123"
+      openPullRequest={[MockFunction]}
+    />
+  </CollapsibleCard>
+</Collapsible>
+`;

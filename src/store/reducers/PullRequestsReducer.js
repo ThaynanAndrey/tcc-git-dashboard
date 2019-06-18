@@ -1,6 +1,6 @@
 import { LOAD_PROJECT_PULL_REQUESTS_SUCCESS, LOAD_PULL_REQUEST_SUCCESS, RESET_PROJECT_PULL_REQUESTS } from '../actions/types';
 
-const initState = {
+export const initState = {
     projectPullRequests: [],
     selectedPullRequest: { responsavel: {}, repositorio: {} },
 };
@@ -8,7 +8,6 @@ const initState = {
 const pullRequestsReducer = (state = initState, action) => {
     switch(action.type) {
         case LOAD_PROJECT_PULL_REQUESTS_SUCCESS:
-            console.log('get all pull requests from project!');
             return {
                 ...state,
                 projectPullRequests: action.projectPullRequests

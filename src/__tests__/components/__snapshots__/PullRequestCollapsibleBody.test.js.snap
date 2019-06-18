@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test RepositoriesNoProject renders correctly a component to show PullRequestCollapsibleBody 1`] = `
+<div
+  className="collapsible-body body-collapsible-project"
+>
+  <AuthenticatedComponent
+    idProject="123"
+    openPullRequest={[MockFunction]}
+  />
+</div>
+`;

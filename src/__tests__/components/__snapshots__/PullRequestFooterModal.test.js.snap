@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test PullRequestFooterModal renders correctly a component to show PullRequestFooterModal 1`] = `
+<PullRequestFooterModal
+  closePullRequestDetails={[MockFunction]}
+>
+  <div
+    className="modal-footer"
+  >
+    <div
+      className="modal-close waves-effect waves-green btn-flat"
+      onClick={[Function]}
+    >
+      Fechar
+    </div>
+  </div>
+</PullRequestFooterModal>
+`;

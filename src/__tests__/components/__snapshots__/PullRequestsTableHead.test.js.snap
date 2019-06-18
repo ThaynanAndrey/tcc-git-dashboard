@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test PullRequestsTableHead renders correctly a PullRequestsTableHead's component with correct props 1`] = `
+<PullRequestsTableHead>
+  <thead>
+    <tr>
+      <th>
+        Pull Request
+      </th>
+      <th>
+        Data
+      </th>
+      <th>
+        Status
+      </th>
+      <th>
+        Responsável
+      </th>
+      <th>
+        Repositório
+      </th>
+      <th />
+    </tr>
+  </thead>
+</PullRequestsTableHead>
+`;

@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PullRequestsReducer should handle LOAD_PROJECT_PULL_REQUESTS_SUCCESS 1`] = `
+Object {
+  "projectPullRequests": Array [
+    Object {
+      "date": "10/12/2015",
+      "name": "Old PR",
+    },
+  ],
+  "selectedPullRequest": Object {
+    "repositorio": Object {},
+    "responsavel": Object {},
+  },
+}
+`;
+
+exports[`PullRequestsReducer should handle LOAD_PULL_REQUEST_SUCCESS 1`] = `
+Object {
+  "projectPullRequests": Array [],
+  "selectedPullRequest": Array [
+    Object {
+      "date": "10/12/2015",
+      "name": "Old PR",
+      "repositorio": Object {
+        "name": "GitRepo",
+      },
+      "responsavel": Object {
+        "name": "Joao",
+      },
+    },
+  ],
+}
+`;
+
+exports[`PullRequestsReducer should handle RESET_PROJECT_PULL_REQUESTS 1`] = `
+Object {
+  "projectPullRequests": Array [],
+  "selectedPullRequest": Object {
+    "repositorio": Object {},
+    "responsavel": Object {},
+  },
+}
+`;
+
+exports[`PullRequestsReducer should return the initial state 1`] = `
+Object {
+  "projectPullRequests": Array [],
+  "selectedPullRequest": Object {
+    "repositorio": Object {},
+    "responsavel": Object {},
+  },
+}
+`;

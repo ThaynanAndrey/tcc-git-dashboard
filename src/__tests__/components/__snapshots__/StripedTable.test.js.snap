@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test StripedTable renders correctly a table 1`] = `
+<table
+  className="striped highlight responsive-table"
+/>
+`;

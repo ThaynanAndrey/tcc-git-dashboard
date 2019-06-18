@@ -41,6 +41,7 @@ class NewPullRequestsProject extends Component {
     this.addExternalPullRequest = this.addExternalPullRequest.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.searchExternalPullRequest = this.searchExternalPullRequest.bind(this);
+    this.isSearchDisabled = this.isSearchDisabled.bind(this);
   }
 
   /**
@@ -116,6 +117,13 @@ class NewPullRequestsProject extends Component {
       });
   }
 
+  /**
+   * Returns a boolean indicating if the search is allowed.
+   */
+  isSearchDisabled() {
+    return !this.state.ownerName || !this.state.repositoryName;
+  }
+
   render() {
     return (
         <div style={styles}>
@@ -140,25 +148,26 @@ class NewPullRequestsProject extends Component {
                           <div className="row" style={{marginBottom: "0"}}>
                               <div className="input-field col s4">
                                   <i className="material-icons prefix">account_circle</i>
-                                  <input name="ownerName" type="text" placeholder="Propietário Repositório" 
+                                  <input name="ownerName" type="text" placeholder="Proprietário Repositório*" 
                                           onChange={this.handleChange}/>
                               </div>
                               <div className="input-field col s4">
                                   <i className="material-icons prefix">insert_drive_file</i>
                                   <input name="repositoryName" type="text" 
-                                          placeholder="Nome Repositório"
+                                          placeholder="Nome Repositório*"
                                           onChange={this.handleChange} />
                               </div>
                               <div className="input-field col s3">
                                   <i className="material-icons prefix">create</i>
                                   <input name="prNumber" type="text" 
-                                          placeholder="Número PR (Opcional)"
+                                          placeholder="Número PR"
                                           onChange={this.handleChange} />
                               </div>
                               <div className="input-field col s1">
                                   <button className="btn waves-effect waves-light blue darken-2"
                                           type="button" name="search-pr"
-                                          onClick={this.searchExternalPullRequest}>
+                                          onClick={this.searchExternalPullRequest}
+                                          disabled={this.isSearchDisabled()}>
                                       Buscar
                                   </button>
                               </div>
@@ -177,7 +186,7 @@ class NewPullRequestsProject extends Component {
           </div>
           <div className="card">
             <div className="card-content" style={{paddingBottom: "0", paddingTop: "20px"}}>
-              <span className="card-title">Pull Requests dos meus repositórios</span>
+              <span className="card-title">Pull Requests dos repositórios do Projeto</span>
             </div>
             <div className="card-action" style={styleCardContent}>
               <BlockUi tag="div" blocking={this.state.loading}>

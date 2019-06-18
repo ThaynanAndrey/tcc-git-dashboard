@@ -77,7 +77,7 @@ export const createProject = projectName => {
         return firestore.collection(COLLECTION_PROJECTS_FIRESTORE).add(newProject)
             .then(project => {
                 newProject.id = project.id;
-                newProject.creationDate = "10/10/2010";
+                newProject.creationDate = getFormattedDate(newProject.creationDate);
                 let projects = getState().projects.projects;
                 projects.push(newProject);
 

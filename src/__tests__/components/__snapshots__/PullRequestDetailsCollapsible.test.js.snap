@@ -1,0 +1,142 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test PullRequestDetailsCollapsible renders correctly a component to show PullRequestDetailsCollapsible with correct props 1`] = `
+<PullRequestDetailsCollapsible
+  pullRequest={Object {}}
+>
+  <Collapsible>
+    <ul
+      className="collapsible"
+    >
+      <PullRequestDescriptionCollapsible
+        pullRequest={Object {}}
+      >
+        <CollapsibleCard
+          isActive={false}
+        >
+          <li
+            className=""
+          >
+            <div
+              className="collapsible-header"
+              style={
+                Object {
+                  "display": "flex",
+                  "justifyContent": "space-between",
+                }
+              }
+            >
+              <div
+                style={
+                  Object {
+                    "display": "flex",
+                  }
+                }
+              >
+                <i
+                  className="material-icons"
+                >
+                  dehaze
+                </i>
+                Descrição
+              </div>
+            </div>
+            <div
+              className="collapsible-body body-collapsible-project descriptionPullRequestContent"
+              id="markdown-description"
+            />
+          </li>
+        </CollapsibleCard>
+      </PullRequestDescriptionCollapsible>
+      <PullRequestCommitsCollapsible
+        pullRequest={Object {}}
+      >
+        <CollapsibleCard
+          isActive={false}
+        >
+          <li
+            className=""
+          >
+            <div
+              className="collapsible-header"
+              style={
+                Object {
+                  "display": "flex",
+                  "justifyContent": "space-between",
+                }
+              }
+            >
+              <div
+                style={
+                  Object {
+                    "display": "flex",
+                  }
+                }
+              >
+                <div
+                  style={
+                    Object {
+                      "backgroundColor": "red",
+                      "borderRadius": "0.5rem",
+                      "color": "white",
+                      "height": "27px",
+                      "marginRight": "1rem",
+                      "textAlign": "center",
+                      "width": "2rem",
+                    }
+                  }
+                />
+                Commits
+              </div>
+            </div>
+          </li>
+        </CollapsibleCard>
+      </PullRequestCommitsCollapsible>
+      <PullRequestCommentsCollapsible
+        pullRequest={Object {}}
+      >
+        <CollapsibleCard
+          isActive={false}
+        >
+          <li
+            className=""
+          >
+            <div
+              className="collapsible-header"
+              style={
+                Object {
+                  "display": "flex",
+                  "justifyContent": "space-between",
+                }
+              }
+            >
+              <div
+                style={
+                  Object {
+                    "display": "flex",
+                  }
+                }
+              >
+                <div
+                  style={
+                    Object {
+                      "backgroundColor": "red",
+                      "borderRadius": "0.5rem",
+                      "color": "white",
+                      "height": "27px",
+                      "marginRight": "1rem",
+                      "textAlign": "center",
+                      "width": "2rem",
+                    }
+                  }
+                />
+                Comentários
+              </div>
+            </div>
+          </li>
+        </CollapsibleCard>
+      </PullRequestCommentsCollapsible>
+    </ul>
+  </Collapsible>
+</PullRequestDetailsCollapsible>
+`;
